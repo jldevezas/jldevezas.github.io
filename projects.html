@@ -1,0 +1,61 @@
+<!--<? echo '<?xml version="1.0" encoding="utf-8"?>'; ?>--><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>Jos&eacute; Devezas R&amp;D</title><meta name="content-type" content="text/html; charset=utf-8"/><link rel="stylesheet" href="css/style.css" type="text/css"/><link rel="stylesheet" type="text/css" href="fancybox/jquery.fancybox-1.3.4.css"/><link rel="stylesheet" type="text/css" href="snippet/jquery.snippet.min.css"/><script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script><script type="text/javascript" src="fancybox/jquery.mousewheel-3.0.4.pack.js"></script><script type="text/javascript" src="fancybox/jquery.fancybox-1.3.4.pack.js"></script><script type="text/javascript" src="snippet/jquery.snippet.min.js"></script><script type="text/javascript">
+var _gaq=_gaq || [];_gaq.push(['_setAccount', 'UA-21355762-1']);_gaq.push(['_trackPageview']);
+(function(){var ga=document.createElement('script');ga.type = 'text/javascript';ga.async=true;ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www')
++ '.google-analytics.com/ga.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(ga,s);})();
+</script></head><body><div id="header"></div><div id="body"><a href="index.html" id="title">Jos&eacute; Devezas R&amp;D</a><div id="menu"><a href="index.html">About Me</a><a href="research.html" class="uberlink">Research</a><a href="contact.html">Contact</a></div><div class="clear"/><div id="left-side-bar"><a href="research.html">Overview</a><br/><a href="affiliation.html">Affiliation</a><br/><a href="publications.html">Publications</a><br/><a href="presentations.html">Presentations</a><br/><a href="projects.html" class="uberlink">Projects</a><br/><a href="jld-cv.pdf">Curriculum Vitae</a></div><div id="content"><script type="text/javascript">
+$(document).ready(function(){$("a[rel=ciclope-screenshots]").fancybox({'transitionIn' : 'none',
+'transitionOut' : 'none',
+'titlePosition' : 'outside',
+'titleFormat' : function(title,currentArray,currentIndex,currentOpts) {return '<span id="fancybox-title-outside">Image ' + (currentIndex + 1) + ' / ' +
+currentArray.length + (title.length ? ' &nbsp;' + title : '') + '</span>';}});$("pre#unite-java-example").snippet("javascript", {style:"whitengrey", box:"34-38", boxColor:"steelblue", boxFill:"#f8f8f8"});});
+</script><h1>Projects</h1><p>As a researcher of Labs SAPO/UP, in the course of this year, I was able to work on two main projects and participate in an information retrieval contest.</p><h2>Ciclope</h2><p>From June 2010 to December 2010, I worked on <a href="http://194.65.94.41/ciclope/stable/index.html">Ciclope</a>, a real-time data visualization project aimed at gathering information from SAPO Blogs clickstream and displaying it in a useful way, allowing the blog owner to have an understanding of how the traffic flow of his or her blog behaves.</p><p class="gallery"><a title="Real time clickstream visualization." href="images/ciclope-realtime.png" rel="ciclope-screenshots"><img src="images/ciclope-realtime-miniature.png" height="70px" alt=""/></a><a title="Blog access hits over a day." href="images/ciclope-history.png" rel="ciclope-screenshots"><img src="images/ciclope-history-miniature.png" height="70px" alt=""/></a><a title="Categorized traffic flow tree, illustrating the different types of traffic
+			sources for the blog." href="images/ciclope-flowtree.png" rel="ciclope-screenshots"><img src="images/ciclope-flowtree-miniature.png" height="70px" alt=""/></a><a title="Blog graph neighborhood navigator." href="images/ciclope-blognetwork.png" rel="ciclope-screenshots"><img src="images/ciclope-blognetwork-miniature.png" height="70px" alt=""/></a><a title="Blog graph node information." href="images/ciclope-bloginfo.png" rel="ciclope-screenshots"><img src="images/ciclope-bloginfo-miniature.png" height="70px" alt=""/></a></p><h2>Unite</h2><p>From January 2011 to June 2011, I focused on graph mining and community detection. As part of my work, I developed <a href="http://labs.sapo.pt/~projects/Unite">Unite</a>, a Java library with the goal to provide an agile platform for link extraction and graph mining. Unite was built with out-of-the-box support for the most common graph building use cases, providing at the same time an extensible and highly modular interface that allows developers to adapt the framework to their own needs. Below is an example of how to read content from a MySQL database, parse it and write the resulting graph to a Blueprints-enabled graph database &mdash; in this case, <a href="http://neo4j.org">Neo4j</a>.</p><pre id="unite-java-example">
+import pt.up.fe.unite.util.Pair;
+import pt.up.fe.unite.util.Logging;
+import pt.up.fe.unite.extraction.GraphBuilder;
+import pt.up.fe.unite.extraction.reader.Reader;
+import pt.up.fe.unite.extraction.reader.MySQLReader;
+import pt.up.fe.unite.extraction.parser.UrlDomainParser;
+import pt.up.fe.unite.extraction.parser.AnchorDomainParser;
+import pt.up.fe.unite.extraction.writer.Writer;
+import pt.up.fe.unite.extraction.writer.BlueprintsWriter;
+
+import java.util.Properties;
+
+// ...
+
+Properties readerSettings = new Properties( Reader.DEFAULT_SETTINGS );
+Properties writerSettings = new Properties( Writer.DEFAULT_SETTINGS );
+
+readerSettings.setProperty( Reader.SK_HOSTNAME, "mydbhostname" );
+readerSettings.setProperty( Reader.SK_USERNAME, "myusername" );
+readerSettings.setProperty( Reader.SK_PASSWORD, "mypassword" );
+readerSettings.setProperty( Reader.SK_DATABASE, "SAPOBlogSearch" );
+readerSettings.setProperty( Reader.SK_TABLE, "rss_entry" );
+readerSettings.setProperty( Reader.SK_SOURCE, "url" );
+readerSettings.setProperty( Reader.SK_TARGET, "body" );
+readerSettings.setProperty( Reader.SK_LIMIT, "20" );
+
+writerSettings.setProperty( Writer.SK_DATABASE, "/path/to/graphdb" );
+
+Reader reader = null;
+Writer writer = null;
+
+try
+{
+        reader = new MySQLReader( readerSettings );
+        Pair<Class,Class> parser = new Pair<Class,Class>( UrlDomainParser.class, AnchorDomainParser.class );
+        writer = new BlueprintsWriter( writerSettings );
+        GraphBuilder builder = new GraphBuilder( reader, parser, writer );
+        builder.run();
+}
+catch ( IllegalArgumentException e )
+{
+        log.error( "Wrong settings, check the API", e );
+}
+
+// ...
+</pre><h2>TREC 2010 Blog Track</h2><p>In 2010, I was presented with the opportunity to participate in the Blog Track for the <a href="http://trec.nist.gov">Text REtrieval Conference</a>. TREC is an information retrieval conference that holds several competitive tracks every year, providing their own datasets (at a price) together with human assessment for the relevance of each resource, given the search topics of the competition. This allows the participants to calculate metrics such as the mean average precision in order to evaluate their retrieval system. For a novice in the area, the experience gained through TREC's participation is immense.</p><p>Our work focused on using some of the structural properties of the blog graph as query-independent features for the blog distillation process. Specifically, we ranked each blog according to the in-degree and then compared it to the rank according to the <a href="http://en.wikipedia.org/wiki/H-index">h-index</a> (a metric commonly used in bibliometrics to measure the scientific output of a researcher). We then introduced a weighted and normalized value, for each of these link-based metrics, in the final document score, obtaining result improvements for the h-index, but not the in-degree.</p><p>During the participation in TREC 2010 Blog Track, I acquired competences in the tasks of link extraction, graph mining and blog distillation, additionally learning about large scale methodologies for indexing, searching and parsing large-scale collections.</p></div><div id="right-side-bar" class="center"><a href="http://gplus.to/jldevezas" title="Google+"><img src="images/google-plus.png" alt="Google+" /></a><div class="medium-space"></div><a href="http://www.linkedin.com/in/jldevezas" title="LinkedIn"><img src="images/linkedin.png" alt="LinkedIn" /></a><a href="http://www.twitter.com/jld" title="Twitter"><img src="images/twitter.png" alt="Twitter" /></a><a href="http://www.facebook.com/jldevezas" title="Facebook"><img src="images/facebook.png" alt="Facebook" /></a><div class="small-space"></div><a href="http://jld.posterous.com" title="Posterous"><img src="images/posterous.png" alt="Posterous" /></a><div class="small-space"></div><a href="http://delicious.com/jldevezas" title="Delicious"><img src="images/delicious.png" alt="Delicious" /></a><div class="medium-space"></div><a href="http://github.com/jldevezas" title="GitHub"><img src="images/github.gif" alt="Github" /></a><div class="medium-space"></div><a href="http://wiki.josedevezas.com" title="R&amp;D Wiki"><img src="images/DokuWiki.png" alt="DokuWiki" /></a></div><div id="footer" class="clear">
+				&copy; 2011 Jos&eacute; Lu&iacute;s da Silva Devezas | <a href="http://validator.w3.org/check?uri=referer" title="Validate XHTML 1.1 on World Wide Web Consortium">Validate XHTML 1.1</a> | 
+<a href="#"><img src="images/uk-flag.png" alt="English" class="selected"/></a><a href="#"><img src="images/pt-flag.png" alt="Portuguese"/></a></div></div></body></html>
