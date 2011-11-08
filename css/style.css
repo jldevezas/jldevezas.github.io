@@ -54,7 +54,7 @@ pre {
 
 #menu {
 	float:right;
-	margin-right:143px;
+	margin-right:93px;
 	margin-bottom:30px;
 	height:100%;
 }
@@ -127,7 +127,7 @@ pre {
 	text-align:justify;
 	padding:10px 30px 30px 30px;
 	border:1px solid #B6C0D2;
-	width:600px;
+	width:650px;
 	min-height:400px;
 }
 
@@ -136,7 +136,7 @@ pre {
 	font-size:12px;
 	text-align:right;
 	line-height:30px;
-	margin-right:150px;
+	margin-right:100px;
 }
 
 #footer img {
@@ -213,9 +213,8 @@ table.contact {
 
 table.contact td {
 	vertical-align:top;
-	width:400px;
+	width:500px;
 	height:1.7em;
-	font-size:13px;
 }
 
 table.contact tr > td:first-child {
