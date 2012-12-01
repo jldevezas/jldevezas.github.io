@@ -284,3 +284,8 @@ span.bqstart {
 	font-family:Georgia,"Times New Roman",Times,serif;
 	color:#634B38;											/* color3.1 */
 }
+
+#breadcrumbs-slider li, #ciclope-slider li {
+	width: 400px;
+	text-align: center;
+}
