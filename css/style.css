@@ -280,7 +280,8 @@ span.bqstart {
 	float:left;
 	margin-top:-15px;
 	padding-right:10px;
-	font-size:550%;
+	/*font-size:550%;*/
+	font-size: 85px;
 	font-family:Georgia,"Times New Roman",Times,serif;
 	color:#634B38;											/* color3.1 */
 }
@@ -288,4 +289,9 @@ span.bqstart {
 #breadcrumbs-slider li, #ciclope-slider li {
 	width: 400px;
 	text-align: center;
+}
+
+#guild-wars-2-icon {
+	margin-left: 10px;
+	margin-right: 20px;
 }
