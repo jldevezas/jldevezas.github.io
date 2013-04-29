@@ -164,7 +164,7 @@ JldVisualization.prototype.listeningBehaviorArtistChart = function (artist) {
 			.data(data)
 		.enter().append("rect")
 			.attr("class", "bar")
-			.attr("x", function(d) { return x(d.month) - Math.floor(barWidth/2); })
+			.attr("x", function(d) { return x(d.month) - barWidth / 2; })
 			.attr("width", barWidth)
 			.attr("y", function(d) { return y(d.plays); })
 			.attr("height", function(d) { return height - y(d.plays); })
@@ -210,7 +210,7 @@ JldVisualization.prototype.mostFrequentArtist = function() {
 		if (row.plays > 0)
 			frequency[row.artist]++;
 	});
-	return d3.max(d3.entries(frequency), function(e) e.key);
+	return d3.max(d3.entries(frequency), function(e) { return e.key; });
 };
 
 JldVisualization.prototype.clear = function() {
