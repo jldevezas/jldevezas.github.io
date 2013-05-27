@@ -261,6 +261,7 @@ table.contact td {
 	vertical-align:top;
 	width:500px;
 	height:1.7em;
+	padding: 10px 5px;
 }
 
 table.contact tr > td:first-child {
