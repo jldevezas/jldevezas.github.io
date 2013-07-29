@@ -35,9 +35,12 @@
 }
 
 #control {
+	z-index: 1000;
 	padding: 5px 10px;
+	border: 1px solid #bbb;
 	border-radius: 10px;
-	background: #ddd;
+	opacity: 0.9;
+	background: #eee;
 }
 
 #control .ink-button {
@@ -57,25 +60,47 @@
 	color: #bbb;
 }
 
+.box {
+	border-radius: 4px;
+	-webkit-box-shadow: 0 2px 3px 0 #dddddd;
+	-moz-box-shadow: 0 2px 3px 0 #dddddd;
+	box-shadow: 0 2px 3px 0 #dddddd;
+	border: 1px solid #BBB;
+	background-color: whitesmoke;
+	padding: 1em;
+	margin-top: 1em;
+}
+
 select {
-	max-width: 200px;
+	max-width: 300px;
+}
+
+th {
+	text-align: left;
 }
 
 footer {
- /* Safari 4-5, Chrome 1-9 */
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f0f0f0), to(#f7f7f7));
+	clear: both;
+	min-height: 200px;
 
-  /* Safari 5.1, Chrome 10+ */
-  background: -webkit-linear-gradient(top, #f0f0f0, #f7f7f7);
+	/* Safari 4-5, Chrome 1-9 */
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f7f7f7), to(#ffffff));
 
-  /* Firefox 3.6+ */
-  background: -moz-linear-gradient(top, #f0f0f0, #f7f7f7);
+	/* Safari 5.1, Chrome 10+ */
+	background: -webkit-linear-gradient(top, #f7f7f7, #ffffff);
 
-  /* IE 10 */
-  background: -ms-linear-gradient(top, #f0f0f0, #f7f7f7);
+	/* Firefox 3.6+ */
+	background: -moz-linear-gradient(top, #f7f7f7, #ffffff);
 
-  /* Opera 11.10+ */
-  background: -o-linear-gradient(top, #f0f0f0, #f7f7f7);
+	/* IE 10 */
+	background: -ms-linear-gradient(top, #f7f7f7, #ffffff);
+
+	/* Opera 11.10+ */
+	background: -o-linear-gradient(top, #f7f7f7, #ffffff);
+}
+
+table.large-math tr td:last-child {
+	font-size: 125%;
 }
 
 .axis path,
