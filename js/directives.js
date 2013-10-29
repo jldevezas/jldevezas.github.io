@@ -33,18 +33,6 @@ utils.directive("mathjaxBind", function() {
 	};
 });
 
-//utils.directive('scrollTo', function ($location, $anchorScroll) {
-	//return function(scope, element, attrs) {
-		//element.bind('click', function(event) {
-			//event.preventDefault();
-			//event.stopPropagation();
-			//var location = attrs.scrollTo;
-			//$location.hash(location);
-			//$anchorScroll();
-		//});
-	//}
-//});
-
 utils.directive("scrollTo", ["$window", function($window){
 	return {
 		restrict : "AC",
@@ -66,19 +54,3 @@ utils.directive("scrollTo", ["$window", function($window){
 		}
 	};
 }]);
-
-utils.directive('scrollSpy', function($timeout) {
-	return {
-		restrict: 'A',
-		link: function(scope, elem, attr) {
-			var offset = parseInt(attr.scrollOffset, 10)
-			if(!offset) offset = 10;
-			elem.scrollspy({ "offset" : offset });
-			scope.$watch(attr.scrollSpy, function(value) {
-				$timeout(function() { 
-					elem.scrollspy('refresh', { "offset" : offset });
-				}, 1);
-			}, true);
-		}
-	}
-});
