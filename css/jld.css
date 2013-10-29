@@ -1,0 +1,105 @@
+#stream-graph {
+	position: relative;
+	margin-top: 20px;
+	height: 400px;
+}
+
+#stream-tooltip {
+	position: absolute;
+	font-size: 30px;
+	font-weight: bold;
+	text-shadow: 0 0 3px WhiteSmoke, 0 0 3px WhiteSmoke;
+	z-index: 20;
+}
+
+.stream-info {
+	font-size: 11px;
+}
+
+#preferred-weekdays, #avoided-weekdays {
+	min-height: 500px;
+}
+
+#artist-monthly-chart, #artist-weekly-chart {
+	height: 300px;
+}
+
+#artist-monthly-tooltip, #artist-weekly-tooltip, #top-artist-weekly-tooltip {
+	display: none;
+	position: absolute;
+	padding: 5px 10px;
+	border: 1px solid black;
+	border-radius: 12px;
+	text-shadow: 0 0 3px WhiteSmoke, 0 0 3px WhiteSmoke;
+	background: white;
+}
+
+#artist-weekly-name, #artist-monthly-name {
+	font-size: 18px;
+}
+
+#control {
+	z-index: 1000;
+	padding: 5px 10px;
+	border: 1px solid #bbb;
+	border-radius: 10px;
+	opacity: 0.9;
+	background: #eee;
+	line-height: 40px;
+}
+
+#control button {
+	font-size: 12px;
+	margin-left: 0;
+}
+
+.select2-container, .select2-drop {
+	font-size: 12px;
+}
+
+.select2-results {
+	max-height: 300px;
+}
+
+.fade-text {
+	color: #bbb;
+}
+
+select {
+	max-width: 300px;
+}
+
+table.large-math tr td:last-child {
+	font-size: 125%;
+}
+
+.axis path,
+.axis line {
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+}
+
+.bar {
+	fill: SteelBlue;
+}
+
+.bar-week {
+	fill: #6FAD6F;
+	/*fill: SeaGreen;*/
+	/*fill: Teal;*/
+	/*fill: #FF9900;*/
+	/*fill: #DD5500;*/
+	/*fill: #789A9F;*/
+	/*fill: rgb(236, 169, 24);*/
+}
+
+.x.axis path {
+	display: none;
+}
+
+.top-artist-text {
+	font-size: smaller;
+	font-weight: bold;
+	text-shadow: 0 0 3px WhiteSmoke;
+}

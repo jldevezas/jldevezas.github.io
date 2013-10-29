@@ -1,0 +1,79 @@
+<section id="vlb-global">
+	<div class="page-header">
+		<h1>Global Music Listening Behavior</h1>
+	</div>
+
+	<p>
+		We've grouped data by the hour of the day and analyzed behavior by gender and country.
+		While male and female music listening behaviors are very similar, listening habits seem
+		to behave differently for different countries.
+	</p>
+
+	<h2>Hourly by Gender</h2>
+
+	<p>
+		Below you can find an hourly chart for the total number of plays in the dataset,
+		distinguishing between male, female and unknown genders.
+	</p>
+
+	<div class="vertical-space content-center">
+		<img src="img/charts/hourly_scrobbles_by_gender.png" class="photo" />
+	</div>
+
+	<h2>Hourly by Country</h2>
+
+	<p>
+		Here you can see the hourly music plays distribution for each country in the dataset.
+		Each bar indicates the fraction of music listened in the given country at each hour of
+		the day.  We've sorted facets from the country with the most global plays to the
+		country with the least global plays. We've also clustered similar hourly behavior using
+		k-means on this normalized hourly data. We used <em>k</em>=3 which resulted in the
+		cluster that achieved the best silhouette value among the clusters generated with
+		<em>k</em> from 2 to 6.
+	</p>
+
+	<p>
+		Note that in the original dataset, timestamps were in the UTC time standard. In order
+		to offer a fair comparison between countries, we shifted the hour in each country by
+		the mean time zone offset. Also notice that, as we approach the countries at the
+		bottom, there is less data supporting those countries behaviors.
+	</p>
+
+	<div class="vertical-space content-center">
+		<img src="img/charts/hourly_scrobbles_by_country.png" class="photo" />
+	</div>
+
+	<p>
+		The following two charts illustrate the two different behaviors identified by the
+		clustering process. At first, we thought averaging the time zone would have influenced
+		the minimum shifting, however we found out that the countries in both clusters have a
+		variable number of time zones, which indicates that it wasn't a factor that highly
+		influenced the clustering.
+	</p>
+	
+	<h3>Behavior 1</h3>
+	<p>
+		This depicts a country that is either more active during the night, sleeping late,
+		or who has people with many different schedules. It includes countries like China
+		who are well known for their intensive working habits.
+	</p>
+	<div class="content-center">
+		<img src="img/charts/hourly_scrobbles_by_country_behavior_1.png" class="photo" />
+	</div>
+
+	<h3>Behavior 2</h3>
+	<p>
+		This depicts a country with low activity during the night, and that listens to
+		music frequently while awake. It includes most of the countries, depicting the
+		expected behavior of inactivity during the night.
+	</p>
+	<div class="content-center">
+		<img src="img/charts/hourly_scrobbles_by_country_behavior_2.png" class="photo" />
+	</div>
+
+	<p>
+		Even though there are two distinctive listening habits among different countries, we
+		believe they are not very different overall and that they do not deviate much from the
+		expected behavior.
+	</p>
+</section>
