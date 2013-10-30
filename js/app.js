@@ -6,11 +6,18 @@ app.config([ '$routeProvider', function($routeProvider) {
 		controller: function($rootScope) { $rootScope.title = "Home"; }
 	}).when('/research', {
 		templateUrl : 'research.partial.html',
-		controller: function($rootScope) { $rootScope.title = "Research"; },
+		controller: function($rootScope) {
+			$rootScope.title = "Research";
+			$('body').scrollspy({ target: '.spy-target' });
+		},
 		reloadOnSearch: false
 	}).when('/individual-listening-behavior', {
 		templateUrl : 'individual-listening-behavior.partial.html',
-		controller: function($rootScope) { $rootScope.title = "Individual Music Listening Behavior"; }
+		controller: function($rootScope) {
+			$rootScope.title = "Individual Music Listening Behavior";
+			$('body').unbind('scroll');
+			$('#control').affix();
+		}
 	}).when('/global-listening-behavior', {
 		templateUrl : 'global-listening-behavior.partial.html',
 		controller: function($rootScope) { $rootScope.title = "Global Music Listening Behavior"; }
