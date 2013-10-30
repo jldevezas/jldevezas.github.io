@@ -8,15 +8,15 @@ app.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : 'research.partial.html',
 		controller: function($rootScope) {
 			$rootScope.title = "Research";
-			$('body').scrollspy({ target: '.spy-target' });
+			angular.element('body').scrollspy({ target: '.spy-target' });
 		},
 		reloadOnSearch: false
 	}).when('/individual-listening-behavior', {
 		templateUrl : 'individual-listening-behavior.partial.html',
 		controller: function($rootScope) {
 			$rootScope.title = "Individual Music Listening Behavior";
-			$('body').unbind('scroll');
-			$('#control').affix();
+			angular.element('body').unbind('scroll');
+			angular.element('#control').affix({ offset: { top: 50 } });
 		}
 	}).when('/global-listening-behavior', {
 		templateUrl : 'global-listening-behavior.partial.html',
