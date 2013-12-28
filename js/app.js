@@ -43,6 +43,7 @@ app.config([ '$routeProvider', function($routeProvider) {
 
 app.run(function($rootScope, $location, $window) {
 	$rootScope.$on('$viewContentLoaded', function() {
+		$window._gaq.push(["_set", "title", $rootScope.title]);
 		$window._gaq.push(['_trackPageview', $location.path()]);
 	});
 });
