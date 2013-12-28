@@ -40,3 +40,9 @@ app.config([ '$routeProvider', function($routeProvider) {
 		redirectTo : '/home'
 	});
 } ]);
+
+app.run(function($rootScope, $location, $window) {
+	$rootScope.$on('$routeChangeSuccess', function() {
+		$window._gaq.push(['_trackPageview', $location.path()]);
+	});
+});
