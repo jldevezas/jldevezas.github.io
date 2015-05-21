@@ -12,7 +12,7 @@
 		matrix to the original</strong>. So there's a transformation of the "training data"
 	(our ratings matrix for a set of users and items) that enables us to estimate a rating for
 	values that were previously zero. Interestingly, <a
-		href="http://www.ams.org/samplings/feature-column/fcarc-svd">Singular Value
+		href="http://www.ams.org/samplings/feature-column/fcarc-svd" target="_blank">Singular Value
 		Decomposition (SVD)</a> can capture the global structure of the training set. It's
 	quite magical!
 </p>
@@ -29,22 +29,22 @@
 	missing values by zero. Why don't we use the means instead of zeros then? Simply because,
 	in computer science, calculating the SVD for dense matrices is not as optimized as doing it
 	for sparse matrices. What we can do is use mean imputation as a baseline for evaluation,
-	but more on that in <a href="k-fold-cross-validation.html">k-fold cross-validation</a>.
+	but more on that in <a href="#/k-fold-cross-validation">k-fold cross-validation</a>.
 </p>
 
 <p>
 	We've been talking about factorizing a matrix into two new matrices that multiplied will
 	give you back a very similar matrix. However, in SVD, you could argue that there are in
 	fact three matrices. The third matrix (the one in the middle of the <a
-		href="http://en.wikipedia.org/wiki/Singular_value_decomposition">formula</a>, which is
+		href="http://en.wikipedia.org/wiki/Singular_value_decomposition" target="_blank">formula</a>, which is
 	&#931;) represents the relevance or weight of each feature, for the description of the two
 	dimensions of the original matrix. By two dimensions we mean the users and the items, but
 	in other contexts, such as information retrieval, users could be terms and items could
 	be documents, thus applying the same idea to something that is called <a
-		href="http://en.wikipedia.org/wiki/Latent_semantic_indexing">Latent Semantic Indexing
+		href="http://en.wikipedia.org/wiki/Latent_semantic_indexing" target="_blank">Latent Semantic Indexing
 		(LSI)</a>. In fact, if you have any doubts about latent factor models using SVD as your
 	matrix factorization methodology, go check informa retrieval bibliography on LSI, namely <a
-		href="http://delab.csd.auth.gr/~dimitris/courses/ir_spring06/page_rank_computing/01cc99333c00501ddab030.pdf">Berry
+		href="http://delab.csd.auth.gr/~dimitris/courses/ir_spring06/page_rank_computing/01cc99333c00501ddab030.pdf" target="_blank">Berry
 		et al. (1995)</a>. They have been doing it since forever and have it really well
 	explained (that's how I understood many details). Oh man, now I'm giving out my whole
 	secrets!
@@ -63,7 +63,7 @@
 
 <h2>Understanding a bit more about what the latent factors are</h2>
 <p>
-	<a href="http://www2.research.att.com/~volinsky/papers/ieeecomputer.pdf">Koren et al.
+	<a href="http://www2.research.att.com/~volinsky/papers/ieeecomputer.pdf" target="_blank">Koren et al.
 		(2009)</a>, the winners of the Netflix competition, did a really good job at explaining
 	in detail how to use latent factor models for rating prediction and recommendation. In
 	fact, they have two figures that perfectly convey the differences between neighborhood
