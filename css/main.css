@@ -177,6 +177,10 @@ img[class=pull-left] {
 	max-height: 90%;
 }
 
+.nav {
+  font-size: 12px;
+}
+
 .navbar .nav>li>a {
   font-size: 14px;
 }
