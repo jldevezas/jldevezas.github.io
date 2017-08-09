@@ -8,16 +8,16 @@ utils.directive('bsHolder', function() {
 	};
 });
 
-MathJax.Hub.Config({
+utils.directive("mathjaxBind", function() {
+  MathJax.Hub.Config({
     skipStartupTypeset: true,
     messageStyle: "none",
     "HTML-CSS": {
-        showMathMenu: false
+      showMathMenu: false
     }
-});
-MathJax.Hub.Configured();
+  });
+  MathJax.Hub.Configured();
 
-utils.directive("mathjaxBind", function() {
 	return {
 		restrict: "A",
 		controller: ["$scope", "$element", "$attrs",
