@@ -11,6 +11,13 @@ app.config([ '$routeProvider', function($routeProvider) {
 			angular.element('body').scrollspy({ target: '.spy-target' });
 		},
 		reloadOnSearch: false
+	}).when('/lectures', {
+		templateUrl : 'lectures.partial.html',
+		controller: function($rootScope) {
+			$rootScope.title = "Lectures";
+			angular.element('body').scrollspy({ target: '.spy-target' });
+		},
+		reloadOnSearch: false
 	}).when('/individual-listening-behavior', {
 		templateUrl : 'individual-listening-behavior.partial.html',
 		controller: function($rootScope) {

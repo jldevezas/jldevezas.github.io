@@ -91,6 +91,14 @@ img[class=pull-left] {
 	float: none;
 }
 
+.presentation-grid .presentation {
+  display: inline-block;
+}
+
+.presentation-grid .presentation img {
+  max-width: 98%;
+}
+
 .presentation {
 	margin-bottom: 2ex;
 }
