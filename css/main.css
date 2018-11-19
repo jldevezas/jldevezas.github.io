@@ -110,6 +110,13 @@ img[class=pull-left] {
 	border-color:#bbb;
 }
 
+.presentation-language {
+	margin-top: -1em;
+	margin-bottom: 1em;
+	text-align: right;
+	width: 550px;
+}
+
 .prezi {
 	margin: 0;
 	width: 550px;
