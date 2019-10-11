@@ -91,30 +91,25 @@ img[class=pull-left] {
 	float: none;
 }
 
-.presentation-grid .presentation {
-  display: inline-block;
-}
-
-.presentation-grid .presentation img {
-  max-width: 98%;
-}
-
 .presentation {
-	margin-bottom: 2ex;
+	display: inline-block;
+	margin-bottom: 1em;
+	vertical-align: top;
 }
 
 .presentation img {
 	border:1px solid #ddd;
+	max-width: 250px;
 }
 .presentation img:hover {
 	border-color:#bbb;
 }
 
 .presentation-language {
-	margin-top: -1em;
-	margin-bottom: 1em;
+	position: relative;
+	bottom: -1em;
+	top: .5em;
 	text-align: right;
-	width: 550px;
 }
 
 .prezi {
@@ -170,7 +165,8 @@ img[class=pull-left] {
 
 #main-carousel {
 	margin-bottom: 60px;
-	margin-top: -20px;
+	/*margin-top: -20px;*/
+	margin-top: -32px;
 }
 #main-carousel .carousel-caption {
 	position: relative;
