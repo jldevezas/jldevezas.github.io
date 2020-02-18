@@ -13,8 +13,6 @@ pdf_filename_base="${pdf_filename%.*}"
 pdf_filename_ext="${pdf_filename##*.}"
 thumb_path="img/$pdf_filename_base-thumb.png"
 
-echo $pdf_dirname/$pdf_filename
-
 echo "==> Creating thumbnail for $pdf_path in $thumb_path"
-inkscape -z -e "$thumb_path" -w 550 "$pdf_path"
+inkscape -z -o "$thumb_path" -w 550 "$pdf_path"
 echo "==> Done"
