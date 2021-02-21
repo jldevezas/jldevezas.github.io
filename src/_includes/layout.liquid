@@ -2,18 +2,42 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>{{ page_title }} &ndash; josedevezas.com</title>
+  <meta charset="utf-8">
+  <title>{{ page_title }} &ndash; josedevezas.com</title>
 
-    <link rel="stylesheet" href="spectre.min.css">
-    <link rel="stylesheet" href="spectre-exp.min.css">
-    <link rel="stylesheet" href="spectre-icons.min.css">
+  <link rel="stylesheet" href="../css/spectre.min.css">
+  <link rel="stylesheet" href="../css/layout.css">
 </head>
 
 <body>
-    <h1>{{ page_title }}</h1>
+  <div id="main">
+    <header class="navbar">
+      <section class="navbar-section">
+        <mark class="navbar-brand">José Devezas</mark>
+        <a href="..." class="btn btn-link">Docs</a>
+        <a href="..." class="btn btn-link">GitHub</a>
+      </section>
+      <section class="navbar-center">
+        LOGO
+      </section>
+      <section class="navbar-section">
+        <div class="input-group input-inline">
+          <input class="form-input" type="text" placeholder="search">
+          <button class="btn btn-primary input-group-btn">Search</button>
+        </div>
+      </section>
+    </header>
 
-    {{ content }}
+    <main>
+      <h1>{{ page_title }}</h1>
+
+      {{ content }}
+    </main>
+
+    <footer>
+      Copyright &copy; 2021 José Devezas
+    </footer>
+  </div>
 </body>
 
 </html>
