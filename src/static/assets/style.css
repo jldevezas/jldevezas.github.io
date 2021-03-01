@@ -1,3 +1,9 @@
 img {
+  display: inline-block !important;
   border-radius: 8px !important;
+  width: 250px;
+}
+
+p a {
+  text-decoration: none;
 }
