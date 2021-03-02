@@ -5,7 +5,7 @@ date: 2021-03-01T18:58:03Z
 
 **2013**
 
-[{{< image src="/img/academy/demos/labs_sapo_up-2013-devezas-juggle.png" >}}](/pdf/academy/demos/labs_sapo_up-2013-devezas-juggle.pdf)
+{{< slides base="academy/demos" src="labs_sapo_up-2013-devezas-juggle.png" >}}
 
 **2010**
 

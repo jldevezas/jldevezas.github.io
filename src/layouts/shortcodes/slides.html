@@ -1,0 +1,8 @@
+{{ if .Get "src" }}
+  <figure class="slides">
+    <a href="/pdf/academy/slides/{{ .Get "src" | safeURL }}.pdf" target="_blank">
+      <img src="/img/academy/slides/{{ .Get "src" | safeURL }}.png"
+        {{ with .Get "title" }} title="{{ . | plainify }}" {{ end }}/>
+    </a>
+  </figure>
+{{ end }}

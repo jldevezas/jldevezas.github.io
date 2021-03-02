@@ -1,11 +1,11 @@
 +++
-title = "Git tips"
-date = "2021-03-02T18:50:18Z"
+title = "{{ replace .TranslationBaseName "-" " " | title }}"
+date = "{{ .Date }}"
 author = "José Devezas"
 authorTwitter = "jldevezas"
 cover = ""
-tags = ["git", "workflows"]
-keywords = ["git", "tips", "workflows"]
+tags = ["", ""]
+keywords = ["", ""]
 description = ""
 showFullContent = false
 draft = true

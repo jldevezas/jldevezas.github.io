@@ -1,9 +1,14 @@
-img {
-  display: inline-block !important;
-  border-radius: 8px !important;
-  width: 250px;
+.slides a {
+  text-decoration: none;
 }
 
-p a {
-  text-decoration: none;
+.slides {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  margin: 0;
+  width: 250px;
+  height: 140.45px;
+  border-radius: 8px;
+  vertical-align: middle;
 }
