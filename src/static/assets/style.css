@@ -27,7 +27,20 @@
   overflow: hidden;
   margin: 0;
   width: 350px;
-  height: 493px;
   border-radius: 8px;
   vertical-align: middle;
+}
+
+.publication {
+  text-align: justify;
+  margin-left: 1.25em;
+  text-indent: -1.25em;
+}
+
+.publication a {
+  text-decoration: none;
+}
+
+.publication:hover a {
+  text-decoration: underline;
 }
