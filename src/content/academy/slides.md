@@ -5,39 +5,50 @@ description: Slides from talks at conferences or similar events, lectures, and t
 ---
 
 - [Talks](#talks)
+  - [Conferences](#conferences)
+  - [Invited speaker](#invited-speaker)
 - [Lectures](#lectures)
-  - [GIRS 2017/2018](#girs-20172018)
-  - [ASSO 2019/2020](#asso-20192020)
-  - [DAPI 2018/2019](#dapi-20182019)
+  - [Invited assistant](#invited-assistant)
+    - [GIRS 2017/2018](#girs-20172018)
+  - [Invited speaker](#invited-speaker-1)
+    - [ASSO 2019/2020](#asso-20192020)
+    - [DAPI 2018/2019](#dapi-20182019)
 - [Theses](#theses)
   - [Doctoral](#doctoral)
   - [Master's](#masters)
 
 # Talks
 
-{{< slides src="infolab_talks_2021-devezas-graph_based_entity_oriented_search"
-  title="Graph-Based Entity-Oriented Search - Practice Run" >}}
+## Conferences
+
 {{< slides src="ecir_2020-doctoral_symposium-devezas-graph_based_entity_oriented_search"
   title="Graph-Based Entity-Oriented Search: A Unified Framework in Information Retrieval" >}}
 {{< slides src="slate_2019-conference-devezas-graph_of_entity"
   title="Graph-of-Entity: A Model for Combined Data Representation and Retrieval">}}
-
-{{< slides src="creative_colab_2019-devezas-mapping_terms_and_entities_with_hypergraphs"
-  title="Mapping Terms and Entities with Hypergraphs" >}}
-{{< slides src="ieee_syp_2018-devezas-ant_rd_platform_for_entity_oriented_search"
-  title="ANT - R&D Platform for Entity-Oriented Search" >}}
 {{< slides src="slate_2017-conference-devezas-information_extraction_for_event_ranking"
   title="Information Extraction for Event Ranking" >}}
 
-{{< slides src="sapo-2013-devezas-juggle_hybrid_large_scale_music_recommendation"
-  title="Juggle: Hybrid Large-Scale Music Recommendation" >}}
 {{< slides src="kdir_2012-conference-devezas-interactive_visualization_news_clips_network"
   title="Interactive Visualization of a News Clips Network: A Journalistic Research and Knowledge Discovery Tool" >}}
 {{< prezi src="kpjwdizporee" >}}
 
+## Invited speaker
+
+{{< slides src="infolab_talks_2021-devezas-graph_based_entity_oriented_search"
+  title="Graph-Based Entity-Oriented Search - Practice Run" >}}
+{{< slides src="creative_colab_2019-devezas-mapping_terms_and_entities_with_hypergraphs"
+  title="Mapping Terms and Entities with Hypergraphs" >}}
+{{< slides src="ieee_syp_2018-devezas-ant_rd_platform_for_entity_oriented_search"
+  title="ANT - R&D Platform for Entity-Oriented Search" >}}
+
+{{< slides src="sapo-2013-devezas-juggle_hybrid_large_scale_music_recommendation"
+  title="Juggle: Hybrid Large-Scale Music Recommendation" >}}
+
 # Lectures
 
-## GIRS 2017/2018
+## Invited assistant
+
+### GIRS 2017/2018
 
 {{< slides src="girs_1718-lecture_01-introducao_a_analise_de_redes_sociais"
   title="Aula 1 - Introdução à análise de redes sociais" >}}
@@ -53,12 +64,14 @@ description: Slides from talks at conferences or similar events, lectures, and t
 {{< slides src="girs_1718-lecture_06-analise_combinada_de_uma_amostra_do_twitter-pt_2"
   title="Aula 6 - Análise combinada de uma amostra do Twitter (Pt. 2)" >}}
 
-## ASSO 2019/2020
+## Invited speaker
+
+### ASSO 2019/2020
 
 {{< slides src="asso_1920-lecture-devezas-ant_the_system_architecture_of_an_academic_search_engine"
   title="ANT - The System Architecture of an Academic Search Engine" >}}
 
-## DAPI 2018/2019
+### DAPI 2018/2019
 
 {{< slides src="dapi_1819-lecture-devezas-ant_pesquisa_de_informação_na_universidade_do_porto-en"
   title="[EN] ANT - Searching for Information at the University of Porto" >}}

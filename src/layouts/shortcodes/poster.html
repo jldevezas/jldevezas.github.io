@@ -1,7 +1,7 @@
-{{ $default_base := "academy/slides" }}
+{{ $default_base := "academy/posters" }}
 
 {{ if .Get "src" }}
-  <figure class="slides {{ .Get "align" }}">
+  <figure class="poster">
     <a href="/pdf/{{ .Get "base" | default $default_base }}/{{ .Get "src" | safeURL }}.pdf" target="_blank">
       <img src="/img/{{ .Get "base" | default $default_base }}/{{ .Get "src" | safeURL }}.png"
         {{ with .Get "title" }} title="{{ . | plainify }}" {{ end }}/>

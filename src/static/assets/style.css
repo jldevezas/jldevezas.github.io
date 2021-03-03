@@ -12,3 +12,22 @@
   border-radius: 8px;
   vertical-align: middle;
 }
+
+.slides.top {
+  align-items: baseline;
+}
+
+.poster a {
+  text-decoration: none;
+}
+
+.poster {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  margin: 0;
+  width: 350px;
+  height: 493px;
+  border-radius: 8px;
+  vertical-align: middle;
+}
