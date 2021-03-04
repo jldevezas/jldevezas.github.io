@@ -5,6 +5,8 @@
 public/
 _site/
 *.swp
+*.sav
+*.bak
 
 #
 # Node
