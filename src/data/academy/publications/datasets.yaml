@@ -1,0 +1,33 @@
+---
+references:
+- id: Pires2017a
+  type: no-type
+  author:
+  - family: Pires
+    given: André
+  - family: Devezas
+    given: José
+  - family: Nunes
+    given: Sérgio
+  issued:
+  - year: '2017'
+    month: '6'
+  title: <span class="nocase">SIGARRA News Corpus \[dataset\]</span>
+  publisher: INESC TEC research data repository
+  DOI: 10.25747/s5jn-q370
+
+- id: Devezas2019b
+  type: no-type
+  author:
+  - family: Devezas
+    given: José
+  - family: Nunes
+    given: Sérgio
+  issued:
+  - year: '2019'
+    month: '3'
+  title: <span class="nocase">Simple English Wikipedia Link Graph with Clickstream
+    Transitions 2018-12 \[dataset\]</span>
+  publisher: INESC TEC research data repository
+  DOI: 10.25747/83vk-zt74
+...

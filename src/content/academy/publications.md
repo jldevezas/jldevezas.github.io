@@ -1,24 +1,36 @@
 ---
 title: "Publications"
 date: 2021-03-03T22:13:00Z
+description: "Papers in conference proceedings, including demos, doctoral symposiums, etc."
 ---
+
+- [Journals](#journals)
+- [Conferences](#conferences)
+- [Theses](#theses)
+- [Chapters](#chapters)
+- [Reports](#reports)
+- [Unpublished](#unpublished)
 
 # Journals
 
-TODO: data template for bibtex
+{{< publications "journals" >}}
 
-{{<pub src="cna_2019-devezas_and_nunes-characterizing_the_hypergraph_of_entity_representation_model">}}
-  Devezas, J., and S. Nunes (2020). Characterizing the hypergraph-of-entity and the structural impact of its extensions. In Applied Network Science (Special Issue of the 7th International Conference on Complex Networks and Their Applications), 5(1), p.79
-{{</pub>}}
+# Conferences
 
-# Conference proceedings
+{{< publications "conferences" >}}
 
 # Theses
 
-# Book chapters
+{{< publications "theses" >}}
 
-# Demos
+# Chapters
 
-# Technical reports
+{{< publications "chapters" >}}
 
-# Other work
+# Reports
+
+{{< publications "reports" >}}
+
+# Unpublished
+
+{{< publications "unpublished" >}}

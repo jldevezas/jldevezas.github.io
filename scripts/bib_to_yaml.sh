@@ -11,4 +11,3 @@ yaml_path=$2
 
 echo "==> Converting BibTeX in $bib_path to YAML at $yaml_path"
 pandoc-citeproc -y "$bib_path" > "$yaml_path"
-echo "==> Done"

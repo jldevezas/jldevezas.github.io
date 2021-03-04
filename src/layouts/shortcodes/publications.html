@@ -1,0 +1,25 @@
+{{ $bib := index $.Site.Data.academy.publications (index $.Params 0) }}
+
+{{ range (index $bib "references") }}
+   <div class="publication">
+    <a href="{{ if .note }}/pdf/academy/publications/{{ index $.Params 0 }}/{{ replace .note "\\" "" }}.pdf{{ else }}{{ .URL }}{{ end }}" target="_blank">
+      {{ $authors := .author }}
+      {{ range $idx, $elem := $authors }}
+        {{ if (eq $idx 0) }}
+          {{ $elem.family }}, {{ $elem.given }}{{ else }}
+          {{ $elem.given }} {{ $elem.family }}{{ end }}{{
+
+        if (and (ge $idx 0) (lt $idx (add (len $authors) -2))) }},{{
+          else if (eq $idx (add (len $authors) -2)) }}, and {{
+          else if (eq $idx (add (len $authors) -1)) }}.
+        {{ end }}
+      {{ end }}
+
+      {{.title}}.
+
+      <em>{{ index . "container-title" }}</em>
+
+      ({{ (index (index .issued 0) "year") }})
+    </a>
+  </div>
+{{ end }}

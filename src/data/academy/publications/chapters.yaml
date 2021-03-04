@@ -1,0 +1,22 @@
+---
+references:
+- id: Figueira2013
+  type: chapter
+  author:
+  - family: Figueira
+    given: Álvaro
+  - family: Devezas
+    given: José
+  - family: Cravino
+    given: Nuno
+  - family: Revilla
+    given: Luis-Francisco
+  issued:
+  - year: '2013'
+  title: Creating and analysing a social network built from clips of online news
+  container-title: Information systems and technology for organizations in a networked
+    society
+  publisher: IGI Global
+  page: '67-86'
+  note: igi\_2013-chapter\_5-figueira\_et\_al-social\_network\_news\_clips
+...

@@ -1,0 +1,24 @@
+---
+references:
+- id: Devezas2010
+  type: thesis
+  author:
+  - family: Devezas
+    given: José
+  issued:
+  - year: '2010'
+  title: Link ecosystem of the portuguese blogosphere
+  publisher: Faculty of Engineering, University of Porto (MIEIC)
+  genre: Master’s thesis
+
+- id: Devezas2021
+  type: thesis
+  author:
+  - family: Devezas
+    given: José
+  issued:
+  - year: '2021'
+  title: Graph-based entity-oriented search
+  publisher: Universities of Minho, Aveiro,; Porto (MAP-i)
+  genre: PhD thesis
+...
