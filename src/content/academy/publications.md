@@ -6,6 +6,7 @@ description: "Papers in conference proceedings, including demos, doctoral sympos
 
 - [Journals](#journals)
 - [Conferences](#conferences)
+- [Datasets](#datasets)
 - [Theses](#theses)
 - [Chapters](#chapters)
 - [Reports](#reports)
@@ -18,6 +19,10 @@ description: "Papers in conference proceedings, including demos, doctoral sympos
 # Conferences
 
 {{< publications "conferences" >}}
+
+# Datasets
+
+{{< publications "datasets" >}}
 
 # Theses
 

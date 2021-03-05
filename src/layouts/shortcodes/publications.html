@@ -2,7 +2,13 @@
 
 {{ range (index $bib "references") }}
    <div class="publication">
-    <a href="{{ if .note }}/pdf/academy/publications/{{ index $.Params 0 }}/{{ replace .note "\\" "" }}.pdf{{ else }}{{ .URL }}{{ end }}" target="_blank">
+    {{ if .note }}
+      <a href="/pdf/academy/publications/{{ index $.Params 0 }}/{{ replace .note "\\" "" }}.pdf" target="_blank">
+    {{ else if .URL }}
+      <a href="{{ .URL }}" target="_blank">
+    {{ else if .DOI }}
+      <a href="https://doi.org/{{ replace .DOI "\\" "" }}" target="_blank">
+    {{ end }}
       {{ $authors := .author }}
       {{ range $idx, $elem := $authors }}
         {{ if (eq $idx 0) }}
@@ -15,11 +21,14 @@
         {{ end }}
       {{ end }}
 
-      {{.title}}.
+      &ldquo;{{ replace (.title) "\\" "" | title }}&rdquo;{{ if (index . "container-title") }}.{{ end }}
 
-      <em>{{ index . "container-title" }}</em>
+      <em>{{ replace (index . "container-title") "\\" "" | title }}</em>{{
+        if .volume }} {{ .volume }}{{ end }}{{
+        if .issue }}.{{ .issue }}{{ end }}
 
-      ({{ (index (index .issued 0) "year") }})
+      ({{ (index (index .issued 0) "year") }}){{
+        if .page }}: {{ .page }}{{ end }}
     </a>
   </div>
 {{ end }}

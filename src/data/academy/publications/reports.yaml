@@ -1,6 +1,6 @@
 ---
 references:
-- id: Devezas2017b
+- id: Devezas2017c
   type: report
   author:
   - family: Devezas
@@ -15,7 +15,7 @@ references:
   genre: research report
   URL: https://hdl.handle.net/10216/110181
 
-- id: Devezas2017d
+- id: Devezas2017b
   type: report
   author:
   - family: Devezas
@@ -30,7 +30,7 @@ references:
   genre: research report
   URL: https://hdl.handle.net/10216/104152
 
-- id: Devezas2011
+- id: Devezas2011a
   type: report
   author:
   - family: Devezas
@@ -42,7 +42,7 @@ references:
     of Porto
   genre: research report
 
-- id: Devezas2011a
+- id: Devezas2011
   type: report
   author:
   - family: Devezas

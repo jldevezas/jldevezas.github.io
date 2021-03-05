@@ -19,4 +19,4 @@ bib:
 	done
 
 clean:
-	find -name "*.sav" -or -name "*.bak" -delete
+	find -name "*.sav" -delete -or -name "*.bak" -delete
