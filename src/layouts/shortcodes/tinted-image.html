@@ -1,0 +1,4 @@
+<div class="tinted" {{ with .Get "style" }} style="{{ . | safeCSS }}" {{ end }}>
+  <div class="tint"></div>
+  <img src="{{ .Get "src" | safeURL }}" {{ with .Get "alt" }} alt="{{ . | plainify }}" {{ end }} />
+</div>
