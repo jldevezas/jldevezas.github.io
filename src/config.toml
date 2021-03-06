@@ -58,7 +58,7 @@ paginate = 10
     missingBackButtonLabel = "Back to home page"
 
     [languages.en.params.logo]
-      logoText = "Terminal"
+      logoText = "José Devezas, PhD"
       logoHomeLink = "/"
 
     [languages.en.menu]
