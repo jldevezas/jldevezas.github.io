@@ -44,6 +44,8 @@ description: Slides from talks at conferences or similar events, lectures, and t
 {{< slides src="sapo-2013-devezas-juggle_hybrid_large_scale_music_recommendation"
   title="Juggle: Hybrid Large-Scale Music Recommendation" >}}
 
+***
+
 # Lectures
 
 ## Invited assistant
@@ -77,6 +79,8 @@ description: Slides from talks at conferences or similar events, lectures, and t
   title="[EN] ANT - Searching for Information at the University of Porto" >}}
 {{< slides src="dapi_1819-lecture-devezas-ant_pesquisa_de_informação_na_universidade_do_porto-pt"
   title="[PT] ANT - Searching for Information at the University of Porto" >}}
+
+***
 
 # Theses
 

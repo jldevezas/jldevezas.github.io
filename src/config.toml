@@ -40,17 +40,17 @@ paginate = 10
   # set Twitter handles for Twitter cards
   # see https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started#card-and-content-attribution
   # do not include @
-  creator = "José Devezas"
+  creator = "jldevezas"
   site = "http://www.josedevezas.com/"
 
 [languages]
   [languages.en]
     languageName = "English"
     title = "José Devezas"
-    subtitle = "A simple, retro theme for Hugo"
-    owner = ""
+    subtitle = "PhD in Computer Science"
+    owner = "José Devezas"
     keywords = ""
-    copyright = ""
+    copyright = "&copy; 2021 José Devezas"
     menuMore = "Show more"
     readMore = "Expand"
     readOtherPosts = "Read other posts"
@@ -58,7 +58,7 @@ paginate = 10
     missingBackButtonLabel = "Back to home page"
 
     [languages.en.params.logo]
-      logoText = "José Devezas, PhD"
+      logoText = "José Devezas, PhD in Computer Science"
       logoHomeLink = "/"
 
     [languages.en.menu]

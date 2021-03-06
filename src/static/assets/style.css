@@ -1,5 +1,19 @@
+p {
+  text-align: justify;
+}
+
+img {
+  border: solid 15px var(--accent);
+  padding: 15px;
+}
+
 .slides a {
   text-decoration: none;
+}
+
+.slides img {
+  border: none;
+  padding: 0;
 }
 
 .slides {
@@ -19,6 +33,11 @@
 
 .poster a {
   text-decoration: none;
+}
+
+.poster img {
+  border: none;
+  padding: 0;
 }
 
 .poster {

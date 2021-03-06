@@ -20,3 +20,4 @@ bib:
 
 clean:
 	find -name "*.sav" -delete -or -name "*.bak" -delete
+	find -name "*Zone.Identifier" -delete
