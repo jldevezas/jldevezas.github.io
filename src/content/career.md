@@ -1,5 +1,5 @@
 ---
-title: "Academy"
+title: "Career"
 ---
 
 {{< image src="/img/academy/FEUP.jpg" position="center" style="max-height: 400px" >}}

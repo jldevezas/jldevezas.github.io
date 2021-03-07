@@ -1,0 +1,96 @@
+baseurl: /
+languageCode: en-us
+theme: terminal
+paginate: 10
+
+params:
+  # dir name of your main content (default is `content/posts`).
+  # the list of set content will show up on your index page (baseurl).
+  contentTypeName: blog
+
+  # ["orange", "blue", "red", "green", "pink"]
+  themeColor: blue
+
+  # if you set this to 0, only submenu trigger will be visible
+  showMenuItems: 5
+
+  # show selector to switch language
+  showLanguageSelector: false
+
+  # set theme to full screen width
+  fullWidthTheme: false
+
+  # center theme with default width
+  centerTheme: true
+
+  # set a custom favicon (default is a `themeColor` square)
+  # favicon: "favicon.ico"
+
+  # set post to show the last updated
+  # If you use git, you can set `enableGitInfo` to `true` and then post will automatically get the last updated
+  showLastUpdated: false
+  # Provide a string as a prefix for the last update date. By default, it looks like this: 2020-xx-xx [Updated: 2020-xx-xx] :: Author
+  # updatedDatePrefix: "Updated"
+
+  # set all headings to their default size (depending on browser settings)
+  # it's set to `true` by default
+  # oneHeadingSize: false
+
+  twitter:
+    # set Twitter handles for Twitter cards
+    # see https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started#card-and-content-attribution
+    # do not include @
+    creator: "jldevezas"
+    site: "http://www.josedevezas.com/"
+
+languages:
+  en:
+    languageName: "English"
+    title: "José Devezas"
+    subtitle: "PhD in Computer Science"
+    owner: "José Devezas"
+    keywords: ""
+    copyright: "&copy; 2021 José Devezas"
+    menuMore: "Show more"
+    readMore: "Read more"
+    readOtherPosts: "Read other posts"
+    missingContentMessage: "Page not found..."
+    missingBackButtonLabel: "Back to home page"
+
+    params:
+      logo:
+        logoText: "José Devezas, PhD"
+        logoHomeLink: "/"
+
+    menu:
+      main:
+      - identifier: "about"
+        name: "About"
+        url: "/about"
+      - identifier: "career"
+        name: "Career"
+        url: "/career"
+      - identifier: "academy"
+        name: "Academy"
+        url: "/academy"
+      - identifier: "blog"
+        name: "Blog"
+        url: "/blog"
+      - identifier: "contact"
+        name: "Contact"
+        url: "/contact"
+      - identifier: "tags"
+        name: "Tags"
+        url: "/tags"
+      - identifier: "rss"
+        name: "RSS"
+        url: "/blog/index.xml"
+      - identifier: "github"
+        name: "GitHub"
+        url: "https://github.com/jldevezas/"
+      - identifier: "twitter"
+        name: "Twitter"
+        url: "https://twitter.com/jldevezas/"
+      - identifier: "linkedin"
+        name: "LinkedIn"
+        url: "https://pt.linkedin.com/in/jldevezas/"

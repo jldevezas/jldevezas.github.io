@@ -1,3 +1,9 @@
+aside {
+  position: fixed;
+  left: 10%;
+  top: 20%;
+}
+
 p {
   text-align: justify;
 }
@@ -72,6 +78,8 @@ img {
 }
 
 .tinted img {
+  border: none;
+  padding: 0;
   filter: grayscale(100%);
 }
 
