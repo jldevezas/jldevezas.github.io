@@ -1,7 +1,7 @@
 ---
 title: "Slides"
 date: 2021-03-01T17:37:00Z
-description: Slides from talks at conferences or similar events, lectures, and thesis defenses.
+author: "José Devezas"
 ---
 
 - [Talks](#talks)

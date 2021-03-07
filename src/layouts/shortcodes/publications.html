@@ -21,7 +21,7 @@
         {{ end }}
       {{ end }}
 
-      &ldquo;{{ replace (.title) "\\" "" | title }}&rdquo;{{ if (index . "container-title") }}.{{ end }}
+      <span class="title">&ldquo;{{ replace (.title) "\\" "" | title }}&rdquo;</span>{{ if (index . "container-title") }}.{{ end }}
 
       <em>{{ replace (index . "container-title") "\\" "" | title }}</em>{{
         if .volume }} {{ .volume }}{{ end }}{{

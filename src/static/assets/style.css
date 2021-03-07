@@ -1,3 +1,22 @@
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  border-bottom-width: 1px;
+  border-bottom-style: dashed;
+  border-bottom-color: var(--accent);
+}
+
+a[target="_blank"]::after {
+  content: '\29C9';
+  color: var(--accent);
+}
+
+.header__logo a:hover {
+  border: none;
+}
+
 p {
   text-align: justify;
 }
@@ -22,30 +41,24 @@ img {
   position: relative;
 }
 
-.posts li a {
-  padding: .2em 0;
-  text-decoration: none;
+.posts a {
   color: var(--accent);
 }
 
-.posts li a:hover {
-  color: white;
-  background-color: var(--accent);
-}
-
 .tags {
-  display: inline-block;
+  margin-left: 1em;
 }
 
-.tags a {
-  padding: .2em 0;
-  text-decoration: none;
-  color: #aaa !important;
+.terms>.posts {
+  margin-left: 0;
 }
 
-.tags a:hover {
-  color: white !important;
-  background-color: var(--background);
+.terms>.posts>li:before {
+  content: "";
+}
+
+.post-date {
+  color: var(--color);
 }
 
 .post-content {
@@ -102,12 +115,8 @@ img {
   margin-bottom: 1em;
 }
 
-.publication a {
-  text-decoration: none;
-}
-
-.publication:hover a {
-  text-decoration: underline;
+.publication .title {
+  color: var(--accent);
 }
 
 .tinted {

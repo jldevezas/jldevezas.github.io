@@ -1,8 +1,7 @@
 ---
 title: "Publications"
 date: 2021-03-03T22:13:00Z
-description: "Papers in conference proceedings, including demos, doctoral symposiums, etc."
-tags: ["academy", "CV"]
+author: "José Devezas"
 ---
 
 - [Journals](#journals)

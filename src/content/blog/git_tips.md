@@ -26,18 +26,20 @@ Caligine in adeo. Iuratus nata. Quem partes. In potentem ventis adhuc deficiunt
 fuerit a debita quercus: supplice et imago placandam fulmina cuncti, et. Iapyge
 omnes, cur per nunc loca?
 
-    digitalHeuristic += screenshotCompression;
-    payloadHacker.fileProcess += page;
-    var multicasting_parse_javascript = tweet_ppga_olap(enterprise_duplex,
-            switch_bluetooth_system + flat_hypermedia_ecc, tweet_eps_e +
-            speedWhitelist) - tagGigo - piracy_host;
-    if (clickMatrix + extranet(vpi.flashPc(wamp_publishing_vaporware),
-            led_language + property)) {
-        samba(camera_data, tcp, tweenHost);
-        memory /= pageOverclockingSyn(bankruptcySuperscalarDisplay, nocInternet(
-                matrix), infringement * 797999);
-    }
-    ups_cpl_mountain *= wrapHitRdf;
+```javascript
+digitalHeuristic += screenshotCompression;
+payloadHacker.fileProcess += page;
+var multicasting_parse_javascript = tweet_ppga_olap(enterprise_duplex,
+        switch_bluetooth_system + flat_hypermedia_ecc, tweet_eps_e +
+        speedWhitelist) - tagGigo - piracy_host;
+if (clickMatrix + extranet(vpi.flashPc(wamp_publishing_vaporware),
+        led_language + property)) {
+    samba(camera_data, tcp, tweenHost);
+    memory /= pageOverclockingSyn(bankruptcySuperscalarDisplay, nocInternet(
+            matrix), infringement * 797999);
+}
+ups_cpl_mountain *= wrapHitRdf;
+```
 
 ## Maior diras
 

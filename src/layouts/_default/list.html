@@ -12,28 +12,32 @@
       {{ range .Pages }}
         <li>
           <a href="{{ .Permalink }}">
-            {{ .Title | markdownify }} :: {{ .Date.Format "2006-01-02" }}
-            {{ with .Params.Author }}
-              :: {{ . }}
+            {{ with .Date }}
+              <span class="post-date">
+                {{ .Format "2006-01-02" }}
+              </span>
             {{ end }}
+            {{ .Title | markdownify }}
+            <!--{{ with .Params.Author }}
+              :: {{ . }}
+            {{ end }}-->
           </a>
 
-          <div class="tags">
+          <span class="description">
+            {{ if .Description }}
+            :: {{ .Description | markdownify }}
+            {{ end }}
+          </span>
+
+          <span class="tags">
             {{ with .Params.tags }}
-              &nbsp;
               {{ range . }}
-              <a href="{{ (urlize (printf "tags/%s/" . )) | absLangURL }}">
-                #{{- . -}}
+              #<a href="{{ (urlize (printf "tags/%s/" . )) | absLangURL }}">
+                {{- . -}}
               </a>&nbsp;
               {{ end }}
             {{ end }}
-          </div>
-
-          <div class="post-content">
-            {{ if .Description }}
-            {{ .Description | markdownify }}
-            {{ end }}
-          </div>
+          </span>
         </li>
       {{ end }}
     </ul>

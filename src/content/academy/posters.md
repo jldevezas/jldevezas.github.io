@@ -1,7 +1,7 @@
 ---
 title: "Posters"
 date: 2021-03-03T18:31:00Z
-description: "Posters presented at conferences."
+author: "José Devezas"
 ---
 
 {{< poster src="cna_2019-devezas-characterizing_the_hypergraph_of_entity_representation_model"

@@ -1,7 +1,7 @@
 ---
 title: "Demos"
 date: 2021-03-01T18:58:03Z
-description: Demos from conferences or research prototypes presentations.
+author: "José Devezas"
 ---
 
 {{< youtube id="-o4sZp6lH9o" >}}
