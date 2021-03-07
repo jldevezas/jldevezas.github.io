@@ -4,55 +4,40 @@
       {{ . }}
     </div>
   {{ end }}
-  <div class="posts">
-    {{ range .Pages }}
-      <div class="post on-list">
-        <div class="post-meta">
-          <span class="post-title">
-            <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
-          </span>
-          <span class="post-date">
-            {{ .Date.Format "2006-01-02" }}
-          </span>
-          {{ with .Params.Author }}
-            <span class="post-author">:: {{ . }}</span>
-          {{ end }}
-        </div>
 
-        {{ if .Params.tags }}
-          <span class="post-tags">
-            {{ range .Params.tags }}
-            #<a href="{{ (urlize (printf "tags/%s/" . )) | absLangURL }}">
-              {{- . -}}
-            </a>&nbsp;
+  <div class="post">
+    <h1 class="post-title">{{ .Title }}</h1>
+
+    <ul class="posts">
+      {{ range .Pages }}
+        <li>
+          <a href="{{ .Permalink }}">
+            {{ .Title | markdownify }} :: {{ .Date.Format "2006-01-02" }}
+            {{ with .Params.Author }}
+              :: {{ . }}
             {{ end }}
-          </span>
-        {{ end }}
+          </a>
 
-        {{ if .Params.Cover }}
-          <img src="{{ .Params.Cover | absURL }}" class="post-cover" alt="{{ .Title | plainify | default " " }}" />
-        {{ end }}
+          <div class="tags">
+            {{ with .Params.tags }}
+              &nbsp;
+              {{ range . }}
+              <a href="{{ (urlize (printf "tags/%s/" . )) | absLangURL }}">
+                #{{- . -}}
+              </a>&nbsp;
+              {{ end }}
+            {{ end }}
+          </div>
 
-        <div class="post-content">
-          {{ if .Params.showFullContent }}
-          {{ .Content | markdownify }}
-          {{ else if .Description }}
-          {{ .Description | markdownify }}
-          {{ else }}
-          {{ if .Truncated }}
-          {{ .Summary | markdownify }}
-          {{ end }}
-          {{ end }}
-        </div>
-
-        {{ if not .Params.showFullContent }}
-        <div>
-          <a class="read-more button"
-            href="{{.RelPermalink}}">{{ $.Site.Params.ReadMore }} →</a>
-        </div>
-        {{ end }}
-      </div>
-    {{ end }}
-    {{ partial "pagination.html" . }}
+          <div class="post-content">
+            {{ if .Description }}
+            {{ .Description | markdownify }}
+            {{ end }}
+          </div>
+        </li>
+      {{ end }}
+    </ul>
   </div>
+
+  {{ partial "pagination.html" . }}
 {{ end }}

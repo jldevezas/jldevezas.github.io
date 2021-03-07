@@ -1,9 +1,3 @@
-aside {
-  position: fixed;
-  left: 10%;
-  top: 20%;
-}
-
 p {
   text-align: justify;
 }
@@ -11,6 +5,51 @@ p {
 img {
   border: solid 15px var(--accent);
   padding: 15px;
+}
+
+.posts {
+  list-style: none;
+}
+
+.posts li::before {
+  content: "-";
+  position: absolute;
+  left: -20px;
+  color: var(--accent);
+}
+
+.posts li {
+  position: relative;
+}
+
+.posts li a {
+  padding: .2em 0;
+  text-decoration: none;
+  color: var(--accent);
+}
+
+.posts li a:hover {
+  color: white;
+  background-color: var(--accent);
+}
+
+.tags {
+  display: inline-block;
+}
+
+.tags a {
+  padding: .2em 0;
+  text-decoration: none;
+  color: #aaa !important;
+}
+
+.tags a:hover {
+  color: white !important;
+  background-color: var(--background);
+}
+
+.post-content {
+  margin-top: 0 !important;
 }
 
 .slides a {
