@@ -1,5 +1,6 @@
 a {
   text-decoration: none;
+  color: var(--accent) !important;
 }
 
 a:hover {
@@ -13,6 +14,15 @@ a[target="_blank"]::after {
   color: var(--accent);
 }
 
+.button {
+  border-radius: 0 !important;
+  height: 1.2em;
+}
+
+.menu a {
+  color: var(--color) !important;
+}
+
 .header__logo a:hover {
   border: none;
 }
@@ -22,22 +32,28 @@ p {
 }
 
 img {
-  border: solid 15px var(--accent);
-  padding: 15px;
+  border: solid 10px var(--accent);
+  padding: 10px;
 }
 
-.posts {
+.framed {
+  border: 1px dashed var(--accent) !important;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.posts, .index-content ul {
   list-style: none;
 }
 
-.posts li::before {
+.posts li::before, .index-content li::before {
   content: "-";
   position: absolute;
   left: -20px;
   color: var(--accent);
 }
 
-.posts li {
+.posts li, .index-content li {
   position: relative;
 }
 

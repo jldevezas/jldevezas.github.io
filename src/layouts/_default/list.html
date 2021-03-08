@@ -1,6 +1,6 @@
 {{ define "main" }}
   {{ with .Content }}
-    <div class="index-content">
+    <div class="index-content framed">
       {{ . }}
     </div>
   {{ end }}
@@ -12,16 +12,8 @@
       {{ range .Pages }}
         <li>
           <a href="{{ .Permalink }}">
-            {{ with .Date }}
-              <span class="post-date">
-                {{ .Format "2006-01-02" }}
-              </span>
-            {{ end }}
-            {{ .Title | markdownify }}
-            <!--{{ with .Params.Author }}
-              :: {{ . }}
-            {{ end }}-->
-          </a>
+            {{ with .Date }}<span class="post-date">{{ .Format "2006-01-02" }}</span>{{ end }}
+            {{ .Title | markdownify }}</a>
 
           <span class="description">
             {{ if .Description }}
@@ -29,15 +21,15 @@
             {{ end }}
           </span>
 
-          <span class="tags">
-            {{ with .Params.tags }}
+          {{ with .Params.tags }}
+            <span class="tags">
               {{ range . }}
               #<a href="{{ (urlize (printf "tags/%s/" . )) | absLangURL }}">
                 {{- . -}}
               </a>&nbsp;
               {{ end }}
-            {{ end }}
-          </span>
+            </span>
+          {{ end }}
         </li>
       {{ end }}
     </ul>
