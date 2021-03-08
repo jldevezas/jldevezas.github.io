@@ -10,7 +10,7 @@ params:
   contentTypeName: blog
 
   # ["orange", "blue", "red", "green", "pink"]
-  themeColor: red
+  themeColor: blue
 
   # if you set this to 0, only submenu trigger will be visible
   showMenuItems: 5
@@ -68,30 +68,28 @@ languages:
       - identifier: "about"
         name: "About"
         url: "/about"
+        weight: -110
       - identifier: "career"
         name: "Career"
         url: "/career"
+        weight: -100
       - identifier: "academy"
         name: "Academy"
         url: "/academy"
+        weight: -90
       - identifier: "blog"
         name: "Blog"
         url: "/blog"
+        weight: -80
       - identifier: "contact"
         name: "Contact"
         url: "/contact"
+        weight: -70
       - identifier: "tags"
         name: "Tags"
         url: "/tags"
+        weight: -60
       - identifier: "rss"
         name: "RSS"
         url: "/blog/index.xml"
-      - identifier: "github"
-        name: "GitHub"
-        url: "https://github.com/jldevezas/"
-      - identifier: "twitter"
-        name: "Twitter"
-        url: "https://twitter.com/jldevezas/"
-      - identifier: "linkedin"
-        name: "LinkedIn"
-        url: "https://pt.linkedin.com/in/jldevezas/"
+        weight: -50

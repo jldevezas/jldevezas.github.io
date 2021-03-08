@@ -21,6 +21,8 @@ This software contains the majority of the code I developed throughout my PhD, p
 
 The code is available at https://github.com/feup-infolab/army-ant, and several Docker images are also available at https://hub.docker.com/r/jldevezas/army-ant, which can be installed using Docker Compose based on the code at https://github.com/feup-infolab/army-ant-install.
 
+{{< gallery dir="/img/academy/projects/army_ant" caption-position="none" hover-effect="slideup" />}}
+
 ***
 
 # ANT
@@ -30,6 +32,8 @@ ANT is an entity-oriented search engine available at http://ant.fe.up.pt, that i
 This research project motivated my doctoral proposal, providing the ideal platform for the integration of previous areas of interest, particularly information retrieval and network science, but also recommendation and personalization. Working in ANT led me to identify several challenges in the area of entity-oriented search and to devise an innovative and focused contribution.
 
 In a similar fashion to Google and other modern search engines, this enabled our system to answer user questions more directly, well beyond the traditional keyword-based matching. Our proposed integrated solution for segmentation and annotation of queries is illustrated in the following figure of the development front-end.
+
+{{< gallery dir="/img/academy/projects/ant" caption-position="none" hover-effect="slideup" />}}
 
 ***
 
@@ -41,7 +45,7 @@ We tackled the challenges of multimodality and large-scale by developing a graph
 
 Our recommendation algorithm was mainly supported on neighborhood methods for collaborative filtering, but we also used metrics from text retrieval to boost the relevance of tags in the long tail, while not completely disregarding tag popularity, in order to offer a playlist that better potentiated the discovery of music.
 
-{{< gallery dir="/img/academy/projects/juggle" />}}
+{{< gallery dir="/img/academy/projects/juggle" caption-position="none" hover-effect="slideup" />}}
 
 ***
 
@@ -51,7 +55,7 @@ In Juggle Mobile we presented the users with the ability to create an account an
 
 Our experiments were based on a linear algebra approach, where, instead of a graph, we used a user-items matrix, applying singular value decomposition to build a latent factor model that provided the support for individual and group recommendations. For groups, we proposed a rating aggregation method that ensured an equal chance for every group member to have a relevant influence in the recommendations outcome.
 
-{{< gallery dir="/img/academy/projects/juggle_mobile" />}}
+{{< gallery dir="/img/academy/projects/juggle_mobile" caption-position="none" hover-effect="slideup" />}}
 
 ***
 
@@ -65,7 +69,7 @@ We used a topic model, based on Latent Dirichlet Allocation, to suggest titles f
 
 These algorithms were all developed using a web services architecture, communicating using either XML or JSON. Several scientific papers were published as the results of the described research. Below are some screenshots of the Breadcrumbs modules I contributed to in some way.
 
-{{< gallery dir="/img/academy/projects/breadcrumbs" />}}
+{{< gallery dir="/img/academy/projects/breadcrumbs" caption-position="none" hover-effect="slideup" />}}
 
 ***
 
@@ -75,4 +79,4 @@ One of my first projects was Ciclope, a real time data visualization project aim
 
 Among other widgets, we developed two main visualizations: a real time bar chart that displayed the number of visits per second along with a table showing traffic origin and destination; and a custom flow tree to visualize and quantify aggregated traffic sources for a given blog.
 
-{{< gallery dir="/img/academy/projects/ciclope" />}}
+{{< gallery dir="/img/academy/projects/ciclope" caption-position="none" hover-effect="slideup" />}}
