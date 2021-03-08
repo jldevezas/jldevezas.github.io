@@ -9,10 +9,15 @@ a:hover {
   border-bottom-color: var(--accent);
 }
 
-a[target="_blank"]::after {
+hr {
+  margin: 2.5em 0 0 0;
+  border-top: 1px dashed var(--accent) !important;
+}
+
+/*a[target="_blank"]::after {
   content: '\29C9';
   color: var(--accent);
-}
+}*/
 
 .button {
   border-radius: 0 !important;
@@ -34,6 +39,15 @@ p {
 img {
   border: solid 10px var(--accent);
   padding: 10px;
+}
+
+.gallery {
+  margin: 0 !important;
+}
+
+.gallery figure {
+  display: inline-block !important;
+  margin: 0;
 }
 
 .framed {
