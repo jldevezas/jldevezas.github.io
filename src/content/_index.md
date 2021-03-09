@@ -3,7 +3,7 @@ title: "Home"
 ---
 
 {{< load-photoswipe >}}
-{{< gallery dir="/img/home" caption-position="none" hover-effect="none" />}}
+{{< gallery dir="img/home" caption-position="none" hover-effect="none" />}}
 
 - PhD in Computer Science ([MAP-i](https://mapi.map.edu.pt/), Universities of [Minho](https://www.uminho.pt/EN), [Aveiro](https://www.ua.pt/), and [Porto](https://sigarra.up.pt/up/en/))
 - MSc in Informatics and Computing Engineering ([MIEIC](https://sigarra.up.pt/feup/en/CUR_GERAL.CUR_VIEW?pv_ano_lectivo=2020&pv_origem=CUR&pv_tipo_cur_sigla=MI&pv_curso_id=742), [FEUP](https://sigarra.up.pt/feup/en/WEB_PAGE.INICIAL))
