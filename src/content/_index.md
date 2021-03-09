@@ -11,6 +11,6 @@ title: "Home"
 - Loves anything [data](https://en.wikipedia.org/wiki/Data), [fintech](https://en.wikipedia.org/wiki/Financial_technology), or [web](https://en.wikipedia.org/wiki/World_Wide_Web) (mostly backend, but fullstack when needed)
 - Codes in [Python](https://www.python.org/), [R](https://cran.r-project.org/), [Scala](https://scala-lang.org/), [Java](https://jdk.java.net/), and [JavaScript](https://nodejs.org/en/) (to name a few)
 
-In my website, you will find information on my [career](/career), including my list of academic [publications](/academy/publications) or [projects](/academy/projects). You should also take a look at my [PhD thesis](thesis.pdf).
+In this website, you will find information about my [career](/career), including a list of academic [publications](/academy/publications) and [projects](/academy/projects). You should also take a look at my [PhD thesis](thesis.pdf).
 
-If you'd prefer, you can find my extended curriculum vitae [here](cv.pdf).
+If you prefer, you can find my extended curriculum vitae [here](cv.pdf).

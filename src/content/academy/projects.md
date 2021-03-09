@@ -46,7 +46,7 @@ ANT is an entity-oriented search engine available at http://ant.fe.up.pt, that i
 
 This research project motivated my doctoral proposal, providing the ideal platform for the integration of previous areas of interest, particularly information retrieval and network science, but also recommendation and personalization. Working in ANT led me to identify several challenges in the area of entity-oriented search and to devise an innovative and focused contribution.
 
-In a similar fashion to Google and other modern search engines, this enabled our system to answer user questions more directly, well beyond the traditional keyword-based matching. Our proposed integrated solution for segmentation and annotation of queries is illustrated in the following figure of the development front-end.
+In a similar fashion to Google and other modern search engines, this enabled our system to answer user questions more directly, well beyond the traditional keyword-based matching. This integrated solution, which includes the segmentation and annotation of queries, is illustrated in the following figures. Please notice that a team of people was involved in the development of ANT. You can find them [here](https://ant.fe.up.pt/about).
 
 {{< gallery dir="/img/academy/projects/ant" caption-position="none" hover-effect="none" />}}
 

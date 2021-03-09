@@ -1,16 +1,18 @@
 {{ define "main" }}
   <div class="terms">
-    <h1>{{ .Title }}</h1>
+    <h1 class="post-title">{{ .Title }}</h1>
     <ul class="posts">
       {{ $type := .Type }}
       {{ range $key, $value := .Data.Terms.Alphabetical }}
-      {{ $name := .Name }}
-      {{ $count := .Count }}
-      {{ with $.Site.GetPage (printf "/%s/%s" $type $name) }}
-        <li>
-          #<a class="terms-title" href="{{ .Permalink }}">{{ .Name }}</a> ({{ $count }})
-        </li>
-      {{ end }}
+        {{ $name := .Name }}
+        {{ $count := .Count }}
+        {{ with $.Site.GetPage (printf "/%s/%s" $type $name) }}
+          <li>
+            #<a class="terms-title" href="{{ .Permalink }}">{{ .Name }}</a> ({{ $count }})
+          </li>
+        {{ end }}
+      {{ else }}
+          No tags added yet.
       {{ end }}
     </ul>
   </div>

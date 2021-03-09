@@ -85,6 +85,11 @@ video {
   margin-left: 1em;
 }
 
+.terms {
+  margin-top: 20px;
+  padding: 20px 0;
+}
+
 .terms>.posts {
   margin-left: 0;
 }
@@ -149,10 +154,6 @@ video {
   margin-left: 1.25em;
   text-indent: -1.25em;
   margin-bottom: 1em;
-}
-
-.publication .title {
-  color: var(--accent);
 }
 
 .tinted {
