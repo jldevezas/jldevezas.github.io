@@ -1,0 +1,7 @@
+<video {{ with .Get "class" }}class="{{ . }}"{{ end }}
+       {{ with .Get "thumb" }}poster="{{ . }}"{{ end }}
+        controls="" muted="" width="640" height="360">
+  <source src="{{ .Get "src" }}" type="video/mp4">
+  Your browser does not support the video tag, but check out
+  <a href="http://foureyes.inesctec.pt/">FourEyes website</a> instead.
+</video>

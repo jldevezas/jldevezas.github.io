@@ -13,7 +13,7 @@ params:
   themeColor: blue
 
   # if you set this to 0, only submenu trigger will be visible
-  showMenuItems: 5
+  showMenuItems: 6
 
   # show selector to switch language
   showLanguageSelector: false
@@ -65,21 +65,25 @@ languages:
 
     menu:
       main:
-      - identifier: "about"
-        name: "About"
-        url: "/about"
-        weight: -110
-      - identifier: "career"
-        name: "Career"
-        url: "/career"
-        weight: -100
-      - identifier: "academy"
-        name: "Academy"
-        url: "/academy"
-        weight: -90
+      - identifier: "home"
+        name: "Home"
+        url: "/"
+        weight: -120
       - identifier: "blog"
         name: "Blog"
         url: "/blog"
+        weight: -110
+      - identifier: "academy"
+        name: "Academy"
+        url: "/academy"
+        weight: -100
+      - identifier: "career"
+        name: "Career"
+        url: "/career"
+        weight: -90
+      - identifier: "about"
+        name: "About"
+        url: "/about"
         weight: -80
       - identifier: "contact"
         name: "Contact"

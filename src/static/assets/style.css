@@ -9,16 +9,6 @@ a:hover {
   border-bottom-color: var(--accent);
 }
 
-hr {
-  margin: 2.5em 0 0 0;
-  border-top: 1px dashed var(--accent) !important;
-}
-
-/*a[target="_blank"]::after {
-  content: '\29C9';
-  color: var(--accent);
-}*/
-
 .button {
   border-radius: 0 !important;
   height: 1.2em;
@@ -32,6 +22,15 @@ hr {
   border: none;
 }
 
+figure a:hover {
+  border: none !important;
+}
+
+hr {
+  margin: 2.5em 0 0 0;
+  border-top: 1px dashed var(--accent) !important;
+}
+
 p {
   text-align: justify;
 }
@@ -39,6 +38,10 @@ p {
 img {
   border: solid 10px var(--accent);
   padding: 10px;
+}
+
+video {
+  margin-top: 1em;
 }
 
 .gallery {
@@ -56,18 +59,21 @@ img {
   padding: 20px;
 }
 
-.posts, .index-content ul {
+.posts,
+.index-content ul {
   list-style: none;
 }
 
-.posts li::before, .index-content li::before {
+.posts li::before,
+.index-content li::before {
   content: "-";
   position: absolute;
   left: -20px;
   color: var(--accent);
 }
 
-.posts li, .index-content li {
+.posts li,
+.index-content li {
   position: relative;
 }
 
