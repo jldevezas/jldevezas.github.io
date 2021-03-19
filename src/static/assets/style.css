@@ -98,6 +98,10 @@ video {
   content: "";
 }
 
+.post-title a:hover {
+  border: none;
+}
+
 .post-date {
   color: var(--color);
 }
@@ -175,4 +179,8 @@ video {
   opacity: 0.5;
   background: var(--accent);
   z-index: 1000;
+}
+
+.highlight .toolbar {
+  display: none;
 }

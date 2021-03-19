@@ -17,11 +17,11 @@
             {{ with .Date }}<span class="post-date">{{ .Format "2006-01-02" }}</span>{{ end }}
             {{ .Title | markdownify }}</a>
 
-          <span class="description">
+          <!-- span class="description">
             {{ if .Description }}
             :: {{ .Description | markdownify }}
             {{ end }}
-          </span>
+          </span -->
 
           {{ with .Params.tags }}
             <span class="tags">
