@@ -1,0 +1,44 @@
+[
+  {
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      }
+    ],
+    "genre": "PhD thesis",
+    "id": "Devezas2021",
+    "issued": {
+      "date-parts": [
+        [
+          2021
+        ]
+      ]
+    },
+    "note": "phd_thesis-2021-devezas-graph_based_entity_oriented_search",
+    "publisher": "Universities of Minho, Aveiro, and Porto (MAP-i)",
+    "title": "Graph-based entity-oriented search",
+    "type": "thesis"
+  },
+  {
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      }
+    ],
+    "genre": "Master’s thesis",
+    "id": "Devezas2010",
+    "issued": {
+      "date-parts": [
+        [
+          2010
+        ]
+      ]
+    },
+    "note": "masters_thesis-2010-devezas-link_ecosystem_of_the_portuguese_blogosphere",
+    "publisher": "Faculty of Engineering, University of Porto (MIEIC)",
+    "title": "Link ecosystem of the portuguese blogosphere",
+    "type": "thesis"
+  }
+]

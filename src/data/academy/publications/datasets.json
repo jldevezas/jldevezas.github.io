@@ -1,0 +1,56 @@
+[
+  {
+    "DOI": "10.25747/83vk-zt74",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "id": "Devezas2019",
+    "issued": {
+      "date-parts": [
+        [
+          2019,
+          3
+        ]
+      ]
+    },
+    "publisher": "INESC TEC research data repository",
+    "title": "Simple english wikipedia link graph with clickstream transitions 2018-12 [dataset]",
+    "type": ""
+  },
+  {
+    "DOI": "10.25747/s5jn-q370",
+    "author": [
+      {
+        "family": "Pires",
+        "given": "André"
+      },
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "id": "Pires2017",
+    "issued": {
+      "date-parts": [
+        [
+          2017,
+          6
+        ]
+      ]
+    },
+    "publisher": "INESC TEC research data repository",
+    "title": "SIGARRA news corpus [dataset]",
+    "type": ""
+  }
+]

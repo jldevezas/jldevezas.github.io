@@ -1,0 +1,62 @@
+[
+  {
+    "DOI": "10.1145/3453117",
+    "ISSN": "1528-4972",
+    "URL": "https://doi.org/10.1145/3453117",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "container-title": "XRDS: Crossroads, The ACM Magazine for Students",
+    "id": "Devezas2021",
+    "issue": "3",
+    "issued": {
+      "date-parts": [
+        [
+          2021,
+          3
+        ]
+      ]
+    },
+    "page": "10-11",
+    "publisher": "Association for Computing Machinery",
+    "publisher-place": "New York, NY, USA",
+    "title": "Managing research the wiki way",
+    "type": "article-journal",
+    "volume": "27"
+  },
+  {
+    "URL": "https://ercim-news.ercim.eu/en111/special/graph-based-entity-oriented-search-imitating-the-human-process-of-seeking-and-cross-referencing-information",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "container-title": "ERCIM News. Special Issue: Digital Humanities",
+    "id": "Devezas2017",
+    "issued": {
+      "date-parts": [
+        [
+          2017,
+          10
+        ]
+      ]
+    },
+    "page": "13-14",
+    "title": "Graph-based entity-oriented search: Imitating the human process of seeking and cross referencing information",
+    "title-short": "Graph-based entity-oriented search",
+    "type": "article-journal",
+    "volume": "111"
+  }
+]

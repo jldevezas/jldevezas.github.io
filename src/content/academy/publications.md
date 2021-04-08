@@ -1,10 +1,11 @@
 ---
 title: "Publications"
-date: 2021-03-03T22:13:00Z
+date: 2021-04-07T19:00:00Z
 author: "José Devezas"
 ---
 
 - [Journals](#journals)
+- [Magazines](#magazines)
 - [Conferences](#conferences)
 - [Datasets](#datasets)
 - [Theses](#theses)
@@ -15,6 +16,10 @@ author: "José Devezas"
 # Journals
 
 {{< publications "journals" >}}
+
+# Magazines
+
+{{< publications "magazines" >}}
 
 # Conferences
 

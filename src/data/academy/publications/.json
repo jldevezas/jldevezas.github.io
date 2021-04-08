@@ -1,0 +1,100 @@
+[
+  {
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      }
+    ],
+    "id": "Devezas2013c",
+    "issued": {
+      "date-parts": [
+        [
+          2013
+        ]
+      ]
+    },
+    "note": "2013-devezas-state_of_the_art-community_driven_music_discovery",
+    "title": "A state of the art for community-driven music discovery",
+    "type": "manuscript"
+  },
+  {
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Coelho",
+        "given": "Filipe"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      },
+      {
+        "family": "Ribeiro",
+        "given": "Cristina"
+      }
+    ],
+    "id": "Devezas2013",
+    "issued": {
+      "date-parts": [
+        [
+          2013
+        ]
+      ]
+    },
+    "note": "2013-devezas_et_al-music_discovery_tfidf_boost_long_tail_tags",
+    "title": "Music discovery: Exploiting TF-IDF to boost results in the long tail of the tags distribution",
+    "title-short": "Music discovery",
+    "type": "manuscript"
+  },
+  {
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "id": "Devezas2013a",
+    "issued": {
+      "date-parts": [
+        [
+          2013
+        ]
+      ]
+    },
+    "note": "2013-devezas_and_nunes-juggle_mobile",
+    "title": "Juggle mobile: Recommending music to individuals and groups",
+    "title-short": "Juggle mobile",
+    "type": "manuscript"
+  },
+  {
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "id": "Devezas2013b",
+    "issued": {
+      "date-parts": [
+        [
+          2013
+        ]
+      ]
+    },
+    "note": "2013-devezas_and_nunes-music_listening_behavior",
+    "title": "Using visualization techniques to characterize music listening behavior",
+    "type": "manuscript"
+  }
+]

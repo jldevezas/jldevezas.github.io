@@ -1,0 +1,896 @@
+[
+  {
+    "DOI": "10.1007/978-3-030-45442-5_78",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      }
+    ],
+    "collection-title": "Lecture eprintin computer science",
+    "container-title": "Advances in information retrieval - 42nd european conference on IR research, ECIR 2020, lisbon, portugal, april 14-17, 2020, proceedings, part II",
+    "editor": [
+      {
+        "family": "Jose",
+        "given": "Joemon M."
+      },
+      {
+        "family": "Yilmaz",
+        "given": "Emine"
+      },
+      {
+        "family": "Magalhães",
+        "given": "João"
+      },
+      {
+        "family": "Castells",
+        "given": "Pablo"
+      },
+      {
+        "family": "Ferro",
+        "given": "Nicola"
+      },
+      {
+        "family": "Silva",
+        "given": "Mário J."
+      },
+      {
+        "family": "Martins",
+        "given": "Flávio"
+      }
+    ],
+    "id": "Devezas2020",
+    "issued": {
+      "date-parts": [
+        [
+          2020
+        ]
+      ]
+    },
+    "note": "ecir_2020-devezas-graph_based_entity_oriented_search_a_unified_framework_in_information_retrieval",
+    "page": "602-607",
+    "publisher": "Springer",
+    "title": "Graph-based entity-oriented search: A unified framework in information retrieval",
+    "title-short": "Graph-based entity-oriented search",
+    "type": "paper-conference",
+    "volume": "12036"
+  },
+  {
+    "DOI": "10.1007/978-3-030-45442-5_56",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "collection-title": "Lecture eprintin computer science",
+    "container-title": "Advances in information retrieval - 42nd european conference on IR research, ECIR 2020, lisbon, portugal, april 14-17, 2020, proceedings, part II",
+    "editor": [
+      {
+        "family": "Jose",
+        "given": "Joemon M."
+      },
+      {
+        "family": "Yilmaz",
+        "given": "Emine"
+      },
+      {
+        "family": "Magalhães",
+        "given": "João"
+      },
+      {
+        "family": "Castells",
+        "given": "Pablo"
+      },
+      {
+        "family": "Ferro",
+        "given": "Nicola"
+      },
+      {
+        "family": "Silva",
+        "given": "Mário J."
+      },
+      {
+        "family": "Martins",
+        "given": "Flávio"
+      }
+    ],
+    "id": "Devezas2020a",
+    "issued": {
+      "date-parts": [
+        [
+          2020
+        ]
+      ]
+    },
+    "note": "ecir_2020-devezas_and_nunes-army_ant_a_workbench_for_innovation_in_entity_oriented_search",
+    "page": "449-453",
+    "publisher": "Springer",
+    "title": "Army ANT: A workbench for innovation in entity-oriented search",
+    "type": "paper-conference",
+    "volume": "12036"
+  },
+  {
+    "DOI": "10.4230/OASIcs.SLATE.2019.1",
+    "URL": "https://doi.org/10.4230/OASIcs.SLATE.2019.1",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Lopes",
+        "given": "Carla Teixeira"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "collection-title": "OASICS",
+    "container-title": "8th symposium on languages, applications and technologies, SLATE 2019, june 27-28, 2019, coimbra, portugal",
+    "editor": [
+      {
+        "family": "Rodrigues",
+        "given": "Ricardo"
+      },
+      {
+        "family": "Janousek",
+        "given": "Jan"
+      },
+      {
+        "family": "Ferreira",
+        "given": "Luı́s"
+      },
+      {
+        "family": "Coheur",
+        "given": "Luı́sa"
+      },
+      {
+        "family": "Batista",
+        "given": "Fernando"
+      },
+      {
+        "family": "Oliveira",
+        "given": "Hugo Gonçalo"
+      }
+    ],
+    "id": "Devezas2019",
+    "issued": {
+      "date-parts": [
+        [
+          2019
+        ]
+      ]
+    },
+    "note": "slate_2019-devezas_et_al-graph_of_entity",
+    "page": "1:1-1:14",
+    "publisher": "Schloss Dagstuhl - Leibniz-Zentrum für Informatik",
+    "title": "Graph-of-entity: A model for combined data representation and retrieval",
+    "title-short": "Graph-of-entity",
+    "type": "paper-conference",
+    "volume": "74"
+  },
+  {
+    "DOI": "10.1007/978-3-030-36683-4_1",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "container-title": "Complex networks and their applications VIII - volume 2 proceedings of the eighth international conference on complex networks and their applications COMPLEX NETWORKS 2019, lisbon, portugal, december 10-12, 2019",
+    "id": "Devezas2019c",
+    "issued": {
+      "date-parts": [
+        [
+          2019
+        ]
+      ]
+    },
+    "note": "cna_2019-devezas_and_nunes-characterizing_the_hypergraph_of_entity_representation_model",
+    "page": "3-14",
+    "title": "Characterizing the hypergraph-of-entity representation model",
+    "type": "paper-conference"
+  },
+  {
+    "URL": "http://ceur-ws.org/Vol-2079/paper5.pdf",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "container-title": "Proceedings of the second international workshop on recent trends in news information retrieval co-located with 40th european conference on information retrieval (ECIR 2018), grenoble, france, march 26, 2018",
+    "id": "Devezas2018a",
+    "issued": {
+      "date-parts": [
+        [
+          2018
+        ]
+      ]
+    },
+    "note": "newsir_2018-devezas_and_nunes-social_media_and_information_consumption_diversity",
+    "page": "18-23",
+    "title": "Social media and information consumption diversity",
+    "type": "paper-conference"
+  },
+  {
+    "URL": "https://trec.nist.gov/pubs/trec27/papers/FEUP-CC.pdf",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      },
+      {
+        "family": "Guillén",
+        "given": "Antonio"
+      },
+      {
+        "family": "Gutiérrez",
+        "given": "Yoan"
+      },
+      {
+        "family": "Muñoz",
+        "given": "Rafael"
+      }
+    ],
+    "collection-title": "NIST special publication",
+    "container-title": "Proceedings of the twenty-seventh text REtrieval conference, TREC 2018, gaithersburg, maryland, USA, november 14-16, 2018",
+    "editor": [
+      {
+        "family": "Voorhees",
+        "given": "Ellen M."
+      },
+      {
+        "family": "Ellis",
+        "given": "Angela"
+      }
+    ],
+    "id": "Devezas2018",
+    "issued": {
+      "date-parts": [
+        [
+          2018
+        ]
+      ]
+    },
+    "note": "trec_2018-devezas_et_al-feup_common_core_track",
+    "publisher": "National Institute of Standards and Technology (NIST)",
+    "title": "FEUP at TREC 2018 common core track - reranking for diversity using hypergraph-of-entity and document profiling",
+    "type": "paper-conference",
+    "volume": "500-331"
+  },
+  {
+    "URL": "https://trec.nist.gov/pubs/trec26/papers/FEUP-O.pdf",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Lopes",
+        "given": "Carla Teixeira"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "collection-title": "NIST special publication",
+    "container-title": "Proceedings of the twenty-sixth text REtrieval conference, TREC 2017, gaithersburg, maryland, USA, november 15-17, 2017",
+    "editor": [
+      {
+        "family": "Voorhees",
+        "given": "Ellen M."
+      },
+      {
+        "family": "Ellis",
+        "given": "Angela"
+      }
+    ],
+    "id": "Devezas2017a",
+    "issued": {
+      "date-parts": [
+        [
+          2017
+        ]
+      ]
+    },
+    "note": "trec_2017-devezas_et_al-feup_opensearch_track",
+    "publisher": "National Institute of Standards and Technology (NIST)",
+    "title": "FEUP at TREC 2017 OpenSearch track graph-based models for entity-oriented",
+    "type": "paper-conference",
+    "volume": "500-324"
+  },
+  {
+    "DOI": "10.4230/OASIcs.SLATE.2017.18",
+    "URL": "https://doi.org/10.4230/OASIcs.SLATE.2017.18",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "collection-title": "OASICS",
+    "container-title": "6th symposium on languages, applications and technologies, SLATE 2017, june 26-27, 2017, vila do conde, portugal",
+    "editor": [
+      {
+        "family": "Queirós",
+        "given": "Ricardo"
+      },
+      {
+        "family": "Pinto",
+        "given": "Mário"
+      },
+      {
+        "family": "Simões",
+        "given": "Alberto"
+      },
+      {
+        "family": "Leal",
+        "given": "José Paulo"
+      },
+      {
+        "family": "Pereira",
+        "given": "Maria João Varanda"
+      }
+    ],
+    "id": "Devezas2017c",
+    "issued": {
+      "date-parts": [
+        [
+          2017
+        ]
+      ]
+    },
+    "note": "slate_2017-devezas_and_nunes-information_extraction_for_event_ranking",
+    "page": "18:1-18:14",
+    "publisher": "Schloss Dagstuhl - Leibniz-Zentrum für Informatik",
+    "title": "Information extraction for event ranking",
+    "type": "paper-conference",
+    "volume": "56"
+  },
+  {
+    "DOI": "10.1007/978-3-319-44564-9_17",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "collection-title": "Lecture eprintin computer science",
+    "container-title": "Experimental IR meets multilinguality, multimodality, and interaction - 7th international conference of the CLEF association, CLEF 2016, Évora, portugal, september 5-8, 2016, proceedings",
+    "editor": [
+      {
+        "family": "Fuhr",
+        "given": "Norbert"
+      },
+      {
+        "family": "Quaresma",
+        "given": "Paulo"
+      },
+      {
+        "family": "Gonçalves",
+        "given": "Teresa"
+      },
+      {
+        "family": "Larsen",
+        "given": "Birger"
+      },
+      {
+        "family": "Balog",
+        "given": "Krisztian"
+      },
+      {
+        "family": "Macdonald",
+        "given": "Craig"
+      },
+      {
+        "family": "Cappellato",
+        "given": "Linda"
+      },
+      {
+        "family": "Ferro",
+        "given": "Nicola"
+      }
+    ],
+    "id": "Devezas2016",
+    "issued": {
+      "date-parts": [
+        [
+          2016
+        ]
+      ]
+    },
+    "note": "clef_2016-devezas_and_nunes-index_based_semantic_tagging_for_efficient_query_interpretation",
+    "page": "208-213",
+    "publisher": "Springer",
+    "title": "Index-based semantic tagging for efficient query interpretation",
+    "type": "paper-conference",
+    "volume": "9822"
+  },
+  {
+    "URL": "http://ceur-ws.org/Vol-1568/paper9.pdf",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "Tiago"
+      },
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "container-title": "Proceedings of the first international workshop on recent trends in news information retrieval co-located with 38th european conference on information retrieval (ECIR 2016), padua, italy, march 20, 2016",
+    "id": "Devezas2016a",
+    "issued": {
+      "date-parts": [
+        [
+          2016
+        ]
+      ]
+    },
+    "note": "newsir_2016-devezas_et_al-exploring_a_large_news_collection_using_visualization_tools",
+    "page": "48-53",
+    "title": "Exploring a large news collection using visualization tools",
+    "type": "paper-conference"
+  },
+  {
+    "URL": "http://dl.acm.org/citation.cfm?id=2491796",
+    "author": [
+      {
+        "family": "Coelho",
+        "given": "Filipe"
+      },
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Ribeiro",
+        "given": "Cristina"
+      }
+    ],
+    "container-title": "Open research areas in information retrieval, OAIR ’13, lisbon, portugal, may 15-17, 2013",
+    "editor": [
+      {
+        "family": "Ferreira",
+        "given": "João"
+      },
+      {
+        "family": "Magalhães",
+        "given": "João"
+      },
+      {
+        "family": "Calado",
+        "given": "Pável"
+      }
+    ],
+    "id": "Coelho2013",
+    "issued": {
+      "date-parts": [
+        [
+          2013
+        ]
+      ]
+    },
+    "note": "oair_2013-coelho_et_al-juggle_large_scale_discovery_music_recommendation",
+    "page": "219-220",
+    "publisher": "ACM",
+    "title": "Juggle: Large-scale discovery in music recommendation",
+    "title-short": "Juggle",
+    "type": "paper-conference"
+  },
+  {
+    "URL": "http://dl.acm.org/citation.cfm?id=2491764",
+    "author": [
+      {
+        "family": "Coelho",
+        "given": "Filipe"
+      },
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Ribeiro",
+        "given": "Cristina"
+      }
+    ],
+    "container-title": "Open research areas in information retrieval, OAIR ’13, lisbon, portugal, may 15-17, 2013",
+    "id": "Coelho2013a",
+    "issued": {
+      "date-parts": [
+        [
+          2013
+        ]
+      ]
+    },
+    "note": "oair_2013-coelho_et_al-cross_media_retrieval_playlist_generation_song_discovery",
+    "page": "61-64",
+    "title": "Large-scale crossmedia retrieval for playlist generation and song discovery",
+    "type": "paper-conference"
+  },
+  {
+    "DOI": "10.1007/978-3-642-36981-0_15",
+    "author": [
+      {
+        "family": "Gomes",
+        "given": "Filipe"
+      },
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "dropping-particle": "Álvaro",
+        "family": "Figueira"
+      }
+    ],
+    "collection-title": "Advances in intelligent systems and computing",
+    "container-title": "Advances in information systems and technologies [WorldCIST’13, olhão, algarve, portugal, march 27-30, 2013]",
+    "editor": [
+      {
+        "dropping-particle": "Álvaro",
+        "family": "Rocha"
+      },
+      {
+        "family": "Correia",
+        "given": "Ana Maria Ramalho"
+      },
+      {
+        "family": "Wilson",
+        "given": "Tom"
+      },
+      {
+        "family": "Stroetmann",
+        "given": "Karl A."
+      }
+    ],
+    "id": "Gomes2013",
+    "issued": {
+      "date-parts": [
+        [
+          2013
+        ]
+      ]
+    },
+    "note": "world_cist_2013-gomes_et_al-temporal_visualization_multidimensional_network_news_clips",
+    "page": "157-166",
+    "publisher": "Springer",
+    "title": "Temporal visualization of a multidimensional network of news clips",
+    "type": "paper-conference",
+    "volume": "206"
+  },
+  {
+    "DOI": "10.1145/2309996.2310036",
+    "URL": "https://doi.org/10.1145/2309996.2310036",
+    "author": [
+      {
+        "family": "Cravino",
+        "given": "Nuno"
+      },
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "dropping-particle": "Álvaro",
+        "family": "Figueira"
+      }
+    ],
+    "container-title": "23rd ACM conference on hypertext and social media, HT ’12, milwaukee, WI, USA, june 25-28, 2012",
+    "editor": [
+      {
+        "family": "Munson",
+        "given": "Ethan V."
+      },
+      {
+        "family": "Strohmaier",
+        "given": "Markus"
+      }
+    ],
+    "id": "Cravino2012",
+    "issued": {
+      "date-parts": [
+        [
+          2012
+        ]
+      ]
+    },
+    "note": "ht_2012-cravino_et_al-overlapping_communities_tags_text_clustering",
+    "page": "239-244",
+    "publisher": "ACM",
+    "title": "Using the overlapping community structure of a network of tags to improve text clustering",
+    "type": "paper-conference"
+  },
+  {
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Alves",
+        "given": "Henrique"
+      },
+      {
+        "family": "Figueira",
+        "given": "Alvaro"
+      }
+    ],
+    "container-title": "Lecture eprintin engineering and computer science: Proceedings of the international MultiConference of engineers and computer scientists",
+    "id": "Devezas2012a",
+    "issued": {
+      "date-parts": [
+        [
+          2012
+        ]
+      ]
+    },
+    "note": "icdma_2012-devezas_et_al-news_context_folksonomy_web_clipping",
+    "page": "446-451",
+    "title": "Creating news context from a folksonomy of web clipping",
+    "type": "paper-conference"
+  },
+  {
+    "DOI": "10.1007/978-3-642-28997-2\\_47",
+    "URL": "https://doi.org/10.1007/978-3-642-28997-2\\_47",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Coelho",
+        "given": "Filipe"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      },
+      {
+        "family": "Ribeiro",
+        "given": "Cristina"
+      }
+    ],
+    "collection-title": "Lecture eprintin computer science",
+    "container-title": "Advances in information retrieval - 34th european conference on IR research, ECIR 2012, barcelona, spain, april 1-5, 2012. proceedings",
+    "editor": [
+      {
+        "family": "Baeza-Yates",
+        "given": "Ricardo"
+      },
+      {
+        "dropping-particle": "de",
+        "family": "Vries",
+        "given": "Arjen P."
+      },
+      {
+        "family": "Zaragoza",
+        "given": "Hugo"
+      },
+      {
+        "family": "Cambazoglu",
+        "given": "Berkant Barla"
+      },
+      {
+        "family": "Murdock",
+        "given": "Vanessa"
+      },
+      {
+        "family": "Lempel",
+        "given": "Ronny"
+      },
+      {
+        "family": "Silvestri",
+        "given": "Fabrizio"
+      }
+    ],
+    "id": "Devezas2012",
+    "issued": {
+      "date-parts": [
+        [
+          2012
+        ]
+      ]
+    },
+    "note": "ecir_2012-devezas_et_al-studying_personality_coreference_network",
+    "page": "485-488",
+    "publisher": "Springer",
+    "title": "Studying a personality coreference network in a news stories photo collection",
+    "type": "paper-conference",
+    "volume": "7224"
+  },
+  {
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "dropping-particle": "Álvaro",
+        "family": "Figueira"
+      }
+    ],
+    "container-title": "KDIR 2012 - proceedings of the international conference on knowledge discovery and information retrieval, barcelona, spain, 4 - 7 october, 2012",
+    "editor": [
+      {
+        "family": "Fred",
+        "given": "Ana L. N."
+      },
+      {
+        "family": "Filipe",
+        "given": "Joaquim"
+      }
+    ],
+    "id": "Devezas2012b",
+    "issued": {
+      "date-parts": [
+        [
+          2012
+        ]
+      ]
+    },
+    "note": "kdir_2012-devezas_and_figueira-news_clips_network_visualization",
+    "page": "157-162",
+    "publisher": "SciTePress",
+    "title": "Interactive visualization of a news clips network - A journalistic research and knowledge discovery tool",
+    "type": "paper-conference"
+  },
+  {
+    "URL": "http://www.aaai.org/ocs/index.php/ICWSM/ICWSM11/paper/view/2829",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      },
+      {
+        "family": "Ribeiro",
+        "given": "Cristina"
+      }
+    ],
+    "container-title": "Proceedings of the fifth international conference on weblogs and social media, barcelona, catalonia, spain, july 17-21, 2011",
+    "id": "Devezas2011",
+    "issued": {
+      "date-parts": [
+        [
+          2011
+        ]
+      ]
+    },
+    "note": "icwsm_2011-devezas_et_al-using_hindex_estimate_blog_authority",
+    "title": "Using the h-index to estimate blog authority",
+    "type": "paper-conference"
+  },
+  {
+    "URL": "http://trec.nist.gov/pubs/trec19/papers/labs-sapo-up.blog.pdf",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      },
+      {
+        "family": "Ribeiro",
+        "given": "Cristina"
+      }
+    ],
+    "collection-title": "NIST special publication",
+    "container-title": "Proceedings of the nineteenth text REtrieval conference, TREC 2010, gaithersburg, maryland, USA, november 16-19, 2010",
+    "editor": [
+      {
+        "family": "Voorhees",
+        "given": "Ellen M."
+      },
+      {
+        "family": "Buckland",
+        "given": "Lori P."
+      }
+    ],
+    "id": "Devezas2010",
+    "issued": {
+      "date-parts": [
+        [
+          2010
+        ]
+      ]
+    },
+    "note": "trec_2010-devezas_et_al-feup_blog_track",
+    "publisher": "National Institute of Standards and Technology (NIST)",
+    "title": "FEUP at TREC 2010 blog track: Using h-index for blog ranking",
+    "title-short": "FEUP at TREC 2010 blog track",
+    "type": "paper-conference",
+    "volume": "500-294"
+  },
+  {
+    "DOI": "10.1145/1964858.1964863",
+    "URL": "https://doi.org/10.1145/1964858.1964863",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Ribeiro",
+        "given": "Cristina"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "container-title": "Proceedings of the 3rd workshop on social network mining and analysis, SNAKDD 2009, paris, france, june 28, 2009",
+    "editor": [
+      {
+        "family": "Giles",
+        "given": "C. Lee"
+      },
+      {
+        "family": "Mitra",
+        "given": "Prasenjit"
+      },
+      {
+        "family": "Perisic",
+        "given": "Igor"
+      },
+      {
+        "family": "Yen",
+        "given": "John"
+      },
+      {
+        "family": "Zhang",
+        "given": "Haizheng"
+      }
+    ],
+    "id": "Devezas2010a",
+    "issued": {
+      "date-parts": [
+        [
+          2010
+        ]
+      ]
+    },
+    "note": "soma_2010-devezas_et_al-blog_features_over_link_popularity",
+    "page": "31-34",
+    "publisher": "ACM",
+    "title": "Studying blog features over link popularity",
+    "type": "paper-conference"
+  }
+]

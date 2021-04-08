@@ -1,6 +1,6 @@
 {{ $bib := index $.Site.Data.academy.publications (index $.Params 0) }}
 
-{{ range (index $bib "references") }}
+{{ range $bib }}
    <div class="publication">
     {{ if .note }}
       <a href="/pdf/academy/publications/{{ index $.Params 0 }}/{{ replace .note "\\" "" }}.pdf" target="_blank">
@@ -27,7 +27,7 @@
         if .volume }} {{ .volume }}{{ end }}{{
         if .issue }}.{{ .issue }}{{ end }}
 
-      ({{ (index (index .issued 0) "year") }}){{
+      ({{ (index (index (index .issued "date-parts") 0) 0) }}){{
         if .page }}: {{ .page }}{{ end }}
     </a>
   </div>

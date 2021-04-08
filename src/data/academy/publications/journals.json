@@ -1,0 +1,117 @@
+[
+  {
+    "DOI": "10.1007/s41109-020-00320-z",
+    "ISSN": "2364-8228",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "container-title": "Applied Network Science - Special Issue of the 8th International Conference on Complex Networks and Their Applications",
+    "id": "Devezas2020",
+    "issue": "1",
+    "issued": {
+      "date-parts": [
+        [
+          2020
+        ]
+      ]
+    },
+    "note": "apns-2020-devezas_and_nunes-hgoe_analysis_extended",
+    "page": "79",
+    "title": "Characterizing the hypergraph-of-entity and the structural impact of its extensions",
+    "type": "article-journal",
+    "volume": "5"
+  },
+  {
+    "DOI": "10.1515/comp-2019-0006",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "container-title": "Open Computer Science",
+    "id": "Devezas2019",
+    "issue": "1",
+    "issued": {
+      "date-parts": [
+        [
+          2019,
+          6
+        ]
+      ]
+    },
+    "note": "ocs-2019-devezas_and_nunes-hypergraph_of_entity",
+    "page": "103-127",
+    "title": "Hypergraph-of-entity: A unified representation model for the retrieval of text and knowledge",
+    "title-short": "Hypergraph-of-entity",
+    "type": "article-journal",
+    "volume": "9"
+  },
+  {
+    "DOI": "10.1504/IJWBC.2013.054911",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Figueira",
+        "given": "Álvaro"
+      }
+    ],
+    "container-title": "IJWBC",
+    "id": "Devezas2013",
+    "issue": "3",
+    "issued": {
+      "date-parts": [
+        [
+          2013
+        ]
+      ]
+    },
+    "note": "ijwbc_2012-devezas_and_figueira-multidimensional_community_detection",
+    "page": "411-429",
+    "title": "The community structure of a multidimensional network of news clips",
+    "type": "article-journal",
+    "volume": "9"
+  },
+  {
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Figueira",
+        "given": "Álvaro"
+      }
+    ],
+    "container-title": "IAENG International Journal of Computer Science",
+    "id": "Devezas2012",
+    "issue": "2",
+    "issued": {
+      "date-parts": [
+        [
+          2012
+        ]
+      ]
+    },
+    "note": "iaeng_ijcs_2012-devezas_and_figueira-language_independent_contextual_supernodes",
+    "page": "200-207",
+    "publisher": "International Association of Engineers",
+    "title": "Finding language-independent contextual supernodes on coreference networks",
+    "type": "article-journal",
+    "volume": "39"
+  }
+]

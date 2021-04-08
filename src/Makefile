@@ -1,8 +1,7 @@
-SCRIPTS_DIR=../scripts
-
 BIBTEX_FILES=\
 	static/bib/chapters.bib \
 	static/bib/conferences.bib \
+	static/bib/magazines.bib \
 	static/bib/datasets.bib \
 	static/bib/journals.bib \
 	static/bib/reports.bib \
@@ -13,9 +12,11 @@ all:
 	hugo
 
 bib:
-	@for file in $(BIBTEX_FILES); \
+	@for bib_path in $(BIBTEX_FILES); \
 	do \
-		$(SCRIPTS_DIR)/bib_to_yaml.sh $$file data/academy/publications/$$(basename $${file%.*}).yaml; \
+		json_path=data/academy/publications/$$(basename $${bib_path%.*}).json; \
+		echo "==> $$bib_path -> $$json_path"; \
+		pandoc -f bibtex -t csljson "$$bib_path" -o "$$json_path"; \
 	done
 
 clean:

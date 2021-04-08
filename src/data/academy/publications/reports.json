@@ -1,0 +1,87 @@
+[
+  {
+    "URL": "https://hdl.handle.net/10216/110181",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      }
+    ],
+    "genre": "research report",
+    "id": "Devezas2017c",
+    "issued": {
+      "date-parts": [
+        [
+          2017,
+          6
+        ]
+      ]
+    },
+    "publisher": "MAP-i Course Report, Faculty of Engineering, University of Porto",
+    "title": "Army ANT: A workbench for innovation in entity-oriented search - external option: Scientific activities – TREC open search",
+    "title-short": "Army ANT",
+    "type": "report"
+  },
+  {
+    "URL": "https://hdl.handle.net/10216/104152",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      }
+    ],
+    "genre": "research report",
+    "id": "Devezas2017b",
+    "issued": {
+      "date-parts": [
+        [
+          2017,
+          5
+        ]
+      ]
+    },
+    "publisher": "MAP-i Course Report. Faculty of Engineering, University of Porto",
+    "title": "Auditing open access repositories - free option: Supervised study – digital archives and libraries",
+    "title-short": "Auditing open access repositories - free option",
+    "type": "report"
+  },
+  {
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      }
+    ],
+    "genre": "research report",
+    "id": "Devezas2011a",
+    "issued": {
+      "date-parts": [
+        [
+          2011
+        ]
+      ]
+    },
+    "publisher": "Breadcrumbs Project Report, CRACS/INESC TEC and Faculty of Sciences, University of Porto",
+    "title": "An overview of the graph database paradigm",
+    "type": "report"
+  },
+  {
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      }
+    ],
+    "id": "Devezas2011",
+    "issued": {
+      "date-parts": [
+        [
+          2011
+        ]
+      ]
+    },
+    "publisher": "Laboratório SAPO/U.Porto, Universidade do Porto",
+    "title": "Overlapping community detection",
+    "type": "report"
+  }
+]

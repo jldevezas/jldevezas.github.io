@@ -1,0 +1,36 @@
+[
+  {
+    "author": [
+      {
+        "family": "Figueira",
+        "given": "Álvaro"
+      },
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Cravino",
+        "given": "Nuno"
+      },
+      {
+        "family": "Revilla",
+        "given": "Luis-Francisco"
+      }
+    ],
+    "container-title": "Information systems and technology for organizations in a networked society",
+    "id": "Figueira2013",
+    "issued": {
+      "date-parts": [
+        [
+          2013
+        ]
+      ]
+    },
+    "note": "igi_2013-chapter_5-figueira_et_al-social_network_news_clips",
+    "page": "67-86",
+    "publisher": "IGI Global",
+    "title": "Creating and analysing a social network built from clips of online news",
+    "type": "chapter"
+  }
+]
