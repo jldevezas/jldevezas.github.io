@@ -9,6 +9,10 @@ a:hover {
   border-bottom-color: var(--accent);
 }
 
+.highlight pre {
+  background: #0002 !important;
+}
+
 .button {
   border-radius: 0 !important;
   height: 1.2em;
@@ -18,7 +22,8 @@ a:hover {
   color: var(--color) !important;
 }
 
-.header__logo a:hover, a.hanchor:hover {
+.header__logo a:hover,
+a.hanchor:hover {
   border: none;
 }
 
