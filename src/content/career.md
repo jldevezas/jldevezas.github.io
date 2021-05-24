@@ -32,6 +32,6 @@ As the end of such a heavy-weight stage of my life drew near, I found a new pass
 
 {{< image src="/img/academy/I123-DEI-FEUP.jpg" position="center" style="max-height: 400px" >}}
 
-Now, I am adrift, randomly walking in an attempt to find my own path --- a non-conformist looking for a brighter future. Meanwhile, however, here are some of my past contributions to science.
+Now, I am adrift, randomly walking in an attempt to find my own path --- a non-conformist looking for a brighter future.
 
 {{< image src="/img/academy/bitcoin.jpg" position="center" style="max-height: 400px" >}}

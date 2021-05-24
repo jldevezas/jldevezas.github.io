@@ -11,6 +11,13 @@ BIBTEX_FILES=\
 all:
 	hugo
 
+dev:
+	hugo server -D -b localhost:1313
+
+git:
+	git submodule update --init --recursive
+	git clone -b gh-pages git@github.com:jldevezas/jldevezas.github.io.git public
+
 bib:
 	@for bib_path in $(BIBTEX_FILES); \
 	do \
