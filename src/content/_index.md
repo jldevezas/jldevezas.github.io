@@ -15,4 +15,4 @@ In this website, you will find information about my [career](/career), including
 
 If you prefer, you can find my extended curriculum vitae [here](cv.pdf).
 
-> Please use my [public key](public-pgp) to message me using PGP.
+> Please use my [public key](pgp-public-key.txt) to message me using PGP.
