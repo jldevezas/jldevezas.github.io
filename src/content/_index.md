@@ -14,3 +14,5 @@ title: "Home"
 In this website, you will find information about my [career](/career), including a list of academic [publications](/academy/publications) and [projects](/academy/projects). You should also take a look at my [PhD thesis](thesis.pdf).
 
 If you prefer, you can find my extended curriculum vitae [here](cv.pdf).
+
+> Please use my [public key](public-pgp) to message me using PGP.
