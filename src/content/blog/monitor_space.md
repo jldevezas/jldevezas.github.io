@@ -1,10 +1,10 @@
 ---
 title: "Monitoring PostgreSQL temporary directory space"
-date: "2022-03-29T11:23:00Z"
+date: "2022-03-29T11:58:44+01:00"
 author: "José Devezas"
 authorTwitter: "jldevezas"
 tags: ["shell", "fish", "function", "postgresql"]
-keywords: ["git", "string", "search", "workflow"]
+keywords: ["shell", "fish", "monitor", "postgresql", "pgsql_tmp"]
 description: |
   - Monitoring directory total size changes.
   - Temporary file size requirements in PostgreSQL queries.
