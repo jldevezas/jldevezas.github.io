@@ -33,7 +33,7 @@ end
 
 If you're like me and you have learned to avoid premature optimizations, you are bound to eventually exhaust disk space because of a badly written SQL query. No shame in that, time is a rare commodity. Better done than perfect, right?
 
-Personally, when a server's disk is approaching it's full state, I get e-mailed by my `disk_space_check` script, that is scheduled to run every 5 minutes in crontab.
+Personally, when a server's disk is approaching its full state, I get e-mailed by my `disk_space_check` script, that is scheduled to run every 5 minutes in crontab.
 
 This one's in bash, if you'd like to use it:
 
