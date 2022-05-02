@@ -233,7 +233,7 @@
 </span></span><span style="display:flex;"><span>end
 </span></span></code></pre></div><h1 id="practical-application-monitoring-pgsql_tmp">Practical application: monitoring pgsql_tmp<a href="#practical-application-monitoring-pgsql_tmp" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
 <p>If you&rsquo;re like me and you have learned to avoid premature optimizations, you are bound to eventually exhaust disk space because of a badly written SQL query. No shame in that, time is a rare commodity. Better done than perfect, right?</p>
-<p>Personally, when a server&rsquo;s disk is approaching it&rsquo;s full state, I get e-mailed by my <code>disk_space_check</code> script, that is scheduled to run every 5 minutes in crontab.</p>
+<p>Personally, when a server&rsquo;s disk is approaching its full state, I get e-mailed by my <code>disk_space_check</code> script, that is scheduled to run every 5 minutes in crontab.</p>
 <p>This one&rsquo;s in bash, if you&rsquo;d like to use it:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>MAIL<span style="color:#f92672">=</span>user@domain
