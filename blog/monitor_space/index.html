@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Monitoring PostgreSQL temporary directory space :: José Devezas, PhD</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="- Monitoring directory total size changes.
+- Temporary file size requirements in PostgreSQL queries.
+" />
+<meta name="keywords" content="shell, fish, monitor, postgresql, pgsql_tmp" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/blog/monitor_space/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/red.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/red.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="http://www.josedevezas.com/" />
+  
+    <meta name="twitter:creator" content="jldevezas" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Monitoring PostgreSQL temporary directory space">
+<meta property="og:description" content="- Monitoring directory total size changes.
+- Temporary file size requirements in PostgreSQL queries.
+" />
+<meta property="og:url" content="/blog/monitor_space/" />
+<meta property="og:site_name" content="José Devezas, PhD" />
+
+  
+    <meta property="og:image" content="/img/favicon/red.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2022-03-29 11:58:44 &#43;0100 WEST" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="red">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    José Devezas, PhD
+  </div>
+</a>
+
+    </div>
+    
+      <div class="menu-trigger">menu</div>
+    
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/">Home</a></li>
+        
+      
+        
+          <li><a href="/blog">Blog</a></li>
+        
+      
+        
+          <li><a href="/academy">Academy</a></li>
+        
+      
+        
+          <li><a href="/career">Career</a></li>
+        
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="/contact">Contact</a></li>
+        
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Show more ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/tags">Tags</a></li>
+              
+            
+              
+                <li><a href="/blog/index.xml">RSS</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/">Home</a></li>
+      
+    
+      
+        <li><a href="/blog">Blog</a></li>
+      
+    
+      
+        <li><a href="/academy">Academy</a></li>
+      
+    
+      
+        <li><a href="/career">Career</a></li>
+      
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="/contact">Contact</a></li>
+      
+    
+      
+        <li><a href="/tags">Tags</a></li>
+      
+    
+      
+        <li><a href="/blog/index.xml">RSS</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/blog/monitor_space/">Monitoring PostgreSQL temporary directory space</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2022-03-29 
+      </span>
+    
+    
+    <span class="post-author">:: José Devezas</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="/tags/shell/">shell</a>&nbsp;
+    
+    #<a href="/tags/fish/">fish</a>&nbsp;
+    
+    #<a href="/tags/function/">function</a>&nbsp;
+    
+    #<a href="/tags/postgresql/">postgresql</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <h1 id="monitor-space-usage-changes">Monitor space usage changes<a href="#monitor-space-usage-changes" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p>While most people use bash, I like fish and I think we should not be afraid to write code for it. So here is a simple function I wrote to monitor space usage changes in a directory. It should be easy to convert it to bash or zsh if you prefer either. This is a general purpose function, not just for PostgreSQL, and I find this frequently comes handy.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> monitor_space
+</span></span><span style="display:flex;"><span>  set --local prev_space
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> true
+</span></span><span style="display:flex;"><span>    set --local space <span style="color:#f92672">(</span>du -h -d0 $argv<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span> 2&gt;/dev/null<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> test <span style="color:#e6db74">&#34;</span>$prev_space<span style="color:#e6db74">&#34;</span> !<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span>$space<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>      echo $space
+</span></span><span style="display:flex;"><span>    end
+</span></span><span style="display:flex;"><span>    set prev_space <span style="color:#e6db74">&#34;</span>$space<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    sleep <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>  end
+</span></span><span style="display:flex;"><span>end
+</span></span></code></pre></div><h1 id="practical-application-monitoring-pgsql_tmp">Practical application: monitoring pgsql_tmp<a href="#practical-application-monitoring-pgsql_tmp" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p>If you&rsquo;re like me and you have learned to avoid premature optimizations, you are bound to eventually exhaust disk space because of a badly written SQL query. No shame in that, time is a rare commodity. Better done than perfect, right?</p>
+<p>Personally, when a server&rsquo;s disk is approaching it&rsquo;s full state, I get e-mailed by my <code>disk_space_check</code> script, that is scheduled to run every 5 minutes in crontab.</p>
+<p>This one&rsquo;s in bash, if you&rsquo;d like to use it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>MAIL<span style="color:#f92672">=</span>user@domain
+</span></span><span style="display:flex;"><span>CURRENT<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>df / | grep / | awk <span style="color:#e6db74">&#39;{ print $5}&#39;</span> | sed <span style="color:#e6db74">&#39;s/%//g&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>THRESHOLD<span style="color:#f92672">=</span><span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$CURRENT<span style="color:#e6db74">&#34;</span> -gt <span style="color:#e6db74">&#34;</span>$THRESHOLD<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span> ; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    mail -s <span style="color:#e6db74">&#39;[domain] Disk Space Alert&#39;</span> $MAIL <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Your root partition remaining free space is critically low. Used: $CURRENT%
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span></code></pre></div><p>So, let&rsquo;s say you just got this e-mail, and you need to figure out what the hell is causing your disk to get filled so quickly. You suspect PostgreSQL, because ran a <code>sudo ncdu /</code> that showed it was taking too much space and, in particular, the <code>/var/lib/postgresql/12/main/base/pgsql_tmp/</code> directory was getting populated with too many bytes.</p>
+<p>So you trigger your: <code>monitor_space /var/lib/postgresql/12/main/base/pgsql_tmp/</code> command and follow your logs in order to identify the query that is creating so much temporary data.</p>
+<p>Sure you could use some PostgreSQL extensions to do this, but <code>monitor_space</code> is simple and works for many applications.</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="/blog/searching_git/">
+                <span class="button__text">Searching through a git repository</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>&copy; 2021 José Devezas</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-21355762-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-21355762-1');
+</script>
+
+
+  
+</div>
+
+</body>
+</html>

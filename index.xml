@@ -1,0 +1,2439 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Home on José Devezas, PhD</title>
+    <link>/</link>
+    <description>Recent content in Home on José Devezas, PhD</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2021 José Devezas</copyright>
+    <lastBuildDate>Tue, 29 Mar 2022 11:58:44 +0100</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Monitoring PostgreSQL temporary directory space</title>
+      <link>/blog/monitor_space/</link>
+      <pubDate>Tue, 29 Mar 2022 11:58:44 +0100</pubDate>
+      
+      <guid>/blog/monitor_space/</guid>
+      <description>Monitor space usage changes While most people use bash, I like fish and I think we should not be afraid to write code for it. So here is a simple function I wrote to monitor space usage changes in a directory. It should be easy to convert it to bash or zsh if you prefer either. This is a general purpose function, not just for PostgreSQL, and I find this frequently comes handy.</description>
+      <content>&lt;h1 id=&#34;monitor-space-usage-changes&#34;&gt;Monitor space usage changes&lt;/h1&gt;
+&lt;p&gt;While most people use bash, I like fish and I think we should not be afraid to write code for it. So here is a simple function I wrote to monitor space usage changes in a directory. It should be easy to convert it to bash or zsh if you prefer either. This is a general purpose function, not just for PostgreSQL, and I find this frequently comes handy.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; monitor_space
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  set --local prev_space
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; true
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    set --local space &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;du -h -d0 $argv&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;1&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; 2&amp;gt;/dev/null&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; test &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$prev_space&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; !&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$space&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      echo $space
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    end
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    set prev_space &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$space&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    sleep &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  end
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;end
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;practical-application-monitoring-pgsql_tmp&#34;&gt;Practical application: monitoring pgsql_tmp&lt;/h1&gt;
+&lt;p&gt;If you&amp;rsquo;re like me and you have learned to avoid premature optimizations, you are bound to eventually exhaust disk space because of a badly written SQL query. No shame in that, time is a rare commodity. Better done than perfect, right?&lt;/p&gt;
+&lt;p&gt;Personally, when a server&amp;rsquo;s disk is approaching it&amp;rsquo;s full state, I get e-mailed by my &lt;code&gt;disk_space_check&lt;/code&gt; script, that is scheduled to run every 5 minutes in crontab.&lt;/p&gt;
+&lt;p&gt;This one&amp;rsquo;s in bash, if you&amp;rsquo;d like to use it:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;MAIL&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;user@domain
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;CURRENT&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;df / | grep / | awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{ print $5}&amp;#39;&lt;/span&gt; | sed &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s/%//g&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;THRESHOLD&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$CURRENT&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; -gt &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$THRESHOLD&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; ; &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    mail -s &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;[domain] Disk Space Alert&amp;#39;&lt;/span&gt; $MAIL &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;&amp;lt; EOF
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Your root partition remaining free space is critically low. Used: $CURRENT%
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;So, let&amp;rsquo;s say you just got this e-mail, and you need to figure out what the hell is causing your disk to get filled so quickly. You suspect PostgreSQL, because ran a &lt;code&gt;sudo ncdu /&lt;/code&gt; that showed it was taking too much space and, in particular, the &lt;code&gt;/var/lib/postgresql/12/main/base/pgsql_tmp/&lt;/code&gt; directory was getting populated with too many bytes.&lt;/p&gt;
+&lt;p&gt;So you trigger your: &lt;code&gt;monitor_space /var/lib/postgresql/12/main/base/pgsql_tmp/&lt;/code&gt; command and follow your logs in order to identify the query that is creating so much temporary data.&lt;/p&gt;
+&lt;p&gt;Sure you could use some PostgreSQL extensions to do this, but &lt;code&gt;monitor_space&lt;/code&gt; is simple and works for many applications.&lt;/p&gt;
+</content>
+    </item>
+    
+    <item>
+      <title>Publications</title>
+      <link>/academy/publications/</link>
+      <pubDate>Wed, 07 Apr 2021 19:00:00 +0000</pubDate>
+      
+      <guid>/academy/publications/</guid>
+      <description>Journals Magazines Conferences Datasets Theses Chapters Reports Unpublished  Journals Devezas, José, and Sérgio Nunes. &amp;ldquo;Characterizing the Hypergraph-of-Entity and the Structural Impact of Its Extensions&amp;rdquo;. Applied Network Science - Special Issue of the 8th International Conference on Complex Networks and Their Applications 5.1 (2020): 79   Devezas, José, and Sérgio Nunes. &amp;ldquo;Hypergraph-of-Entity: A Unified Representation Model for the Retrieval of Text and Knowledge&amp;rdquo;. Open Computer Science 9.1 (2019): 103-127   Devezas, José, and Álvaro Figueira.</description>
+      <content>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#journals&#34;&gt;Journals&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#magazines&#34;&gt;Magazines&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#conferences&#34;&gt;Conferences&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#datasets&#34;&gt;Datasets&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#theses&#34;&gt;Theses&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#chapters&#34;&gt;Chapters&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#reports&#34;&gt;Reports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#unpublished&#34;&gt;Unpublished&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;journals&#34;&gt;Journals&lt;/h1&gt;
+
+
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/journals/apns-2020-devezas_and_nunes-hgoe_analysis_extended.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Characterizing the Hypergraph-of-Entity and the Structural Impact of Its Extensions&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Applied Network Science - Special Issue of the 8th International Conference on Complex Networks and Their Applications&lt;/em&gt; 5.1
+
+      (2020): 79
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/journals/ocs-2019-devezas_and_nunes-hypergraph_of_entity.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Hypergraph-of-Entity: A Unified Representation Model for the Retrieval of Text and Knowledge&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Open Computer Science&lt;/em&gt; 9.1
+
+      (2019): 103-127
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/journals/ijwbc_2012-devezas_and_figueira-multidimensional_community_detection.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+          Álvaro Figueira.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;The Community Structure of a Multidimensional Network of News Clips&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;IJWBC&lt;/em&gt; 9.3
+
+      (2013): 411-429
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/journals/iaeng_ijcs_2012-devezas_and_figueira-language_independent_contextual_supernodes.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+          Álvaro Figueira.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Finding Language-Independent Contextual Supernodes on Coreference Networks&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;IAENG International Journal of Computer Science&lt;/em&gt; 39.2
+
+      (2012): 200-207
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+
+&lt;h1 id=&#34;magazines&#34;&gt;Magazines&lt;/h1&gt;
+
+
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;https://doi.org/10.1145/3453117&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Managing Research the Wiki Way&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;XRDS: Crossroads, the ACM Magazine for Students&lt;/em&gt; 27.3
+
+      (2021): 10-11
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;https://ercim-news.ercim.eu/en111/special/graph-based-entity-oriented-search-imitating-the-human-process-of-seeking-and-cross-referencing-information&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Graph-Based Entity-Oriented Search: Imitating the Human Process of Seeking and Cross Referencing Information&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;ERCIM News. Special Issue: Digital Humanities&lt;/em&gt; 111
+
+      (2017): 13-14
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+
+&lt;h1 id=&#34;conferences&#34;&gt;Conferences&lt;/h1&gt;
+
+
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/ecir_2020-devezas-graph_based_entity_oriented_search_a_unified_framework_in_information_retrieval.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Graph-Based Entity-Oriented Search: A Unified Framework in Information Retrieval&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Advances in Information Retrieval - 42nd European Conference on IR Research, ECIR 2020, Lisbon, Portugal, April 14-17, 2020, Proceedings, Part II&lt;/em&gt; 12036
+
+      (2020): 602-607
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/ecir_2020-devezas_and_nunes-army_ant_a_workbench_for_innovation_in_entity_oriented_search.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Army ANT: A Workbench for Innovation in Entity-Oriented Search&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Advances in Information Retrieval - 42nd European Conference on IR Research, ECIR 2020, Lisbon, Portugal, April 14-17, 2020, Proceedings, Part II&lt;/em&gt; 12036
+
+      (2020): 449-453
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/slate_2019-devezas_et_al-graph_of_entity.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José,
+      
+        
+          Carla Teixeira Lopes, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Graph-of-Entity: A Model for Combined Data Representation and Retrieval&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;8th Symposium on Languages, Applications and Technologies, SLATE 2019, June 27-28, 2019, Coimbra, Portugal&lt;/em&gt; 74
+
+      (2019): 1:1-1:14
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/cna_2019-devezas_and_nunes-characterizing_the_hypergraph_of_entity_representation_model.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Characterizing the Hypergraph-of-Entity Representation Model&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Complex Networks and Their Applications VIII - Volume 2 Proceedings of the Eighth International Conference on Complex Networks and Their Applications COMPLEX NETWORKS 2019, Lisbon, Portugal, December 10-12, 2019&lt;/em&gt;
+
+      (2019): 3-14
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/newsir_2018-devezas_and_nunes-social_media_and_information_consumption_diversity.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Social Media and Information Consumption Diversity&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Proceedings of the Second International Workshop on Recent Trends in News Information Retrieval Co-Located With 40th European Conference on Information Retrieval (ECIR 2018), Grenoble, France, March 26, 2018&lt;/em&gt;
+
+      (2018): 18-23
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/trec_2018-devezas_et_al-feup_common_core_track.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José,
+      
+        
+          Sérgio Nunes,
+      
+        
+          Antonio Guillén,
+      
+        
+          Yoan Gutiérrez, and 
+      
+        
+          Rafael Muñoz.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;FEUP at TREC 2018 Common Core Track - Reranking for Diversity Using Hypergraph-of-Entity and Document Profiling&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Proceedings of the Twenty-Seventh Text REtrieval Conference, TREC 2018, Gaithersburg, Maryland, USA, November 14-16, 2018&lt;/em&gt; 500-331
+
+      (2018)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/trec_2017-devezas_et_al-feup_opensearch_track.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José,
+      
+        
+          Carla Teixeira Lopes, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;FEUP at TREC 2017 OpenSearch Track Graph-Based Models for Entity-Oriented&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Proceedings of the Twenty-Sixth Text REtrieval Conference, TREC 2017, Gaithersburg, Maryland, USA, November 15-17, 2017&lt;/em&gt; 500-324
+
+      (2017)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/slate_2017-devezas_and_nunes-information_extraction_for_event_ranking.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Information Extraction for Event Ranking&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;6th Symposium on Languages, Applications and Technologies, SLATE 2017, June 26-27, 2017, Vila Do Conde, Portugal&lt;/em&gt; 56
+
+      (2017): 18:1-18:14
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/clef_2016-devezas_and_nunes-index_based_semantic_tagging_for_efficient_query_interpretation.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Index-Based Semantic Tagging for Efficient Query Interpretation&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Experimental IR Meets Multilinguality, Multimodality, and Interaction - 7th International Conference of the CLEF Association, CLEF 2016, Évora, Portugal, September 5-8, 2016, Proceedings&lt;/em&gt; 9822
+
+      (2016): 208-213
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/newsir_2016-devezas_et_al-exploring_a_large_news_collection_using_visualization_tools.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, Tiago,
+      
+        
+          José Devezas, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Exploring a Large News Collection Using Visualization Tools&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Proceedings of the First International Workshop on Recent Trends in News Information Retrieval Co-Located With 38th European Conference on Information Retrieval (ECIR 2016), Padua, Italy, March 20, 2016&lt;/em&gt;
+
+      (2016): 48-53
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/oair_2013-coelho_et_al-juggle_large_scale_discovery_music_recommendation.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Coelho, Filipe,
+      
+        
+          José Devezas, and 
+      
+        
+          Cristina Ribeiro.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Juggle: Large-Scale Discovery in Music Recommendation&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Open Research Areas in Information Retrieval, OAIR ’13, Lisbon, Portugal, May 15-17, 2013&lt;/em&gt;
+
+      (2013): 219-220
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/oair_2013-coelho_et_al-cross_media_retrieval_playlist_generation_song_discovery.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Coelho, Filipe,
+      
+        
+          José Devezas, and 
+      
+        
+          Cristina Ribeiro.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Large-Scale Crossmedia Retrieval for Playlist Generation and Song Discovery&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Open Research Areas in Information Retrieval, OAIR ’13, Lisbon, Portugal, May 15-17, 2013&lt;/em&gt;
+
+      (2013): 61-64
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/world_cist_2013-gomes_et_al-temporal_visualization_multidimensional_network_news_clips.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Gomes, Filipe,
+      
+        
+          José Devezas, and 
+      
+        
+           Figueira.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Temporal Visualization of a Multidimensional Network of News Clips&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Advances in Information Systems and Technologies [WorldCIST’13, Olhão, Algarve, Portugal, March 27-30, 2013]&lt;/em&gt; 206
+
+      (2013): 157-166
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/ht_2012-cravino_et_al-overlapping_communities_tags_text_clustering.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Cravino, Nuno,
+      
+        
+          José Devezas, and 
+      
+        
+           Figueira.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Using the Overlapping Community Structure of a Network of Tags to Improve Text Clustering&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;23rd ACM Conference on Hypertext and Social Media, HT ’12, Milwaukee, WI, USA, June 25-28, 2012&lt;/em&gt;
+
+      (2012): 239-244
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/icdma_2012-devezas_et_al-news_context_folksonomy_web_clipping.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José,
+      
+        
+          Henrique Alves, and 
+      
+        
+          Alvaro Figueira.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Creating News Context From a Folksonomy of Web Clipping&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Lecture Eprintin Engineering and Computer Science: Proceedings of the International MultiConference of Engineers and Computer Scientists&lt;/em&gt;
+
+      (2012): 446-451
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/ecir_2012-devezas_et_al-studying_personality_coreference_network.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José,
+      
+        
+          Filipe Coelho,
+      
+        
+          Sérgio Nunes, and 
+      
+        
+          Cristina Ribeiro.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Studying a Personality Coreference Network in a News Stories Photo Collection&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Advances in Information Retrieval - 34th European Conference on IR Research, ECIR 2012, Barcelona, Spain, April 1-5, 2012. Proceedings&lt;/em&gt; 7224
+
+      (2012): 485-488
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/kdir_2012-devezas_and_figueira-news_clips_network_visualization.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+           Figueira.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Interactive Visualization of a News Clips Network - A Journalistic Research and Knowledge Discovery Tool&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;KDIR 2012 - Proceedings of the International Conference on Knowledge Discovery and Information Retrieval, Barcelona, Spain, 4 - 7 October, 2012&lt;/em&gt;
+
+      (2012): 157-162
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/icwsm_2011-devezas_et_al-using_hindex_estimate_blog_authority.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José,
+      
+        
+          Sérgio Nunes, and 
+      
+        
+          Cristina Ribeiro.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Using the H-Index to Estimate Blog Authority&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Proceedings of the Fifth International Conference on Weblogs and Social Media, Barcelona, Catalonia, Spain, July 17-21, 2011&lt;/em&gt;
+
+      (2011)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/trec_2010-devezas_et_al-feup_blog_track.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José,
+      
+        
+          Sérgio Nunes, and 
+      
+        
+          Cristina Ribeiro.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;FEUP at TREC 2010 Blog Track: Using H-Index for Blog Ranking&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Proceedings of the Nineteenth Text REtrieval Conference, TREC 2010, Gaithersburg, Maryland, USA, November 16-19, 2010&lt;/em&gt; 500-294
+
+      (2010)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/soma_2010-devezas_et_al-blog_features_over_link_popularity.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José,
+      
+        
+          Cristina Ribeiro, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Studying Blog Features Over Link Popularity&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Proceedings of the 3rd Workshop on Social Network Mining and Analysis, SNAKDD 2009, Paris, France, June 28, 2009&lt;/em&gt;
+
+      (2010): 31-34
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+
+&lt;h1 id=&#34;datasets&#34;&gt;Datasets&lt;/h1&gt;
+
+
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;https://doi.org/10.25747/83vk-zt74&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Simple English Wikipedia Link Graph With Clickstream Transitions 2018-12 [Dataset]&amp;rdquo;&lt;/span&gt;
+
+      &lt;em&gt;&lt;/em&gt;
+
+      (2019)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;https://doi.org/10.25747/s5jn-q370&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Pires, André,
+      
+        
+          José Devezas, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;SIGARRA News Corpus [Dataset]&amp;rdquo;&lt;/span&gt;
+
+      &lt;em&gt;&lt;/em&gt;
+
+      (2017)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+
+&lt;h1 id=&#34;theses&#34;&gt;Theses&lt;/h1&gt;
+
+
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/theses/phd_thesis-2021-devezas-graph_based_entity_oriented_search.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Graph-Based Entity-Oriented Search&amp;rdquo;&lt;/span&gt;
+
+      &lt;em&gt;&lt;/em&gt;
+
+      (2021)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/theses/masters_thesis-2010-devezas-link_ecosystem_of_the_portuguese_blogosphere.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Link Ecosystem of the Portuguese Blogosphere&amp;rdquo;&lt;/span&gt;
+
+      &lt;em&gt;&lt;/em&gt;
+
+      (2010)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+
+&lt;h1 id=&#34;chapters&#34;&gt;Chapters&lt;/h1&gt;
+
+
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/chapters/igi_2013-chapter_5-figueira_et_al-social_network_news_clips.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Figueira, Álvaro,
+      
+        
+          José Devezas,
+      
+        
+          Nuno Cravino, and 
+      
+        
+          Luis-Francisco Revilla.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Creating and Analysing a Social Network Built From Clips of Online News&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Information Systems and Technology for Organizations in a Networked Society&lt;/em&gt;
+
+      (2013): 67-86
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+
+&lt;h1 id=&#34;reports&#34;&gt;Reports&lt;/h1&gt;
+
+
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;https://hdl.handle.net/10216/110181&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Army ANT: A Workbench for Innovation in Entity-Oriented Search - External Option: Scientific Activities – TREC Open Search&amp;rdquo;&lt;/span&gt;
+
+      &lt;em&gt;&lt;/em&gt;
+
+      (2017)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;https://hdl.handle.net/10216/104152&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Auditing Open Access Repositories - Free Option: Supervised Study – Digital Archives and Libraries&amp;rdquo;&lt;/span&gt;
+
+      &lt;em&gt;&lt;/em&gt;
+
+      (2017)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      
+      
+        
+          Devezas, José.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;An Overview of the Graph Database Paradigm&amp;rdquo;&lt;/span&gt;
+
+      &lt;em&gt;&lt;/em&gt;
+
+      (2011)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      
+      
+        
+          Devezas, José.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Overlapping Community Detection&amp;rdquo;&lt;/span&gt;
+
+      &lt;em&gt;&lt;/em&gt;
+
+      (2011)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+
+&lt;h1 id=&#34;unpublished&#34;&gt;Unpublished&lt;/h1&gt;
+
+
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;https://arxiv.org/abs/2104.01849&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Managing Research the Wiki Way: A Systematic Approach to Documenting Research&amp;rdquo;&lt;/span&gt;
+
+      &lt;em&gt;&lt;/em&gt;
+
+      (2021)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/unpublished/2013-devezas-state_of_the_art-community_driven_music_discovery.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;A State of the Art for Community-Driven Music Discovery&amp;rdquo;&lt;/span&gt;
+
+      &lt;em&gt;&lt;/em&gt;
+
+      (2013)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/unpublished/2013-devezas_et_al-music_discovery_tfidf_boost_long_tail_tags.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José,
+      
+        
+          Filipe Coelho,
+      
+        
+          Sérgio Nunes, and 
+      
+        
+          Cristina Ribeiro.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Music Discovery: Exploiting TF-IDF to Boost Results in the Long Tail of the Tags Distribution&amp;rdquo;&lt;/span&gt;
+
+      &lt;em&gt;&lt;/em&gt;
+
+      (2013)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/unpublished/2013-devezas_and_nunes-juggle_mobile.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Juggle Mobile: Recommending Music to Individuals and Groups&amp;rdquo;&lt;/span&gt;
+
+      &lt;em&gt;&lt;/em&gt;
+
+      (2013)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/unpublished/2013-devezas_and_nunes-music_listening_behavior.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Using Visualization Techniques to Characterize Music Listening Behavior&amp;rdquo;&lt;/span&gt;
+
+      &lt;em&gt;&lt;/em&gt;
+
+      (2013)
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+
+</content>
+    </item>
+    
+    <item>
+      <title>Searching through a git repository</title>
+      <link>/blog/searching_git/</link>
+      <pubDate>Fri, 19 Mar 2021 11:17:45 +0000</pubDate>
+      
+      <guid>/blog/searching_git/</guid>
+      <description>Log search Finding a log with a certain string in the commit message:
+git log --grep=query Content search Finding a commit where a given string was introduced in the code:
+git log -Squery Same as the previous, but using a regex instead of string matching:
+git log -Gquery Word difference comparison Running a diff based on words rather than lines (useful when managing a blog, documentation, or scientific writing in LaTeX):</description>
+      <content>&lt;h1 id=&#34;log-search&#34;&gt;Log search&lt;/h1&gt;
+&lt;p&gt;Finding a log with a certain string in the commit message:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git log --grep&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;query
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;content-search&#34;&gt;Content search&lt;/h1&gt;
+&lt;p&gt;Finding a commit where a given string was introduced in the code:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git log -Squery
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Same as the previous, but using a regex instead of string matching:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git log -Gquery
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;word-difference-comparison&#34;&gt;Word difference comparison&lt;/h1&gt;
+&lt;p&gt;Running a diff based on words rather than lines (useful when managing a blog, documentation, or scientific writing in LaTeX):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git diff --word-diff HEAD~1
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>/academy/projects/</link>
+      <pubDate>Fri, 05 Mar 2021 16:42:00 +0000</pubDate>
+      
+      <guid>/academy/projects/</guid>
+      <description>Army ANT FeedArchive ANT Juggle Juggle Mobile Breadcrumbs Ciclope                              Army ANT Army ANT is an information retrieval research framework that supports experimentation with classical approaches, while also providing a high-level abstraction that motivates the implementation of innovative approaches in a shared evaluation environment.</description>
+      <content>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#army-ant&#34;&gt;Army ANT&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#feedarchive&#34;&gt;FeedArchive&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#ant&#34;&gt;ANT&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#juggle&#34;&gt;Juggle&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#juggle-mobile&#34;&gt;Juggle Mobile&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#breadcrumbs&#34;&gt;Breadcrumbs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#ciclope&#34;&gt;Ciclope&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+
+  
+
+
+&lt;script src=&#34;https://code.jquery.com/jquery-1.12.4.min.js&#34; integrity=&#34;sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=&#34; crossorigin=&#34;anonymous&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/js/load-photoswipe.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;link rel=&#34;stylesheet&#34; href=&#34;https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css&#34; integrity=&#34;sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=&#34; crossorigin=&#34;anonymous&#34; /&gt;
+&lt;link rel=&#34;stylesheet&#34; href=&#34;https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css&#34; integrity=&#34;sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=&#34; crossorigin=&#34;anonymous&#34; /&gt;
+&lt;script src=&#34;https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.js&#34; integrity=&#34;sha256-UplRCs9v4KXVJvVY+p+RSo5Q4ilAUXh7kpjyIP5odyc=&#34; crossorigin=&#34;anonymous&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe-ui-default.min.js&#34; integrity=&#34;sha256-PWHOlUzc96pMc8ThwRIXPn8yH4NOLu42RQ0b9SpnpFk=&#34; crossorigin=&#34;anonymous&#34;&gt;&lt;/script&gt;
+
+
+&lt;div class=&#34;pswp&#34; tabindex=&#34;-1&#34; role=&#34;dialog&#34; aria-hidden=&#34;true&#34;&gt;
+
+&lt;div class=&#34;pswp__bg&#34;&gt;&lt;/div&gt;
+
+&lt;div class=&#34;pswp__scroll-wrap&#34;&gt;
+    
+    &lt;div class=&#34;pswp__container&#34;&gt;
+      &lt;div class=&#34;pswp__item&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;pswp__item&#34;&gt;&lt;/div&gt;
+      &lt;div class=&#34;pswp__item&#34;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&#34;pswp__ui pswp__ui--hidden&#34;&gt;
+    &lt;div class=&#34;pswp__top-bar&#34;&gt;
+      
+      &lt;div class=&#34;pswp__counter&#34;&gt;&lt;/div&gt;
+      &lt;button class=&#34;pswp__button pswp__button--close&#34; title=&#34;Close (Esc)&#34;&gt;&lt;/button&gt;
+      &lt;button class=&#34;pswp__button pswp__button--share&#34; title=&#34;Share&#34;&gt;&lt;/button&gt;
+      &lt;button class=&#34;pswp__button pswp__button--fs&#34; title=&#34;Toggle fullscreen&#34;&gt;&lt;/button&gt;
+      &lt;button class=&#34;pswp__button pswp__button--zoom&#34; title=&#34;Zoom in/out&#34;&gt;&lt;/button&gt;
+      
+      
+      &lt;div class=&#34;pswp__preloader&#34;&gt;
+        &lt;div class=&#34;pswp__preloader__icn&#34;&gt;
+          &lt;div class=&#34;pswp__preloader__cut&#34;&gt;
+            &lt;div class=&#34;pswp__preloader__donut&#34;&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;pswp__share-modal pswp__share-modal--hidden pswp__single-tap&#34;&gt;
+      &lt;div class=&#34;pswp__share-tooltip&#34;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;button class=&#34;pswp__button pswp__button--arrow--left&#34; title=&#34;Previous (arrow left)&#34;&gt;
+    &lt;/button&gt;
+    &lt;button class=&#34;pswp__button pswp__button--arrow--right&#34; title=&#34;Next (arrow right)&#34;&gt;
+    &lt;/button&gt;
+    &lt;div class=&#34;pswp__caption&#34;&gt;
+      &lt;div class=&#34;pswp__caption__center hidden&#34;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&#34;army-ant&#34;&gt;Army ANT&lt;/h1&gt;
+&lt;p&gt;Army ANT is an information retrieval research framework that supports experimentation with classical approaches, while also providing a high-level abstraction that motivates the implementation of innovative approaches in a shared evaluation environment. It facilitates the use of combined data, and it provides an environment for testing and evaluating multiple retrieval tasks, supporting keyword or entity queries, as well as documents, entities, or even terms, as the rankable results.&lt;/p&gt;
+&lt;p&gt;This software contains the majority of the code I developed throughout my PhD, providing iterators for well-known test collection, as well as evaluators for several common retrieval tasks from the TREC and INEX evaluation forums. Several experimental search models are also available in Army ANT, along with classical approaches based on Apache Lucene.&lt;/p&gt;
+&lt;p&gt;The code is available at &lt;a href=&#34;https://github.com/feup-infolab/army-ant&#34;&gt;https://github.com/feup-infolab/army-ant&lt;/a&gt;, and several Docker images are also available at &lt;a href=&#34;https://hub.docker.com/r/jldevezas/army-ant&#34;&gt;https://hub.docker.com/r/jldevezas/army-ant&lt;/a&gt;, which can be installed using Docker Compose based on the code at &lt;a href=&#34;https://github.com/feup-infolab/army-ant-install&#34;&gt;https://github.com/feup-infolab/army-ant-install&lt;/a&gt;.&lt;/p&gt;
+
+&lt;link rel=&#34;stylesheet&#34; href=&#34;/css/hugo-easy-gallery.css&#34; /&gt;
+
+&lt;div class=&#34;gallery caption-position-none caption-effect-slide hover-effect-none hover-transition&#34; itemscope itemtype=&#34;http://schema.org/ImageGallery&#34;&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/army_ant/army_ant-01_search.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/army_ant/army_ant-01_search.png&#34; alt=&#34;Army ant 01 search&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;Army ant 01 search&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/army_ant/army_ant-01_search.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/army_ant/army_ant-02_learn_mode-results.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/army_ant/army_ant-02_learn_mode-results.png&#34; alt=&#34;Army ant 02 learn mode results&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;Army ant 02 learn mode results&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/army_ant/army_ant-02_learn_mode-results.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/army_ant/army_ant-03_learn_mode-trace.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/army_ant/army_ant-03_learn_mode-trace.png&#34; alt=&#34;Army ant 03 learn mode trace&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;Army ant 03 learn mode trace&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/army_ant/army_ant-03_learn_mode-trace.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/army_ant/army_ant-04_learn_mode-trace_export.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/army_ant/army_ant-04_learn_mode-trace_export.png&#34; alt=&#34;Army ant 04 learn mode trace export&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;Army ant 04 learn mode trace export&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/army_ant/army_ant-04_learn_mode-trace_export.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/army_ant/army_ant-05_learn_mode-score_components.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/army_ant/army_ant-05_learn_mode-score_components.png&#34; alt=&#34;Army ant 05 learn mode score components&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;Army ant 05 learn mode score components&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/army_ant/army_ant-05_learn_mode-score_components.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/army_ant/army_ant-06_learn_mode-model.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/army_ant/army_ant-06_learn_mode-model.png&#34; alt=&#34;Army ant 06 learn mode model&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;Army ant 06 learn mode model&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/army_ant/army_ant-06_learn_mode-model.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/army_ant/army_ant-07_learn_mode-collection.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/army_ant/army_ant-07_learn_mode-collection.png&#34; alt=&#34;Army ant 07 learn mode collection&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;Army ant 07 learn mode collection&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/army_ant/army_ant-07_learn_mode-collection.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/army_ant/army_ant-08_evaluation-form.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/army_ant/army_ant-08_evaluation-form.png&#34; alt=&#34;Army ant 08 evaluation form&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;Army ant 08 evaluation form&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/army_ant/army_ant-08_evaluation-form.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/army_ant/army_ant-09_evaluation-task.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/army_ant/army_ant-09_evaluation-task.png&#34; alt=&#34;Army ant 09 evaluation task&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;Army ant 09 evaluation task&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/army_ant/army_ant-09_evaluation-task.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/army_ant/army_ant-10_evaluation-export.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/army_ant/army_ant-10_evaluation-export.png&#34; alt=&#34;Army ant 10 evaluation export&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;Army ant 10 evaluation export&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/army_ant/army_ant-10_evaluation-export.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;hr&gt;
+&lt;h1 id=&#34;feedarchive&#34;&gt;FeedArchive&lt;/h1&gt;
+&lt;p&gt;FeedArchive was a &lt;a href=&#34;https://foureyes.inesctec.pt/prototypes&#34;&gt;FourEyes&lt;/a&gt; prototype developed at &lt;a href=&#34;https://infolab.fe.up.pt/&#34;&gt;FEUP InfoLab&lt;/a&gt;, under &lt;a href=&#34;https://www.inesctec.pt/en&#34;&gt;INESC TEC&lt;/a&gt;&amp;rsquo;s TEC4MEDIA innovation branch. The developed prototype provides a convenient web interface to manage web page archival based on available RSS or Atom feeds.&lt;/p&gt;
+&lt;p&gt;Periodical crawls for configured sources are scheduled via crontab. The system then collects metadata from RSS or Atom and retrieves all webpage resources, rewriting links to point to the local copies.&lt;/p&gt;
+&lt;p&gt;In the code, archival can be implemented based on one of two approaches, which differ in their way of organizing collected files. The default approach creates individual folders per webpage, containing all the required resources (ready for download), while a secondary approach is focused on managing storage space more efficiently, relying on a directory tree of content-based hashes that work as a unique identifier for shared content.&lt;/p&gt;
+&lt;p&gt;The following demo video illustrates the setup and usage workflow for FeedArchive.&lt;/p&gt;
+&lt;video 
+       poster=&#34;/img/academy/projects/feedarchive/feedarchive_demo.jpg&#34;
+        controls=&#34;&#34; muted=&#34;&#34; width=&#34;640&#34; height=&#34;360&#34;&gt;
+  &lt;source src=&#34;/vid/academy/projects/feedarchive/feedarchive_demo.mp4&#34; type=&#34;video/mp4&#34;&gt;
+  Your browser does not support the video tag, but check out
+  &lt;a href=&#34;http://foureyes.inesctec.pt/&#34;&gt;FourEyes website&lt;/a&gt; instead.
+&lt;/video&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;ant&#34;&gt;ANT&lt;/h1&gt;
+&lt;p&gt;ANT is an entity-oriented search engine available at &lt;a href=&#34;http://ant.fe.up.pt&#34;&gt;http://ant.fe.up.pt&lt;/a&gt;, that indexes data from the SIGARRA Information System. On one side, it aims at improving search in U.Porto. On the other side, it aims at providing a platform to educate students and to support future research in the area.&lt;/p&gt;
+&lt;p&gt;This research project motivated my doctoral proposal, providing the ideal platform for the integration of previous areas of interest, particularly information retrieval and network science, but also recommendation and personalization. Working in ANT led me to identify several challenges in the area of entity-oriented search and to devise an innovative and focused contribution.&lt;/p&gt;
+&lt;p&gt;In a similar fashion to Google and other modern search engines, this enabled our system to answer user questions more directly, well beyond the traditional keyword-based matching. This integrated solution, which includes the segmentation and annotation of queries, is illustrated in the following figures. Please notice that a team of people was involved in the development of ANT. You can find them &lt;a href=&#34;https://ant.fe.up.pt/about&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+
+
+&lt;div class=&#34;gallery caption-position-none caption-effect-slide hover-effect-none hover-transition&#34; itemscope itemtype=&#34;http://schema.org/ImageGallery&#34;&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/ant/01-ant_overview.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/ant/01-ant_overview.png&#34; alt=&#34;01 ant overview&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;01 ant overview&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/ant/01-ant_overview.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/ant/02-ant-20170809T161922.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/ant/02-ant-20170809T161922.png&#34; alt=&#34;02 ant 20170809 t161922&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;02 ant 20170809 t161922&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/ant/02-ant-20170809T161922.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/ant/03-ant-20170809T162006.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/ant/03-ant-20170809T162006.png&#34; alt=&#34;03 ant 20170809 t162006&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;03 ant 20170809 t162006&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/ant/03-ant-20170809T162006.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/ant/04-ant-keyword_query-20181105T1547.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/ant/04-ant-keyword_query-20181105T1547.png&#34; alt=&#34;04 ant keyword query 20181105 t1547&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;04 ant keyword query 20181105 t1547&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/ant/04-ant-keyword_query-20181105T1547.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/ant/05-ant-entity_query-20181105T1547.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/ant/05-ant-entity_query-20181105T1547.png&#34; alt=&#34;05 ant entity query 20181105 t1547&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;05 ant entity query 20181105 t1547&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/ant/05-ant-entity_query-20181105T1547.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/ant/06-ant-attribute_query-20181105T1547.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/ant/06-ant-attribute_query-20181105T1547.png&#34; alt=&#34;06 ant attribute query 20181105 t1547&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;06 ant attribute query 20181105 t1547&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/ant/06-ant-attribute_query-20181105T1547.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/ant/06-ant-type_query-20181105T1547.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/ant/06-ant-type_query-20181105T1547.png&#34; alt=&#34;06 ant type query 20181105 t1547&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;06 ant type query 20181105 t1547&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/ant/06-ant-type_query-20181105T1547.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/ant/07-ant-relation_query-20181105T1547.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/ant/07-ant-relation_query-20181105T1547.png&#34; alt=&#34;07 ant relation query 20181105 t1547&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;07 ant relation query 20181105 t1547&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/ant/07-ant-relation_query-20181105T1547.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/ant/08-ant-widget-FPCEUP-small-20190723T0856.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/ant/08-ant-widget-FPCEUP-small-20190723T0856.png&#34; alt=&#34;08 ant widget fpceup small 20190723 t0856&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;08 ant widget fpceup small 20190723 t0856&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/ant/08-ant-widget-FPCEUP-small-20190723T0856.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/ant/09-ant-widget-ICBAS-small-20190723T0856.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/ant/09-ant-widget-ICBAS-small-20190723T0856.png&#34; alt=&#34;09 ant widget icbas small 20190723 t0856&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;09 ant widget icbas small 20190723 t0856&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/ant/09-ant-widget-ICBAS-small-20190723T0856.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;hr&gt;
+&lt;h1 id=&#34;juggle&#34;&gt;Juggle&lt;/h1&gt;
+&lt;p&gt;Juggle project aimed at improving music discovery based on a hybrid large-scale recommender system, capable of handling and combining different types of data, namely text and audio content, context from elements such as tags or location, and collaborative information from user profiles.&lt;/p&gt;
+&lt;p&gt;We tackled the challenges of multimodality and large-scale by developing a graph-based recommender system, supported on Neo4j, a popular and robust graph database that facilitated the modeling of content, context and collaborative information as nodes and edges in a graph. One of the biggest challenges was the translation of audio content to relationships in a graph, specifically the comparison of the audio features of a million songs with each other, which we solved by using an approximate search algorithm from image retrieval.&lt;/p&gt;
+&lt;p&gt;Our recommendation algorithm was mainly supported on neighborhood methods for collaborative filtering, but we also used metrics from text retrieval to boost the relevance of tags in the long tail, while not completely disregarding tag popularity, in order to offer a playlist that better potentiated the discovery of music.&lt;/p&gt;
+
+
+
+&lt;div class=&#34;gallery caption-position-none caption-effect-slide hover-effect-none hover-transition&#34; itemscope itemtype=&#34;http://schema.org/ImageGallery&#34;&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle/01-juggle-20130517T155220.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle/01-juggle-20130517T155220.png&#34; alt=&#34;01 juggle 20130517 t155220&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;01 juggle 20130517 t155220&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle/01-juggle-20130517T155220.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle/02-juggle-20130517T155244.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle/02-juggle-20130517T155244.png&#34; alt=&#34;02 juggle 20130517 t155244&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;02 juggle 20130517 t155244&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle/02-juggle-20130517T155244.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle/03-juggle-20130517T155425.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle/03-juggle-20130517T155425.png&#34; alt=&#34;03 juggle 20130517 t155425&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;03 juggle 20130517 t155425&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle/03-juggle-20130517T155425.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle/04-juggle-20130517T165436.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle/04-juggle-20130517T165436.png&#34; alt=&#34;04 juggle 20130517 t165436&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;04 juggle 20130517 t165436&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle/04-juggle-20130517T165436.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle/05-juggle-20130517T165446.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle/05-juggle-20130517T165446.png&#34; alt=&#34;05 juggle 20130517 t165446&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;05 juggle 20130517 t165446&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle/05-juggle-20130517T165446.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle/06-juggle-20130517T165459.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle/06-juggle-20130517T165459.png&#34; alt=&#34;06 juggle 20130517 t165459&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;06 juggle 20130517 t165459&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle/06-juggle-20130517T165459.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle/07-juggle-20130517T165547.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle/07-juggle-20130517T165547.png&#34; alt=&#34;07 juggle 20130517 t165547&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;07 juggle 20130517 t165547&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle/07-juggle-20130517T165547.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;hr&gt;
+&lt;h1 id=&#34;juggle-mobile&#34;&gt;Juggle Mobile&lt;/h1&gt;
+&lt;p&gt;In Juggle Mobile we presented the users with the ability to create an account and fill their taste profiles either based on our random artist rating system, or by importing their existing music information from Facebook or Last.fm. All the data from these different sources was mixed together based on our weighting model and used to provide recommendations to the user or to a group of nearby users.&lt;/p&gt;
+&lt;p&gt;Our experiments were based on a linear algebra approach, where, instead of a graph, we used a user-items matrix, applying singular value decomposition to build a latent factor model that provided the support for individual and group recommendations. For groups, we proposed a rating aggregation method that ensured an equal chance for every group member to have a relevant influence in the recommendations outcome.&lt;/p&gt;
+
+
+
+&lt;div class=&#34;gallery caption-position-none caption-effect-slide hover-effect-none hover-transition&#34; itemscope itemtype=&#34;http://schema.org/ImageGallery&#34;&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle_mobile/01-juggle_mobile-20131018T084844.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle_mobile/01-juggle_mobile-20131018T084844.png&#34; alt=&#34;01 juggle mobile 20131018 t084844&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;01 juggle mobile 20131018 t084844&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle_mobile/01-juggle_mobile-20131018T084844.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle_mobile/02-juggle_mobile-20130926T150023.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle_mobile/02-juggle_mobile-20130926T150023.png&#34; alt=&#34;02 juggle mobile 20130926 t150023&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;02 juggle mobile 20130926 t150023&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle_mobile/02-juggle_mobile-20130926T150023.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle_mobile/03-juggle_mobile-20130926T145948.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle_mobile/03-juggle_mobile-20130926T145948.png&#34; alt=&#34;03 juggle mobile 20130926 t145948&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;03 juggle mobile 20130926 t145948&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle_mobile/03-juggle_mobile-20130926T145948.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle_mobile/04-juggle_mobile-20130808T173209.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle_mobile/04-juggle_mobile-20130808T173209.png&#34; alt=&#34;04 juggle mobile 20130808 t173209&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;04 juggle mobile 20130808 t173209&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle_mobile/04-juggle_mobile-20130808T173209.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle_mobile/05-juggle_mobile-20130926T150206.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle_mobile/05-juggle_mobile-20130926T150206.png&#34; alt=&#34;05 juggle mobile 20130926 t150206&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;05 juggle mobile 20130926 t150206&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle_mobile/05-juggle_mobile-20130926T150206.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle_mobile/06-juggle_mobile-20131018T084741.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle_mobile/06-juggle_mobile-20131018T084741.png&#34; alt=&#34;06 juggle mobile 20131018 t084741&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;06 juggle mobile 20131018 t084741&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle_mobile/06-juggle_mobile-20131018T084741.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle_mobile/07-juggle_mobile-20130926T145918.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle_mobile/07-juggle_mobile-20130926T145918.png&#34; alt=&#34;07 juggle mobile 20130926 t145918&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;07 juggle mobile 20130926 t145918&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle_mobile/07-juggle_mobile-20130926T145918.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle_mobile/08-juggle_mobile-20130926T150040.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle_mobile/08-juggle_mobile-20130926T150040.png&#34; alt=&#34;08 juggle mobile 20130926 t150040&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;08 juggle mobile 20130926 t150040&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle_mobile/08-juggle_mobile-20130926T150040.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle_mobile/09-juggle_mobile-20130926T150142.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle_mobile/09-juggle_mobile-20130926T150142.png&#34; alt=&#34;09 juggle mobile 20130926 t150142&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;09 juggle mobile 20130926 t150142&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle_mobile/09-juggle_mobile-20130926T150142.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle_mobile/10-juggle_mobile-20130926T155544.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle_mobile/10-juggle_mobile-20130926T155544.png&#34; alt=&#34;10 juggle mobile 20130926 t155544&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;10 juggle mobile 20130926 t155544&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle_mobile/10-juggle_mobile-20130926T155544.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle_mobile/11-juggle_mobile-20130926T145735.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle_mobile/11-juggle_mobile-20130926T145735.png&#34; alt=&#34;11 juggle mobile 20130926 t145735&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;11 juggle mobile 20130926 t145735&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle_mobile/11-juggle_mobile-20130926T145735.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle_mobile/12-juggle_mobile-20130926T141152.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle_mobile/12-juggle_mobile-20130926T141152.png&#34; alt=&#34;12 juggle mobile 20130926 t141152&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;12 juggle mobile 20130926 t141152&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle_mobile/12-juggle_mobile-20130926T141152.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle_mobile/13-juggle_mobile-20130926T141254.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle_mobile/13-juggle_mobile-20130926T141254.png&#34; alt=&#34;13 juggle mobile 20130926 t141254&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;13 juggle mobile 20130926 t141254&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle_mobile/13-juggle_mobile-20130926T141254.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/juggle_mobile/14-juggle_mobile-20130926T145855.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/juggle_mobile/14-juggle_mobile-20130926T145855.png&#34; alt=&#34;14 juggle mobile 20130926 t145855&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;14 juggle mobile 20130926 t145855&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/juggle_mobile/14-juggle_mobile-20130926T145855.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;hr&gt;
+&lt;h1 id=&#34;breadcrumbs&#34;&gt;Breadcrumbs&lt;/h1&gt;
+&lt;p&gt;As a Breadcrumbs researcher, I was able to make contributions on several different areas. I implemented a language-independent named entity recognition system based on DBpedia entity lists. This system enabled the identification of three different types of entities &amp;mdash; people, places and dates &amp;ndash;— tied to three of the five dimensions (the Five-Ws) of journalism: who, where and when. Using this data, a multidimensional entity coreference network was built, connecting news clips that cited the same entity. Next, I implemented the community detection methodologies for multidimensional networks proposed by Tang &lt;em&gt;et al&lt;/em&gt;. This included the dimension integration strategies proposed by the authors, based on their unified view of four traditional community detection methodologies. These algorithms were also implemented in the system, along with the Louvain method, one of the state of the art algorithms for community detection.&lt;/p&gt;
+&lt;p&gt;Next, two visualization tools were developed to display and explore the acquired data. The first was analogous to a map, where communities were visualized as countries resulting of the aggregation of a node population. The second enabled the exploration of the multidimensional network based on the three identified dimensions: who, where and when. Some simple chart visualizations were created to display statistics about the top user and system tags and entities.&lt;/p&gt;
+&lt;p&gt;We used a topic model, based on Latent Dirichlet Allocation, to suggest titles for each collection of news clips; a simplistic event detection system was also created, in order to find relevant peaks of activity in a time series of entity frequencies. Some other trivial systems, such as an administration panel, capable of scheduling tasks, and a widget dashboard were also implemented.&lt;/p&gt;
+&lt;p&gt;These algorithms were all developed using a web services architecture, communicating using either XML or JSON. Several scientific papers were published as the results of the described research. Below are some screenshots of the Breadcrumbs modules I contributed to in some way.&lt;/p&gt;
+
+
+
+&lt;div class=&#34;gallery caption-position-none caption-effect-slide hover-effect-none hover-transition&#34; itemscope itemtype=&#34;http://schema.org/ImageGallery&#34;&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/01-breadcrumbs-2012-09-21-102414_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/01-breadcrumbs-2012-09-21-102414_1920x1080_scrot.png&#34; alt=&#34;01 breadcrumbs 2012 09 21 102414 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;01 breadcrumbs 2012 09 21 102414 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/01-breadcrumbs-2012-09-21-102414_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/02-breadcrumbs-2012-09-21-102437_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/02-breadcrumbs-2012-09-21-102437_1920x1080_scrot.png&#34; alt=&#34;02 breadcrumbs 2012 09 21 102437 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;02 breadcrumbs 2012 09 21 102437 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/02-breadcrumbs-2012-09-21-102437_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/03-breadcrumbs-2012-09-21-102453_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/03-breadcrumbs-2012-09-21-102453_1920x1080_scrot.png&#34; alt=&#34;03 breadcrumbs 2012 09 21 102453 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;03 breadcrumbs 2012 09 21 102453 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/03-breadcrumbs-2012-09-21-102453_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/04-breadcrumbs-2012-09-21-102512_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/04-breadcrumbs-2012-09-21-102512_1920x1080_scrot.png&#34; alt=&#34;04 breadcrumbs 2012 09 21 102512 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;04 breadcrumbs 2012 09 21 102512 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/04-breadcrumbs-2012-09-21-102512_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/05-breadcrumbs-2012-09-21-102519_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/05-breadcrumbs-2012-09-21-102519_1920x1080_scrot.png&#34; alt=&#34;05 breadcrumbs 2012 09 21 102519 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;05 breadcrumbs 2012 09 21 102519 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/05-breadcrumbs-2012-09-21-102519_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/06-breadcrumbs-2012-09-21-102547_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/06-breadcrumbs-2012-09-21-102547_1920x1080_scrot.png&#34; alt=&#34;06 breadcrumbs 2012 09 21 102547 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;06 breadcrumbs 2012 09 21 102547 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/06-breadcrumbs-2012-09-21-102547_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/07-breadcrumbs-2012-09-21-102607_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/07-breadcrumbs-2012-09-21-102607_1920x1080_scrot.png&#34; alt=&#34;07 breadcrumbs 2012 09 21 102607 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;07 breadcrumbs 2012 09 21 102607 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/07-breadcrumbs-2012-09-21-102607_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/08-breadcrumbs-2012-09-21-102637_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/08-breadcrumbs-2012-09-21-102637_1920x1080_scrot.png&#34; alt=&#34;08 breadcrumbs 2012 09 21 102637 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;08 breadcrumbs 2012 09 21 102637 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/08-breadcrumbs-2012-09-21-102637_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/09-breadcrumbs-2012-09-21-102714_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/09-breadcrumbs-2012-09-21-102714_1920x1080_scrot.png&#34; alt=&#34;09 breadcrumbs 2012 09 21 102714 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;09 breadcrumbs 2012 09 21 102714 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/09-breadcrumbs-2012-09-21-102714_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/10-breadcrumbs-2012-09-21-102743_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/10-breadcrumbs-2012-09-21-102743_1920x1080_scrot.png&#34; alt=&#34;10 breadcrumbs 2012 09 21 102743 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;10 breadcrumbs 2012 09 21 102743 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/10-breadcrumbs-2012-09-21-102743_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/11-breadcrumbs-2012-09-21-102801_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/11-breadcrumbs-2012-09-21-102801_1920x1080_scrot.png&#34; alt=&#34;11 breadcrumbs 2012 09 21 102801 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;11 breadcrumbs 2012 09 21 102801 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/11-breadcrumbs-2012-09-21-102801_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/12-breadcrumbs-2012-09-21-102809_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/12-breadcrumbs-2012-09-21-102809_1920x1080_scrot.png&#34; alt=&#34;12 breadcrumbs 2012 09 21 102809 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;12 breadcrumbs 2012 09 21 102809 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/12-breadcrumbs-2012-09-21-102809_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/13-breadcrumbs-2012-09-21-102825_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/13-breadcrumbs-2012-09-21-102825_1920x1080_scrot.png&#34; alt=&#34;13 breadcrumbs 2012 09 21 102825 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;13 breadcrumbs 2012 09 21 102825 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/13-breadcrumbs-2012-09-21-102825_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/14-breadcrumbs-2012-09-21-102832_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/14-breadcrumbs-2012-09-21-102832_1920x1080_scrot.png&#34; alt=&#34;14 breadcrumbs 2012 09 21 102832 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;14 breadcrumbs 2012 09 21 102832 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/14-breadcrumbs-2012-09-21-102832_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/15-breadcrumbs-2012-09-21-102902_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/15-breadcrumbs-2012-09-21-102902_1920x1080_scrot.png&#34; alt=&#34;15 breadcrumbs 2012 09 21 102902 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;15 breadcrumbs 2012 09 21 102902 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/15-breadcrumbs-2012-09-21-102902_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/16-breadcrumbs-2012-10-26-150238_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/16-breadcrumbs-2012-10-26-150238_1920x1080_scrot.png&#34; alt=&#34;16 breadcrumbs 2012 10 26 150238 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;16 breadcrumbs 2012 10 26 150238 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/16-breadcrumbs-2012-10-26-150238_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/17-breadcrumbs-2012-10-26-150332_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/17-breadcrumbs-2012-10-26-150332_1920x1080_scrot.png&#34; alt=&#34;17 breadcrumbs 2012 10 26 150332 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;17 breadcrumbs 2012 10 26 150332 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/17-breadcrumbs-2012-10-26-150332_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/18-breadcrumbs-2012-10-26-150415_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/18-breadcrumbs-2012-10-26-150415_1920x1080_scrot.png&#34; alt=&#34;18 breadcrumbs 2012 10 26 150415 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;18 breadcrumbs 2012 10 26 150415 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/18-breadcrumbs-2012-10-26-150415_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/19-breadcrumbs-2012-10-26-150500_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/19-breadcrumbs-2012-10-26-150500_1920x1080_scrot.png&#34; alt=&#34;19 breadcrumbs 2012 10 26 150500 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;19 breadcrumbs 2012 10 26 150500 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/19-breadcrumbs-2012-10-26-150500_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/20-breadcrumbs-2012-10-26-150536_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/20-breadcrumbs-2012-10-26-150536_1920x1080_scrot.png&#34; alt=&#34;20 breadcrumbs 2012 10 26 150536 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;20 breadcrumbs 2012 10 26 150536 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/20-breadcrumbs-2012-10-26-150536_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/21-breadcrumbs-2012-10-26-150604_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/21-breadcrumbs-2012-10-26-150604_1920x1080_scrot.png&#34; alt=&#34;21 breadcrumbs 2012 10 26 150604 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;21 breadcrumbs 2012 10 26 150604 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/21-breadcrumbs-2012-10-26-150604_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/22-breadcrumbs-2012-10-26-150632_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/22-breadcrumbs-2012-10-26-150632_1920x1080_scrot.png&#34; alt=&#34;22 breadcrumbs 2012 10 26 150632 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;22 breadcrumbs 2012 10 26 150632 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/22-breadcrumbs-2012-10-26-150632_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/breadcrumbs/23-breadcrumbs-2012-11-02-144914_1920x1080_scrot.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/breadcrumbs/23-breadcrumbs-2012-11-02-144914_1920x1080_scrot.png&#34; alt=&#34;23 breadcrumbs 2012 11 02 144914 1920x1080 scrot&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;23 breadcrumbs 2012 11 02 144914 1920x1080 scrot&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/breadcrumbs/23-breadcrumbs-2012-11-02-144914_1920x1080_scrot.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;hr&gt;
+&lt;h1 id=&#34;ciclope&#34;&gt;Ciclope&lt;/h1&gt;
+&lt;p&gt;One of my first projects was Ciclope, a real time data visualization project aimed at gathering information from SAPO Blogs clickstream and displaying it in a useful way, allowing the blog owner to have an understanding of how the traffic flow of his or her blog behaved.&lt;/p&gt;
+&lt;p&gt;Among other widgets, we developed two main visualizations: a real time bar chart that displayed the number of visits per second along with a table showing traffic origin and destination; and a custom flow tree to visualize and quantify aggregated traffic sources for a given blog.&lt;/p&gt;
+
+
+
+&lt;div class=&#34;gallery caption-position-none caption-effect-slide hover-effect-none hover-transition&#34; itemscope itemtype=&#34;http://schema.org/ImageGallery&#34;&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/ciclope/01-ciclope-realtime.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/ciclope/01-ciclope-realtime.png&#34; alt=&#34;01 ciclope realtime&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;01 ciclope realtime&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/ciclope/01-ciclope-realtime.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/ciclope/02-ciclope-history.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/ciclope/02-ciclope-history.png&#34; alt=&#34;02 ciclope history&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;02 ciclope history&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/ciclope/02-ciclope-history.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/ciclope/03-ciclope-flowtree.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/ciclope/03-ciclope-flowtree.png&#34; alt=&#34;03 ciclope flowtree&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;03 ciclope flowtree&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/ciclope/03-ciclope-flowtree.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/ciclope/04-ciclope-blognetwork.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/ciclope/04-ciclope-blognetwork.png&#34; alt=&#34;04 ciclope blognetwork&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;04 ciclope blognetwork&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/ciclope/04-ciclope-blognetwork.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+				&lt;div class=&#34;box&#34;&gt;
+				  &lt;figure itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+				    &lt;div class=&#34;img&#34; style=&#34;background-image: url(&#39;/img/academy/projects/ciclope/05-ciclope-bloginfo.png&#39;);&#34; &gt;
+				      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;/img/academy/projects/ciclope/05-ciclope-bloginfo.png&#34; alt=&#34;05 ciclope bloginfo&#34; /&gt;
+				    &lt;/div&gt;
+			      &lt;figcaption&gt;
+		          &lt;p&gt;05 ciclope bloginfo&lt;/p&gt;
+			      &lt;/figcaption&gt;
+				    &lt;a href=&#34;/img/academy/projects/ciclope/05-ciclope-bloginfo.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+				  &lt;/figure&gt;
+				&lt;/div&gt;
+&lt;/div&gt;
+
+</content>
+    </item>
+    
+    <item>
+      <title>Posters</title>
+      <link>/academy/posters/</link>
+      <pubDate>Wed, 03 Mar 2021 18:31:00 +0000</pubDate>
+      
+      <guid>/academy/posters/</guid>
+      <description>          </description>
+      <content>&lt;p&gt;
+
+
+  &lt;figure class=&#34;poster&#34;&gt;
+    &lt;a href=&#34;/pdf/academy/posters/cna_2019-devezas-characterizing_the_hypergraph_of_entity_representation_model.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/posters/cna_2019-devezas-characterizing_the_hypergraph_of_entity_representation_model.png&#34;
+         title=&#34;Characterizing the Hypergraph-of-Entity Representation Model&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+
+
+
+  &lt;figure class=&#34;poster&#34;&gt;
+    &lt;a href=&#34;/pdf/academy/posters/clef_2016-devezas-index_based_semantic_tagging_for_efficient_query_interpretation.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/posters/clef_2016-devezas-index_based_semantic_tagging_for_efficient_query_interpretation.png&#34;
+         title=&#34;Index-based semantic tagging for efficient query interpretation&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;
+
+
+  &lt;figure class=&#34;poster&#34;&gt;
+    &lt;a href=&#34;/pdf/academy/posters/icwsm_2011-devezas-using_hindex_estimate_blog_authority.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/posters/icwsm_2011-devezas-using_hindex_estimate_blog_authority.png&#34;
+         title=&#34;Using the H-index to Estimate Blog Authority&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+
+
+
+  &lt;figure class=&#34;poster&#34;&gt;
+    &lt;a href=&#34;/pdf/academy/posters/soma_2010-devezas-blog_features_over_link_popularity.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/posters/soma_2010-devezas-blog_features_over_link_popularity.png&#34;
+         title=&#34;Studying Blog Features over Link Popularity&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+&lt;/p&gt;
+</content>
+    </item>
+    
+    <item>
+      <title>Demos</title>
+      <link>/academy/demos/</link>
+      <pubDate>Mon, 01 Mar 2021 18:58:03 +0000</pubDate>
+      
+      <guid>/academy/demos/</guid>
+      <description>    Your browser does not support the video tag, but check out FourEyes website instead. 
+     </description>
+      <content>&lt;p&gt;&lt;div class=&#34;slides&#34;&gt;
+  &lt;iframe width=&#34;250&#34; height=&#34;140.45&#34; src=&#34;https://www.youtube.com/embed/-o4sZp6lH9o&#34; frameborder=&#34;0&#34;
+    allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34;
+    allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;div class=&#34;slides&#34;&gt;
+  &lt;iframe width=&#34;250&#34; height=&#34;140.45&#34; src=&#34;https://www.youtube.com/embed/uDhfL_UvF_Y&#34; frameborder=&#34;0&#34;
+    allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34;
+    allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;video class=&#34;slides&#34;
+       poster=&#34;/img/academy/projects/feedarchive/feedarchive_demo.jpg&#34;
+        controls=&#34;&#34; muted=&#34;&#34; width=&#34;640&#34; height=&#34;360&#34;&gt;
+  &lt;source src=&#34;/vid/academy/projects/feedarchive/feedarchive_demo.mp4&#34; type=&#34;video/mp4&#34;&gt;
+  Your browser does not support the video tag, but check out
+  &lt;a href=&#34;http://foureyes.inesctec.pt/&#34;&gt;FourEyes website&lt;/a&gt; instead.
+&lt;/video&gt;&lt;/p&gt;
+&lt;p&gt;
+
+
+  &lt;figure class=&#34;slides top&#34;&gt;
+    &lt;a href=&#34;/pdf/academy/demos/labs_sapo_up-2013-devezas-juggle.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/demos/labs_sapo_up-2013-devezas-juggle.png&#34;
+        /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/demos/labs_sapo_up-2010-devezas-ciclope.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/demos/labs_sapo_up-2010-devezas-ciclope.png&#34;
+        /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+&lt;/p&gt;
+</content>
+    </item>
+    
+    <item>
+      <title>Slides</title>
+      <link>/academy/slides/</link>
+      <pubDate>Mon, 01 Mar 2021 17:37:00 +0000</pubDate>
+      
+      <guid>/academy/slides/</guid>
+      <description> Talks  Conferences Invited speaker   Lectures  Invited assistant  GIRS 2017/2018   Invited speaker  ASSO 2019/2020 DAPI 2018/2019     Theses  Doctoral Master&amp;rsquo;s    Talks Conferences            Invited speaker           Lectures Invited assistant GIRS 2017/2018               Invited speaker ASSO 2019/2020   DAPI 2018/2019       Theses Doctoral   Master&amp;rsquo;s   </description>
+      <content>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#talks&#34;&gt;Talks&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#conferences&#34;&gt;Conferences&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#invited-speaker&#34;&gt;Invited speaker&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#lectures&#34;&gt;Lectures&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#invited-assistant&#34;&gt;Invited assistant&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#girs-20172018&#34;&gt;GIRS 2017/2018&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#invited-speaker-1&#34;&gt;Invited speaker&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#asso-20192020&#34;&gt;ASSO 2019/2020&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#dapi-20182019&#34;&gt;DAPI 2018/2019&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#theses&#34;&gt;Theses&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#doctoral&#34;&gt;Doctoral&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#masters&#34;&gt;Master&amp;rsquo;s&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;talks&#34;&gt;Talks&lt;/h1&gt;
+&lt;h2 id=&#34;conferences&#34;&gt;Conferences&lt;/h2&gt;
+&lt;p&gt;
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/ecir_2020-doctoral_symposium-devezas-graph_based_entity_oriented_search.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/ecir_2020-doctoral_symposium-devezas-graph_based_entity_oriented_search.png&#34;
+         title=&#34;Graph-Based Entity-Oriented Search: A Unified Framework in Information Retrieval&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/slate_2019-conference-devezas-graph_of_entity.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/slate_2019-conference-devezas-graph_of_entity.png&#34;
+         title=&#34;Graph-of-Entity: A Model for Combined Data Representation and Retrieval&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/slate_2017-conference-devezas-information_extraction_for_event_ranking.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/slate_2017-conference-devezas-information_extraction_for_event_ranking.png&#34;
+         title=&#34;Information Extraction for Event Ranking&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/kdir_2012-conference-devezas-interactive_visualization_news_clips_network.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/kdir_2012-conference-devezas-interactive_visualization_news_clips_network.png&#34;
+         title=&#34;Interactive Visualization of a News Clips Network: A Journalistic Research and Knowledge Discovery Tool&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+
+  &lt;iframe src=&#34;https://prezi.com/embed/kpjwdizporee/&#34; frameborder=&#34;0&#34; class=&#34;slides&#34;
+    webkitallowfullscreen=&#34;&#34; mozallowfullscreen=&#34;&#34; allowfullscreen=&#34;&#34; allow=&#34;autoplay; fullscreen&#34;
+    height=&#34;141&#34; width=&#34;250&#34;&gt;&lt;/iframe&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;invited-speaker&#34;&gt;Invited speaker&lt;/h2&gt;
+&lt;p&gt;
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/infolab_talks_2021-devezas-graph_based_entity_oriented_search.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/infolab_talks_2021-devezas-graph_based_entity_oriented_search.png&#34;
+         title=&#34;Graph-Based Entity-Oriented Search - Practice Run&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/creative_colab_2019-devezas-mapping_terms_and_entities_with_hypergraphs.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/creative_colab_2019-devezas-mapping_terms_and_entities_with_hypergraphs.png&#34;
+         title=&#34;Mapping Terms and Entities with Hypergraphs&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/ieee_syp_2018-devezas-ant_rd_platform_for_entity_oriented_search.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/ieee_syp_2018-devezas-ant_rd_platform_for_entity_oriented_search.png&#34;
+         title=&#34;ANT - R&amp;amp;D Platform for Entity-Oriented Search&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+&lt;/p&gt;
+
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/sapo-2013-devezas-juggle_hybrid_large_scale_music_recommendation.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/sapo-2013-devezas-juggle_hybrid_large_scale_music_recommendation.png&#34;
+         title=&#34;Juggle: Hybrid Large-Scale Music Recommendation&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+&lt;hr&gt;
+&lt;h1 id=&#34;lectures&#34;&gt;Lectures&lt;/h1&gt;
+&lt;h2 id=&#34;invited-assistant&#34;&gt;Invited assistant&lt;/h2&gt;
+&lt;h3 id=&#34;girs-20172018&#34;&gt;GIRS 2017/2018&lt;/h3&gt;
+&lt;p&gt;
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/girs_1718-lecture_01-introducao_a_analise_de_redes_sociais.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/girs_1718-lecture_01-introducao_a_analise_de_redes_sociais.png&#34;
+         title=&#34;Aula 1 - Introdução à análise de redes sociais&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/girs_1718-lecture_02-introducao_as_ferramentas_de_analise.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/girs_1718-lecture_02-introducao_as_ferramentas_de_analise.png&#34;
+         title=&#34;Aula 2 - Introdução às ferramentas de análise&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/girs_1718-lecture_03-analise_estrutural_de_uma_amostra_do_twitter.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/girs_1718-lecture_03-analise_estrutural_de_uma_amostra_do_twitter.png&#34;
+         title=&#34;Aula 3 - Análise estrutural de uma amostra do Twitter&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/girs_1718-lecture_04-analise_textual_de_uma_amostra_do_twitter.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/girs_1718-lecture_04-analise_textual_de_uma_amostra_do_twitter.png&#34;
+         title=&#34;Aula 4 - Análise textual de uma amostra do Twitter&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/girs_1718-lecture_05-analise_combinada_de_uma_amostra_do_twitter-pt_1.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/girs_1718-lecture_05-analise_combinada_de_uma_amostra_do_twitter-pt_1.png&#34;
+         title=&#34;Aula 5 - Análise combinada de uma amostra do Twitter (Pt. 1)&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/girs_1718-lecture_06-analise_combinada_de_uma_amostra_do_twitter-pt_2.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/girs_1718-lecture_06-analise_combinada_de_uma_amostra_do_twitter-pt_2.png&#34;
+         title=&#34;Aula 6 - Análise combinada de uma amostra do Twitter (Pt. 2)&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;invited-speaker-1&#34;&gt;Invited speaker&lt;/h2&gt;
+&lt;h3 id=&#34;asso-20192020&#34;&gt;ASSO 2019/2020&lt;/h3&gt;
+
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/asso_1920-lecture-devezas-ant_the_system_architecture_of_an_academic_search_engine.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/asso_1920-lecture-devezas-ant_the_system_architecture_of_an_academic_search_engine.png&#34;
+         title=&#34;ANT - The System Architecture of an Academic Search Engine&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+&lt;h3 id=&#34;dapi-20182019&#34;&gt;DAPI 2018/2019&lt;/h3&gt;
+&lt;p&gt;
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/dapi_1819-lecture-devezas-ant_pesquisa_de_informa%c3%a7%c3%a3o_na_universidade_do_porto-en.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/dapi_1819-lecture-devezas-ant_pesquisa_de_informa%c3%a7%c3%a3o_na_universidade_do_porto-en.png&#34;
+         title=&#34;[EN] ANT - Searching for Information at the University of Porto&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/dapi_1819-lecture-devezas-ant_pesquisa_de_informa%c3%a7%c3%a3o_na_universidade_do_porto-pt.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/dapi_1819-lecture-devezas-ant_pesquisa_de_informa%c3%a7%c3%a3o_na_universidade_do_porto-pt.png&#34;
+         title=&#34;[PT] ANT - Searching for Information at the University of Porto&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;theses&#34;&gt;Theses&lt;/h1&gt;
+&lt;h2 id=&#34;doctoral&#34;&gt;Doctoral&lt;/h2&gt;
+
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/thesis-phd-2021-devezas-graph_based_entity_oriented_search.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/thesis-phd-2021-devezas-graph_based_entity_oriented_search.png&#34;
+         title=&#34;Graph-Based Entity-Oriented Search&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+&lt;h2 id=&#34;masters&#34;&gt;Master&amp;rsquo;s&lt;/h2&gt;
+
+
+
+  &lt;figure class=&#34;slides &#34;&gt;
+    &lt;a href=&#34;/pdf/academy/slides/thesis-masters-2010-devezas-link_ecosystem_of_the_portuguese_blogopshere.pdf&#34; target=&#34;_blank&#34;&gt;
+      &lt;img src=&#34;/img/academy/slides/thesis-masters-2010-devezas-link_ecosystem_of_the_portuguese_blogopshere.png&#34;
+         title=&#34;Ecossistema de Ligações da Blogosfera Portuguesa&#34; /&gt;
+    &lt;/a&gt;
+  &lt;/figure&gt;
+
+</content>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/about/</guid>
+      <description>A creative, classical liberal, PhD in Computer Science from Portugal. Specialist in information retrieval and network science. Enjoys random walks, machine learning, and data science. Mainly codes in Python, but also a master of R, and a lover of Scala. Believer in diversity and equality, but not fussy about it. No-bullshit, people-take-precedence policy, and an endless passion for questioning. Gets bored easily, works best when focused on a single, challenging goal.</description>
+      <content>&lt;p&gt;&lt;div class=&#34;tinted&#34;  style=&#34;max-width: 22%;&#34; &gt;
+  &lt;div class=&#34;tint&#34;&gt;&lt;/div&gt;
+  &lt;img src=&#34;/img/about/jld1.jpg&#34;  /&gt;
+&lt;/div&gt;
+
+&lt;div class=&#34;tinted&#34;  style=&#34;max-width: 22%;&#34; &gt;
+  &lt;div class=&#34;tint&#34;&gt;&lt;/div&gt;
+  &lt;img src=&#34;/img/about/jld2.jpg&#34;  /&gt;
+&lt;/div&gt;
+
+&lt;div class=&#34;tinted&#34;  style=&#34;max-width: 22%;&#34; &gt;
+  &lt;div class=&#34;tint&#34;&gt;&lt;/div&gt;
+  &lt;img src=&#34;/img/about/jld3.jpg&#34;  /&gt;
+&lt;/div&gt;
+
+&lt;div class=&#34;tinted&#34;  style=&#34;max-width: 22%;&#34; &gt;
+  &lt;div class=&#34;tint&#34;&gt;&lt;/div&gt;
+  &lt;img src=&#34;/img/about/jld4.jpg&#34;  /&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A creative, classical liberal, &lt;code&gt;PhD in Computer Science&lt;/code&gt; from Portugal.&lt;/li&gt;
+&lt;li&gt;Specialist in &lt;code&gt;information retrieval&lt;/code&gt; and &lt;code&gt;network science&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Enjoys &lt;code&gt;random walks&lt;/code&gt;, &lt;code&gt;machine learning&lt;/code&gt;, and &lt;code&gt;data science&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Mainly codes in &lt;code&gt;Python&lt;/code&gt;, but also a master of &lt;code&gt;R&lt;/code&gt;, and a lover of &lt;code&gt;Scala&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Believer in diversity and equality, but not fussy about it.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;No-bullshit&lt;/code&gt;, people-take-precedence policy, and an endless passion for questioning.&lt;/li&gt;
+&lt;li&gt;Gets bored easily, works best when focused on a single, challenging goal.&lt;/li&gt;
+&lt;li&gt;Disbeliever in multitasking, unless it&amp;rsquo;s a computer doing it.&lt;/li&gt;
+&lt;li&gt;Doesn&amp;rsquo;t care about benefits, only money (&lt;code&gt;crypto&lt;/code&gt; is fine).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Anti&lt;/code&gt; compartmentalization, emotional intelligence, or &lt;code&gt;social convention&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Believes an individual should be &lt;code&gt;free to be&lt;/code&gt; regardless of context.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Engineer&lt;/code&gt;, &lt;code&gt;programmer&lt;/code&gt;, &lt;code&gt;sysadmin&lt;/code&gt; &amp;mdash; I get it done.&lt;/li&gt;
+&lt;li&gt;And did I mention the &lt;code&gt;no-bullshit&lt;/code&gt; policy?&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    </item>
+    
+    <item>
+      <title>Career</title>
+      <link>/career/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/career/</guid>
+      <description>I have been doing research since 2009, where I began at SAPO Labs/U.Porto with information retrieval work on blog search and link analysis. In 2010, I finished my Master&amp;rsquo;s in Informatics and Computing Engineering, at the Faculty of Engineering of the University of Porto.
+I continued at SAPO Labs, working on data visualization and link analysis for a while, and then I moved to CRACS/INESC TEC, at the Faculty of Sciences of the University of Porto.</description>
+      <content>&lt;p&gt;I have been doing research since 2009, where I began at SAPO Labs/U.Porto with information retrieval work on blog search and link analysis. In 2010, I finished my &lt;a href=&#34;https://sigarra.up.pt/feup/en/CUR_GERAL.CUR_VIEW?pv_ano_lectivo=2020&amp;amp;pv_origem=CUR&amp;amp;pv_tipo_cur_sigla=MI&amp;amp;pv_curso_id=742&#34;&gt;Master&amp;rsquo;s in Informatics and Computing Engineering&lt;/a&gt;, at the &lt;a href=&#34;https://sigarra.up.pt/feup/en/WEB_PAGE.INICIAL&#34;&gt;Faculty of Engineering of the University of Porto&lt;/a&gt;.&lt;/p&gt;
+
+  &lt;img src=&#34;/img/academy/FEUP.jpg&#34;  class=&#34;center&#34;  style=&#34;max-height: 400px&#34;  /&gt;
+
+
+&lt;p&gt;I continued at SAPO Labs, working on data visualization and link analysis for a while, and then I moved to CRACS/INESC TEC, at the &lt;a href=&#34;https://sigarra.up.pt/fcup/en/WEB_PAGE.INICIAL&#34;&gt;Faculty of Sciences of the University of Porto&lt;/a&gt;. There, I did some of my most passionate work on network analysis, community detection, and visualization, as a member of the Breadcrumbs project.&lt;/p&gt;
+
+  &lt;img src=&#34;/img/academy/FCUP.jpg&#34;  class=&#34;center&#34;  style=&#34;max-height: 400px&#34;  /&gt;
+
+
+&lt;p&gt;I eventually came back to SAPO Labs with an enticing offer to work on music recommender systems, the Juggle project. This was a project I truly loved working on, where I got the chance to explore graph-based recommender systems, and adapt the concept of IDF to music discovery, based on hybrid recommendation &amp;mdash; nowadays, I still listen to some obscure death metal I found through my own system.&lt;/p&gt;
+
+  &lt;img src=&#34;/img/academy/DEI-FEUP.jpg&#34;  class=&#34;center&#34;  style=&#34;max-height: 400px&#34;  /&gt;
+
+
+&lt;p&gt;When that project ended, I decided to leave to explore the industry for a while, working on a data science startup, where I did pretty much whatever was required of me.&lt;/p&gt;
+&lt;p&gt;Then, I came back to my alma matter to reattempt to pursue a PhD, after several failed attempts at getting funding. In 2015, I joined &lt;a href=&#34;https://infolab.fe.up.pt/&#34;&gt;FEUP InfoLab&lt;/a&gt; and, in 2016, I was able to begin working on my thesis, entitled &amp;ldquo;Graph-Based Entity-Oriented Search&amp;rdquo;, which I successfully defended in January 2021, finally attaining my doctoral degree. For nearly five years, I was a proud student at &lt;a href=&#34;https://mapi.map.edu.pt/&#34;&gt;MAP-i&lt;/a&gt;, the Doctoral Program in Computer Science of the Universities of &lt;a href=&#34;https://www.uminho.pt/EN&#34;&gt;Minho&lt;/a&gt;, &lt;a href=&#34;&#34;&gt;Aveiro&lt;/a&gt;, and &lt;a href=&#34;https://sigarra.up.pt/up/en/WEB_PAGE.INICIAL&#34;&gt;Porto&lt;/a&gt;. This program provided an amazing curriculum with many interesting and useful courses, taught by the best scholars of the three universities on the corresponding subjects &amp;mdash; it was one of the best years of my life as a student.&lt;/p&gt;
+
+  &lt;img src=&#34;/img/academy/Desk-I123-DEI-FEUP.jpg&#34;  class=&#34;center&#34;  style=&#34;max-height: 400px&#34;  /&gt;
+
+
+&lt;p&gt;After that first year, I turned my focus to the thesis. I had decided to explore generalist approaches to information retrieval, proposing a hypergraph-based joint model for indexing corpora and knowledge bases. On top of such an index, I then proposed a universal ranking function that was able, through a simple selection of the input and a trivial collection of the target output, solve four of main tasks in entity-oriented search: ad hoc document retrieval, ad hoc entity retrieval, related entity finding, and entity list completion. The two latter tasks were similar to recommendation tasks, and this felt a bit like the perfect ending to my academic life. If you&amp;rsquo;re curious about my work, check out the &lt;a href=&#34;https://ant.fe.up.pt/&#34;&gt;ANT search engine&lt;/a&gt;, whose backend I built, as well as &lt;a href=&#34;https://github.com/feup-infolab/army-ant/tree/develop&#34;&gt;Army ANT&lt;/a&gt;, where most of the code from my PhD ended up.&lt;/p&gt;
+
+  &lt;img src=&#34;/img/academy/FEUP-favorite_tree.jpg&#34;  class=&#34;center&#34;  style=&#34;max-height: 400px&#34;  /&gt;
+
+
+&lt;p&gt;After finishing the writing of my &lt;a href=&#34;/pdf/academy/publications/theses/phd_thesis-2021-devezas-graph_based_entity_oriented_search.pdf&#34;&gt;dissertation&lt;/a&gt;, during a COVID-19 pandemic while on lockdown, I successfully defended my thesis to some of best scholars I know &amp;mdash; on my slippers, I might add (one of the hidden benefits of remote juries during a pandemic).&lt;/p&gt;
+
+  &lt;img src=&#34;/img/academy/FEUP-grass.jpg&#34;  class=&#34;center&#34;  style=&#34;max-height: 400px&#34;  /&gt;
+
+
+&lt;p&gt;As the end of such a heavy-weight stage of my life drew near, I found a new passion in an unlikely place. I started getting really interested in financial markets and trading! I started exploring technical analysis, mostly while doing margin trading with demo accounts on forex. However, it was when I decided to move into crypto spot trading &amp;mdash; this time with a real account &amp;mdash; that I found my place. At the same time, I also started to get more and more into politics, finding a true passion for liberalism, freedom, and capitalism. I still remember the day I understood the Futures market for commodities and how beautifully it solved the problem of uncertainty in cereal production, which, as you know, can be affected by external factors like the weather.&lt;/p&gt;
+
+  &lt;img src=&#34;/img/academy/I123-DEI-FEUP.jpg&#34;  class=&#34;center&#34;  style=&#34;max-height: 400px&#34;  /&gt;
+
+
+&lt;p&gt;Now, I am adrift, randomly walking in an attempt to find my own path &amp;mdash; a non-conformist looking for a brighter future.&lt;/p&gt;
+
+  &lt;img src=&#34;/img/academy/bitcoin.jpg&#34;  class=&#34;center&#34;  style=&#34;max-height: 400px&#34;  /&gt;
+
+
+</content>
+    </item>
+    
+    <item>
+      <title>Contact</title>
+      <link>/contact/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/contact/</guid>
+      <description>Location
+Porto, Portugal
+E-mail
+joseluisdevezas@gmail.com
+Twitter
+@jldevezas
+LinkedIn
+https://pt.linkedin.com/in/jldevezas
+GitHub
+https://github.com/jldevezas/</description>
+      <content>&lt;p&gt;&lt;strong&gt;Location&lt;/strong&gt;&lt;br&gt;
+Porto, Portugal&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;E-mail&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&#34;mailto:joseluisdevezas@gmail.com&#34;&gt;joseluisdevezas@gmail.com&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Twitter&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&#34;https://twitter.com/jldevezas&#34;&gt;@jldevezas&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;LinkedIn&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&#34;https://pt.linkedin.com/in/jldevezas&#34;&gt;https://pt.linkedin.com/in/jldevezas&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;GitHub&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&#34;https://github.com/jldevezas/&#34;&gt;https://github.com/jldevezas/&lt;/a&gt;&lt;/p&gt;
+</content>
+    </item>
+    
+  </channel>
+</rss>

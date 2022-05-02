@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/jldevezas
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://josedevezas.com
+  * I am jldevezas (https://keybase.io/jldevezas) on keybase.
+  * I have a public key ASATM_EUbSAJP46SRPljWjvf2GVSmZHiM6ar9x5rEyJCEgo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01201333f1146d20093f8e9244f9635a3bdfd865529991e233a6abf71e6b132242120a",
+      "host": "keybase.io",
+      "kid": "01201333f1146d20093f8e9244f9635a3bdfd865529991e233a6abf71e6b132242120a",
+      "uid": "f2b225a373cc3f75cfa51b0d09028a19",
+      "username": "jldevezas"
+    },
+    "merkle_root": {
+      "ctime": 1626124794,
+      "hash": "5bb6bb9c11dcf2884fcac2d89ecd730bf1ea31e61adfc6b8444d8d31a77c2cc1c865dccf6aca65eb80d8255a819f460fe7f8a1f99b3a199155d8c81b2316cc08",
+      "hash_meta": "655f93648c2f56129ebbeab66d4d38eaae79eaef10a98eb490eb6d3cc20b9bfe",
+      "seqno": 20363474
+    },
+    "service": {
+      "entropy": "rg9nkbtzdOf7gwJdHquDcl0s",
+      "hostname": "josedevezas.com",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "5.7.0"
+  },
+  "ctime": 1626124808,
+  "expire_in": 504576000,
+  "prev": "9fce5c48f72d5d2cf3e177e3359de4dfa12bb9a492dc721ac325978caa1e375f",
+  "seqno": 8,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgEzPxFG0gCT+OkkT5Y1o739hlUpmR4jOmq/ceaxMiQhIKp3BheWxvYWTESpcCCMQgn85cSPctXSzz4XfjNZ3k36EruaSS3HIawyWXjKoeN1/EIAm7a6djcbM4syxGEHg1pwqwMjLU2or9z/uK/sCmamWLAgHCo3NpZ8RAsweY2G90TZXvpEru6eNJeQ0cD074OdQp9z/ijsby0wiPc9oZBO4icXjvd/2KmqyPQjIDbYAxWleNJrsmokY0CKhzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIF5dOoMRSjsbcknKBdcbhbmriior9hdXrPN9t7PRTZTdo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/jldevezas
+
+==================================================================
