@@ -30,7 +30,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;end
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;practical-application-monitoring-pgsql_tmp&#34;&gt;Practical application: monitoring pgsql_tmp&lt;/h1&gt;
 &lt;p&gt;If you&amp;rsquo;re like me and you have learned to avoid premature optimizations, you are bound to eventually exhaust disk space because of a badly written SQL query. No shame in that, time is a rare commodity. Better done than perfect, right?&lt;/p&gt;
-&lt;p&gt;Personally, when a server&amp;rsquo;s disk is approaching it&amp;rsquo;s full state, I get e-mailed by my &lt;code&gt;disk_space_check&lt;/code&gt; script, that is scheduled to run every 5 minutes in crontab.&lt;/p&gt;
+&lt;p&gt;Personally, when a server&amp;rsquo;s disk is approaching its full state, I get e-mailed by my &lt;code&gt;disk_space_check&lt;/code&gt; script, that is scheduled to run every 5 minutes in crontab.&lt;/p&gt;
 &lt;p&gt;This one&amp;rsquo;s in bash, if you&amp;rsquo;d like to use it:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/bin/bash
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;MAIL&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;user@domain
