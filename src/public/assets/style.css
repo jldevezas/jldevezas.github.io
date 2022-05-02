@@ -1,0 +1,193 @@
+@import url(https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/fira_code.css);
+
+a {
+  text-decoration: none;
+  color: var(--accent) !important;
+}
+
+a:hover {
+  border-bottom-width: 1px;
+  border-bottom-style: dashed;
+  border-bottom-color: var(--accent);
+}
+
+.highlight pre {
+  background: #0002 !important;
+}
+
+.button {
+  border-radius: 0 !important;
+  height: 1.2em;
+}
+
+.menu a {
+  color: var(--color) !important;
+}
+
+.header__logo a:hover,
+a.hanchor:hover {
+  border: none;
+}
+
+figure a:hover {
+  border: none !important;
+}
+
+hr {
+  margin: 2.5em 0 0 0;
+  border-top: 1px dashed var(--accent) !important;
+}
+
+p {
+  text-align: justify;
+}
+
+img {
+  border: solid 10px var(--accent);
+  padding: 10px;
+}
+
+video {
+  margin-top: 1em;
+}
+
+.gallery {
+  margin: 0 !important;
+}
+
+.gallery figure {
+  display: inline-block !important;
+  margin: 0;
+}
+
+.framed {
+  border: 1px dashed var(--accent) !important;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.posts,
+.index-content ul {
+  list-style: none;
+}
+
+.posts li::before,
+.index-content li::before {
+  content: "-";
+  position: absolute;
+  left: -20px;
+  color: var(--accent);
+}
+
+.posts li,
+.index-content li {
+  position: relative;
+}
+
+.posts a {
+  color: var(--accent);
+}
+
+.tags {
+  margin-left: 1em;
+}
+
+.terms {
+  margin-top: 20px;
+  padding: 20px 0;
+}
+
+.terms>.posts {
+  margin-left: 0;
+}
+
+.terms>.posts>li:before {
+  content: "";
+}
+
+.post-title a:hover {
+  border: none;
+}
+
+.post-date {
+  color: var(--color);
+}
+
+.post-content {
+  margin-top: 0 !important;
+}
+
+.slides a {
+  text-decoration: none;
+}
+
+.slides img {
+  border: none;
+  padding: 0;
+}
+
+.slides {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  margin: 0;
+  width: 250px;
+  height: 140.45px;
+  border-radius: 8px;
+  vertical-align: middle;
+}
+
+.slides.top {
+  align-items: baseline;
+}
+
+.poster a {
+  text-decoration: none;
+}
+
+.poster img {
+  border: none;
+  padding: 0;
+}
+
+.poster {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  margin: 0;
+  width: 350px;
+  border-radius: 8px;
+  vertical-align: middle;
+}
+
+.publication {
+  text-align: justify;
+  margin-left: 1.25em;
+  text-indent: -1.25em;
+  margin-bottom: 1em;
+}
+
+.tinted {
+  position: relative;
+  display: inline-block;
+  clip-path: circle(50%);
+}
+
+.tinted img {
+  border: none;
+  padding: 0;
+  filter: grayscale(100%);
+}
+
+.tinted .tint {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  opacity: 0.5;
+  background: var(--accent);
+  z-index: 1000;
+}
+
+.highlight .toolbar {
+  display: none;
+}

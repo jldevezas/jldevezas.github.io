@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blog on José Devezas, PhD</title>
+    <link>/blog/</link>
+    <description>Recent content in Blog on José Devezas, PhD</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2021 José Devezas</copyright>
+    <lastBuildDate>Tue, 29 Mar 2022 11:58:44 +0100</lastBuildDate><atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Monitoring PostgreSQL temporary directory space</title>
+      <link>/blog/monitor_space/</link>
+      <pubDate>Tue, 29 Mar 2022 11:58:44 +0100</pubDate>
+      
+      <guid>/blog/monitor_space/</guid>
+      <description>Monitor space usage changes While most people use bash, I like fish and I think we should not be afraid to write code for it. So here is a simple function I wrote to monitor space usage changes in a directory. It should be easy to convert it to bash or zsh if you prefer either. This is a general purpose function, not just for PostgreSQL, and I find this frequently comes handy.</description>
+      <content>&lt;h1 id=&#34;monitor-space-usage-changes&#34;&gt;Monitor space usage changes&lt;/h1&gt;
+&lt;p&gt;While most people use bash, I like fish and I think we should not be afraid to write code for it. So here is a simple function I wrote to monitor space usage changes in a directory. It should be easy to convert it to bash or zsh if you prefer either. This is a general purpose function, not just for PostgreSQL, and I find this frequently comes handy.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; monitor_space
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  set --local prev_space
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; true
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    set --local space &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;du -h -d0 $argv&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;1&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; 2&amp;gt;/dev/null&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; test &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$prev_space&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; !&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$space&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      echo $space
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    end
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    set prev_space &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$space&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    sleep &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  end
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;end
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;practical-application-monitoring-pgsql_tmp&#34;&gt;Practical application: monitoring pgsql_tmp&lt;/h1&gt;
+&lt;p&gt;If you&amp;rsquo;re like me and you have learned to avoid premature optimizations, you are bound to eventually exhaust disk space because of a badly written SQL query. No shame in that, time is a rare commodity. Better done than perfect, right?&lt;/p&gt;
+&lt;p&gt;Personally, when a server&amp;rsquo;s disk is approaching it&amp;rsquo;s full state, I get e-mailed by my &lt;code&gt;disk_space_check&lt;/code&gt; script, that is scheduled to run every 5 minutes in crontab.&lt;/p&gt;
+&lt;p&gt;This one&amp;rsquo;s in bash, if you&amp;rsquo;d like to use it:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;MAIL&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;user@domain
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;CURRENT&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;df / | grep / | awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{ print $5}&amp;#39;&lt;/span&gt; | sed &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s/%//g&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;THRESHOLD&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$CURRENT&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; -gt &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$THRESHOLD&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; ; &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    mail -s &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;[domain] Disk Space Alert&amp;#39;&lt;/span&gt; $MAIL &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;&amp;lt; EOF
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Your root partition remaining free space is critically low. Used: $CURRENT%
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;So, let&amp;rsquo;s say you just got this e-mail, and you need to figure out what the hell is causing your disk to get filled so quickly. You suspect PostgreSQL, because ran a &lt;code&gt;sudo ncdu /&lt;/code&gt; that showed it was taking too much space and, in particular, the &lt;code&gt;/var/lib/postgresql/12/main/base/pgsql_tmp/&lt;/code&gt; directory was getting populated with too many bytes.&lt;/p&gt;
+&lt;p&gt;So you trigger your: &lt;code&gt;monitor_space /var/lib/postgresql/12/main/base/pgsql_tmp/&lt;/code&gt; command and follow your logs in order to identify the query that is creating so much temporary data.&lt;/p&gt;
+&lt;p&gt;Sure you could use some PostgreSQL extensions to do this, but &lt;code&gt;monitor_space&lt;/code&gt; is simple and works for many applications.&lt;/p&gt;
+</content>
+    </item>
+    
+    <item>
+      <title>Searching through a git repository</title>
+      <link>/blog/searching_git/</link>
+      <pubDate>Fri, 19 Mar 2021 11:17:45 +0000</pubDate>
+      
+      <guid>/blog/searching_git/</guid>
+      <description>Log search Finding a log with a certain string in the commit message:
+git log --grep=query Content search Finding a commit where a given string was introduced in the code:
+git log -Squery Same as the previous, but using a regex instead of string matching:
+git log -Gquery Word difference comparison Running a diff based on words rather than lines (useful when managing a blog, documentation, or scientific writing in LaTeX):</description>
+      <content>&lt;h1 id=&#34;log-search&#34;&gt;Log search&lt;/h1&gt;
+&lt;p&gt;Finding a log with a certain string in the commit message:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git log --grep&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;query
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;content-search&#34;&gt;Content search&lt;/h1&gt;
+&lt;p&gt;Finding a commit where a given string was introduced in the code:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git log -Squery
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Same as the previous, but using a regex instead of string matching:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git log -Gquery
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;word-difference-comparison&#34;&gt;Word difference comparison&lt;/h1&gt;
+&lt;p&gt;Running a diff based on words rather than lines (useful when managing a blog, documentation, or scientific writing in LaTeX):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git diff --word-diff HEAD~1
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+    </item>
+    
+  </channel>
+</rss>

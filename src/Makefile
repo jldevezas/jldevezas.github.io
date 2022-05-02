@@ -14,8 +14,10 @@ all:
 dev:
 	hugo server -D -b localhost:1313
 
-git:
+setup:
 	git submodule update --init --recursive
+
+deploy:
 	git clone -b gh-pages git@github.com:jldevezas/jldevezas.github.io.git public
 
 bib:

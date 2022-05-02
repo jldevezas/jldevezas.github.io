@@ -2,11 +2,15 @@
 # josedevezas.com
 #
 
-public/
 _site/
 *.swp
 *.sav
 *.bak
+
+#
+# Hugo
+#
+.hugo_build.lock
 
 #
 # Node

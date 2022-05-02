@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>workflows on José Devezas, PhD</title>
+    <link>/tags/workflows/</link>
+    <description>Recent content in workflows on José Devezas, PhD</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2021 José Devezas</copyright>
+    <lastBuildDate>Fri, 19 Mar 2021 11:17:45 +0000</lastBuildDate><atom:link href="/tags/workflows/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Searching through a git repository</title>
+      <link>/blog/searching_git/</link>
+      <pubDate>Fri, 19 Mar 2021 11:17:45 +0000</pubDate>
+      
+      <guid>/blog/searching_git/</guid>
+      <description>Log search Finding a log with a certain string in the commit message:
+git log --grep=query Content search Finding a commit where a given string was introduced in the code:
+git log -Squery Same as the previous, but using a regex instead of string matching:
+git log -Gquery Word difference comparison Running a diff based on words rather than lines (useful when managing a blog, documentation, or scientific writing in LaTeX):</description>
+      <content>&lt;h1 id=&#34;log-search&#34;&gt;Log search&lt;/h1&gt;
+&lt;p&gt;Finding a log with a certain string in the commit message:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git log --grep&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;query
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;content-search&#34;&gt;Content search&lt;/h1&gt;
+&lt;p&gt;Finding a commit where a given string was introduced in the code:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git log -Squery
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Same as the previous, but using a regex instead of string matching:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git log -Gquery
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;word-difference-comparison&#34;&gt;Word difference comparison&lt;/h1&gt;
+&lt;p&gt;Running a diff based on words rather than lines (useful when managing a blog, documentation, or scientific writing in LaTeX):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git diff --word-diff HEAD~1
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+    </item>
+    
+  </channel>
+</rss>
