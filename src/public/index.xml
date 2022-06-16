@@ -54,7 +54,7 @@
       <pubDate>Wed, 07 Apr 2021 19:00:00 +0000</pubDate>
       
       <guid>/academy/publications/</guid>
-      <description>Journals Magazines Conferences Datasets Theses Chapters Reports Unpublished  Journals Devezas, José, and Sérgio Nunes. &amp;ldquo;Characterizing the Hypergraph-of-Entity and the Structural Impact of Its Extensions&amp;rdquo;. Applied Network Science - Special Issue of the 8th International Conference on Complex Networks and Their Applications 5.1 (2020): 79   Devezas, José, and Sérgio Nunes. &amp;ldquo;Hypergraph-of-Entity: A Unified Representation Model for the Retrieval of Text and Knowledge&amp;rdquo;. Open Computer Science 9.1 (2019): 103-127   Devezas, José, and Álvaro Figueira.</description>
+      <description>Journals Magazines Conferences Datasets Theses Chapters Reports Unpublished  Journals Devezas, José, and Sérgio Nunes. &amp;ldquo;A Review of Graph-Based Models for Entity-Oriented Search&amp;rdquo;. SN Computer Science 2.6 (2021)   Devezas, José, and Sérgio Nunes. &amp;ldquo;Characterizing the Hypergraph-of-Entity and the Structural Impact of Its Extensions&amp;rdquo;. Applied Network Science - Special Issue of the 8th International Conference on Complex Networks and Their Applications 5.1 (2020): 79   Devezas, José, and Sérgio Nunes.</description>
       <content>&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#journals&#34;&gt;Journals&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#magazines&#34;&gt;Magazines&lt;/a&gt;&lt;/li&gt;
@@ -68,6 +68,28 @@
 &lt;h1 id=&#34;journals&#34;&gt;Journals&lt;/h1&gt;
 
 
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/journals/sncs_2021-a_review_of_graph_based_models_for_entity_oriented_search.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Devezas, José, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;A Review of Graph-Based Models for Entity-Oriented Search&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;SN Computer Science&lt;/em&gt; 2.6
+
+      (2021)
+    &lt;/a&gt;
+  &lt;/div&gt;
 
    &lt;div class=&#34;publication&#34;&gt;
     
@@ -210,6 +232,31 @@
 &lt;h1 id=&#34;conferences&#34;&gt;Conferences&lt;/h1&gt;
 
 
+
+   &lt;div class=&#34;publication&#34;&gt;
+    
+      &lt;a href=&#34;/pdf/academy/publications/conferences/epia_2022-damas_et_al-federated_search_using_query_log_evidence.pdf&#34; target=&#34;_blank&#34;&gt;
+    
+      
+      
+        
+          Damas, João,
+      
+        
+          José Devezas, and 
+      
+        
+          Sérgio Nunes.
+        
+      
+
+      &lt;span class=&#34;title&#34;&gt;&amp;ldquo;Federated Search Using Query Log Evidence&amp;rdquo;&lt;/span&gt;.
+
+      &lt;em&gt;Progress in Artificial Intelligence - 21st EPIA Conference on Artificial Intelligence, EPIA 2022, Instituto Superior Técnico, University of Lisbon, August 31-Septermber 2, 2021, Proceedings&lt;/em&gt;
+
+      (2022)
+    &lt;/a&gt;
+  &lt;/div&gt;
 
    &lt;div class=&#34;publication&#34;&gt;
     

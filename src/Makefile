@@ -18,7 +18,7 @@ setup:
 	git submodule update --init --recursive
 
 deploy:
-	git clone -b gh-pages git@github.com:jldevezas/jldevezas.github.io.git public
+	git subtree push --prefix public/ origin gh-pages
 
 bib:
 	@for bib_path in $(BIBTEX_FILES); \

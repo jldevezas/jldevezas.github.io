@@ -1,5 +1,39 @@
 [
   {
+    "DOI": "",
+    "URL": "",
+    "author": [
+      {
+        "family": "Damas",
+        "given": "João"
+      },
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "collection-title": "Lecture notes in computer science",
+    "container-title": "Progress in artificial intelligence - 21st EPIA conference on artificial intelligence, EPIA 2022, instituto superior técnico, university of lisbon, august 31-septermber 2, 2021, proceedings",
+    "id": "Damas2022",
+    "issued": {
+      "date-parts": [
+        [
+          2022
+        ]
+      ]
+    },
+    "note": "epia_2022-damas_et_al-federated_search_using_query_log_evidence",
+    "page": "",
+    "publisher": "Springer",
+    "title": "Federated search using query log evidence",
+    "type": "paper-conference",
+    "volume": ""
+  },
+  {
     "DOI": "10.1007/978-3-030-45442-5_78",
     "author": [
       {

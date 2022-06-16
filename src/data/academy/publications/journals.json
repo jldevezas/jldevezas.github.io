@@ -1,5 +1,35 @@
 [
   {
+    "DOI": "10.1007/s42979-021-00828-w",
+    "URL": "https://doi.org/10.1007%2Fs42979-021-00828-w",
+    "author": [
+      {
+        "family": "Devezas",
+        "given": "José"
+      },
+      {
+        "family": "Nunes",
+        "given": "Sérgio"
+      }
+    ],
+    "container-title": "SN Computer Science",
+    "id": "Devezas2021",
+    "issue": "6",
+    "issued": {
+      "date-parts": [
+        [
+          2021,
+          8
+        ]
+      ]
+    },
+    "note": "sncs_2021-a_review_of_graph_based_models_for_entity_oriented_search",
+    "publisher": "Springer Science and Business Media LLC",
+    "title": "A review of graph-based models for entity-oriented search",
+    "type": "article-journal",
+    "volume": "2"
+  },
+  {
     "DOI": "10.1007/s41109-020-00320-z",
     "ISSN": "2364-8228",
     "author": [
