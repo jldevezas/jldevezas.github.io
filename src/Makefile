@@ -18,7 +18,7 @@ setup:
 	git submodule update --init --recursive
 
 deploy:
-	git subtree push --prefix public/ origin gh-pages
+	(cd .. && git subtree push --prefix src/public/ origin gh-pages)
 
 bib:
 	@for bib_path in $(BIBTEX_FILES); \
