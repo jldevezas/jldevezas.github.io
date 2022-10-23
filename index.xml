@@ -54,7 +54,7 @@
       <pubDate>Wed, 07 Apr 2021 19:00:00 +0000</pubDate>
       
       <guid>/academy/publications/</guid>
-      <description>Journals Magazines Conferences Datasets Theses Chapters Reports Unpublished  Journals Devezas, José, and Sérgio Nunes. &amp;ldquo;A Review of Graph-Based Models for Entity-Oriented Search&amp;rdquo;. SN Computer Science 2.6 (2021)   Devezas, José, and Sérgio Nunes. &amp;ldquo;Characterizing the Hypergraph-of-Entity and the Structural Impact of Its Extensions&amp;rdquo;. Applied Network Science - Special Issue of the 8th International Conference on Complex Networks and Their Applications 5.1 (2020): 79   Devezas, José, and Sérgio Nunes.</description>
+      <description>Journals Magazines Conferences Datasets Theses Chapters Reports Unpublished Journals Devezas, José, and Sérgio Nunes. &amp;ldquo;A Review of Graph-Based Models for Entity-Oriented Search&amp;rdquo;. SN Computer Science 2.6 (2021) Devezas, José, and Sérgio Nunes. &amp;ldquo;Characterizing the Hypergraph-of-Entity and the Structural Impact of Its Extensions&amp;rdquo;. Applied Network Science - Special Issue of the 8th International Conference on Complex Networks and Their Applications 5.1 (2020): 79 Devezas, José, and Sérgio Nunes. &amp;ldquo;Hypergraph-of-Entity: A Unified Representation Model for the Retrieval of Text and Knowledge&amp;rdquo;.</description>
       <content>&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#journals&#34;&gt;Journals&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#magazines&#34;&gt;Magazines&lt;/a&gt;&lt;/li&gt;
@@ -1100,7 +1100,7 @@ git log -Gquery Word difference comparison Running a diff based on words rather 
       <pubDate>Fri, 05 Mar 2021 16:42:00 +0000</pubDate>
       
       <guid>/academy/projects/</guid>
-      <description>Army ANT FeedArchive ANT Juggle Juggle Mobile Breadcrumbs Ciclope                              Army ANT Army ANT is an information retrieval research framework that supports experimentation with classical approaches, while also providing a high-level abstraction that motivates the implementation of innovative approaches in a shared evaluation environment.</description>
+      <description>Army ANT FeedArchive ANT Juggle Juggle Mobile Breadcrumbs Ciclope Army ANT Army ANT is an information retrieval research framework that supports experimentation with classical approaches, while also providing a high-level abstraction that motivates the implementation of innovative approaches in a shared evaluation environment. It facilitates the use of combined data, and it provides an environment for testing and evaluating multiple retrieval tasks, supporting keyword or entity queries, as well as documents, entities, or even terms, as the rankable results.</description>
       <content>&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#army-ant&#34;&gt;Army ANT&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#feedarchive&#34;&gt;FeedArchive&lt;/a&gt;&lt;/li&gt;
@@ -2016,7 +2016,7 @@ git log -Gquery Word difference comparison Running a diff based on words rather 
       <pubDate>Wed, 03 Mar 2021 18:31:00 +0000</pubDate>
       
       <guid>/academy/posters/</guid>
-      <description>          </description>
+      <description> </description>
       <content>&lt;p&gt;
 
 
@@ -2066,8 +2066,7 @@ git log -Gquery Word difference comparison Running a diff based on words rather 
       <pubDate>Mon, 01 Mar 2021 18:58:03 +0000</pubDate>
       
       <guid>/academy/demos/</guid>
-      <description>    Your browser does not support the video tag, but check out FourEyes website instead. 
-     </description>
+      <description> Your browser does not support the video tag, but check out FourEyes website instead. </description>
       <content>&lt;p&gt;&lt;div class=&#34;slides&#34;&gt;
   &lt;iframe width=&#34;250&#34; height=&#34;140.45&#34; src=&#34;https://www.youtube.com/embed/-o4sZp6lH9o&#34; frameborder=&#34;0&#34;
     allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34;
@@ -2114,7 +2113,7 @@ git log -Gquery Word difference comparison Running a diff based on words rather 
       <pubDate>Mon, 01 Mar 2021 17:37:00 +0000</pubDate>
       
       <guid>/academy/slides/</guid>
-      <description> Talks  Conferences Invited speaker   Lectures  Invited assistant  GIRS 2017/2018   Invited speaker  ASSO 2019/2020 DAPI 2018/2019     Theses  Doctoral Master&amp;rsquo;s    Talks Conferences            Invited speaker           Lectures Invited assistant GIRS 2017/2018               Invited speaker ASSO 2019/2020   DAPI 2018/2019       Theses Doctoral   Master&amp;rsquo;s   </description>
+      <description> Talks Conferences Invited speaker Lectures Invited assistant GIRS 2017/2018 Invited speaker ASSO 2019/2020 DAPI 2018/2019 Theses Doctoral Master&amp;rsquo;s Talks Conferences Invited speaker Lectures Invited assistant GIRS 2017/2018 Invited speaker ASSO 2019/2020 DAPI 2018/2019 Theses Doctoral Master&amp;rsquo;s </description>
       <content>&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#talks&#34;&gt;Talks&lt;/a&gt;
 &lt;ul&gt;
@@ -2362,7 +2361,7 @@ git log -Gquery Word difference comparison Running a diff based on words rather 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/about/</guid>
-      <description>A creative, classical liberal, PhD in Computer Science from Portugal. Specialist in information retrieval and network science. Enjoys random walks, machine learning, and data science. Mainly codes in Python, but also a master of R, and a lover of Scala. Believer in diversity and equality, but not fussy about it. No-bullshit, people-take-precedence policy, and an endless passion for questioning. Gets bored easily, works best when focused on a single, challenging goal.</description>
+      <description>A creative, anarcho-capitalist, PhD in Computer Science from Portugal. Specialist in information retrieval and network science. Enjoys random walks, machine learning, and data science. Mainly codes in Python, but also a master of R, and a lover of Scala. Believer in diversity and equality, but not fussy about it. No-bullshit, people-take-precedence policy, and an endless passion for questioning. Gets bored easily, works best when focused on a single, challenging goal.</description>
       <content>&lt;p&gt;&lt;div class=&#34;tinted&#34;  style=&#34;max-width: 22%;&#34; &gt;
   &lt;div class=&#34;tint&#34;&gt;&lt;/div&gt;
   &lt;img src=&#34;/img/about/jld1.jpg&#34;  /&gt;
@@ -2384,7 +2383,7 @@ git log -Gquery Word difference comparison Running a diff based on words rather 
 &lt;/div&gt;
 &lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;A creative, classical liberal, &lt;code&gt;PhD in Computer Science&lt;/code&gt; from Portugal.&lt;/li&gt;
+&lt;li&gt;A creative, anarcho-capitalist, &lt;code&gt;PhD in Computer Science&lt;/code&gt; from Portugal.&lt;/li&gt;
 &lt;li&gt;Specialist in &lt;code&gt;information retrieval&lt;/code&gt; and &lt;code&gt;network science&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Enjoys &lt;code&gt;random walks&lt;/code&gt;, &lt;code&gt;machine learning&lt;/code&gt;, and &lt;code&gt;data science&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Mainly codes in &lt;code&gt;Python&lt;/code&gt;, but also a master of &lt;code&gt;R&lt;/code&gt;, and a lover of &lt;code&gt;Scala&lt;/code&gt;.&lt;/li&gt;
@@ -2450,6 +2449,7 @@ I continued at SAPO Labs, working on data visualization and link analysis for a 
   &lt;img src=&#34;/img/academy/bitcoin.jpg&#34;  class=&#34;center&#34;  style=&#34;max-height: 400px&#34;  /&gt;
 
 
+&lt;p&gt;An anarcho-capitalist in the making.&lt;/p&gt;
 </content>
     </item>
     
