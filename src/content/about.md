@@ -7,7 +7,7 @@ title: "About"
 {{< tinted-image src="/img/about/jld3.jpg" style="max-width: 22%;" >}}
 {{< tinted-image src="/img/about/jld4.jpg" style="max-width: 22%;" >}}
 
-- A creative, classical liberal, `PhD in Computer Science` from Portugal.
+- A creative, anarcho-capitalist, `PhD in Computer Science` from Portugal.
 - Specialist in `information retrieval` and `network science`.
 - Enjoys `random walks`, `machine learning`, and `data science`.
 - Mainly codes in `Python`, but also a master of `R`, and a lover of `Scala`.

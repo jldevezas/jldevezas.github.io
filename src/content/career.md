@@ -35,3 +35,5 @@ As the end of such a heavy-weight stage of my life drew near, I found a new pass
 Now, I am adrift, randomly walking in an attempt to find my own path --- a non-conformist looking for a brighter future.
 
 {{< image src="/img/academy/bitcoin.jpg" position="center" style="max-height: 400px" >}}
+
+An anarcho-capitalist in the making.
