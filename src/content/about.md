@@ -15,8 +15,7 @@ title: "About"
 - `No-bullshit`, people-take-precedence policy, and an endless passion for questioning.
 - Gets bored easily, works best when focused on a single, challenging goal.
 - Disbeliever in multitasking, unless it's a computer doing it.
-- Doesn't care about benefits, only money (`crypto` is fine).
+- Doesn't care about benefits, only money.
 - `Anti` compartmentalization, emotional intelligence, or `social convention`.
 - Believes an individual should be `free to be` regardless of context.
 - `Engineer`, `programmer`, `sysadmin` --- I get it done.
-- And did I mention the `no-bullshit` policy?
