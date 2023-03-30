@@ -229,16 +229,16 @@ if (!doNotTrack) {
   <div class="post-content"><div>
         <h1 id="log-search">Log search<a href="#log-search" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
 <p>Finding a log with a certain string in the commit message:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git log --grep<span style="color:#f92672">=</span>query
-</code></pre></div><h1 id="content-search">Content search<a href="#content-search" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git log --grep<span style="color:#f92672">=</span>query
+</span></span></code></pre></div><h1 id="content-search">Content search<a href="#content-search" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
 <p>Finding a commit where a given string was introduced in the code:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git log -Squery
-</code></pre></div><p>Same as the previous, but using a regex instead of string matching:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git log -Gquery
-</code></pre></div><h1 id="word-difference-comparison">Word difference comparison<a href="#word-difference-comparison" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git log -Squery
+</span></span></code></pre></div><p>Same as the previous, but using a regex instead of string matching:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git log -Gquery
+</span></span></code></pre></div><h1 id="word-difference-comparison">Word difference comparison<a href="#word-difference-comparison" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
 <p>Running a diff based on words rather than lines (useful when managing a blog, documentation, or scientific writing in LaTeX):</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git diff --word-diff HEAD~1
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git diff --word-diff HEAD~1
+</span></span></code></pre></div>
       </div></div>
 
   
