@@ -231,32 +231,32 @@ if (!doNotTrack) {
   <div class="post-content"><div>
         <h1 id="monitor-space-usage-changes">Monitor space usage changes<a href="#monitor-space-usage-changes" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
 <p>While most people use bash, I like fish and I think we should not be afraid to write code for it. So here is a simple function I wrote to monitor space usage changes in a directory. It should be easy to convert it to bash or zsh if you prefer either. This is a general purpose function, not just for PostgreSQL, and I find this frequently comes handy.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#66d9ef">function</span> monitor_space
-  set --local prev_space
-  <span style="color:#66d9ef">while</span> true
-    set --local space <span style="color:#f92672">(</span>du -h -d0 $argv<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span> 2&gt;/dev/null<span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">if</span> test <span style="color:#e6db74">&#34;</span>$prev_space<span style="color:#e6db74">&#34;</span> !<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span>$space<span style="color:#e6db74">&#34;</span>
-      echo $space
-    end
-    set prev_space <span style="color:#e6db74">&#34;</span>$space<span style="color:#e6db74">&#34;</span>
-    sleep <span style="color:#ae81ff">1</span>
-  end
-end
-</code></pre></div><h1 id="practical-application-monitoring-pgsql_tmp">Practical application: monitoring pgsql_tmp<a href="#practical-application-monitoring-pgsql_tmp" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> monitor_space
+</span></span><span style="display:flex;"><span>  set --local prev_space
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> true
+</span></span><span style="display:flex;"><span>    set --local space <span style="color:#f92672">(</span>du -h -d0 $argv<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span> 2&gt;/dev/null<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> test <span style="color:#e6db74">&#34;</span>$prev_space<span style="color:#e6db74">&#34;</span> !<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span>$space<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>      echo $space
+</span></span><span style="display:flex;"><span>    end
+</span></span><span style="display:flex;"><span>    set prev_space <span style="color:#e6db74">&#34;</span>$space<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    sleep <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>  end
+</span></span><span style="display:flex;"><span>end
+</span></span></code></pre></div><h1 id="practical-application-monitoring-pgsql_tmp">Practical application: monitoring pgsql_tmp<a href="#practical-application-monitoring-pgsql_tmp" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
 <p>If you&rsquo;re like me and you have learned to avoid premature optimizations, you are bound to eventually exhaust disk space because of a badly written SQL query. No shame in that, time is a rare commodity. Better done than perfect, right?</p>
 <p>Personally, when a server&rsquo;s disk is approaching its full state, I get e-mailed by my <code>disk_space_check</code> script, that is scheduled to run every 5 minutes in crontab.</p>
 <p>This one&rsquo;s in bash, if you&rsquo;d like to use it:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
-</span><span style="color:#75715e"></span>MAIL<span style="color:#f92672">=</span>user@domain
-CURRENT<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>df / | grep / | awk <span style="color:#e6db74">&#39;{ print $5}&#39;</span> | sed <span style="color:#e6db74">&#39;s/%//g&#39;</span><span style="color:#66d9ef">)</span>
-THRESHOLD<span style="color:#f92672">=</span><span style="color:#ae81ff">80</span>
-
-<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$CURRENT<span style="color:#e6db74">&#34;</span> -gt <span style="color:#e6db74">&#34;</span>$THRESHOLD<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span> ; <span style="color:#66d9ef">then</span>
-    mail -s <span style="color:#e6db74">&#39;[domain] Disk Space Alert&#39;</span> $MAIL <span style="color:#e6db74">&lt;&lt; EOF
-</span><span style="color:#e6db74">Your root partition remaining free space is critically low. Used: $CURRENT%
-</span><span style="color:#e6db74">EOF</span>
-<span style="color:#66d9ef">fi</span>
-</code></pre></div><p>So, let&rsquo;s say you just got this e-mail, and you need to figure out what the hell is causing your disk to get filled so quickly. You suspect PostgreSQL, because ran a <code>sudo ncdu /</code> that showed it was taking too much space and, in particular, the <code>/var/lib/postgresql/12/main/base/pgsql_tmp/</code> directory was getting populated with too many bytes.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>MAIL<span style="color:#f92672">=</span>user@domain
+</span></span><span style="display:flex;"><span>CURRENT<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>df / | grep / | awk <span style="color:#e6db74">&#39;{ print $5}&#39;</span> | sed <span style="color:#e6db74">&#39;s/%//g&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>THRESHOLD<span style="color:#f92672">=</span><span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$CURRENT<span style="color:#e6db74">&#34;</span> -gt <span style="color:#e6db74">&#34;</span>$THRESHOLD<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span> ; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    mail -s <span style="color:#e6db74">&#39;[domain] Disk Space Alert&#39;</span> $MAIL <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Your root partition remaining free space is critically low. Used: $CURRENT%
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span></code></pre></div><p>So, let&rsquo;s say you just got this e-mail, and you need to figure out what the hell is causing your disk to get filled so quickly. You suspect PostgreSQL, because ran a <code>sudo ncdu /</code> that showed it was taking too much space and, in particular, the <code>/var/lib/postgresql/12/main/base/pgsql_tmp/</code> directory was getting populated with too many bytes.</p>
 <p>So you trigger your: <code>monitor_space /var/lib/postgresql/12/main/base/pgsql_tmp/</code> command and follow your logs in order to identify the query that is creating so much temporary data.</p>
 <p>Sure you could use some PostgreSQL extensions to do this, but <code>monitor_space</code> is simple and works for many applications.</p>
 
