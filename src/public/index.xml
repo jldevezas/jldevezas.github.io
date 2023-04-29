@@ -6,7 +6,7 @@
     <description>Recent content in Home on José Devezas, PhD</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; 2021-2022 José Devezas</copyright>
+    <copyright>&amp;copy; 2021-2023 José Devezas</copyright>
     <lastBuildDate>Tue, 29 Mar 2022 11:58:44 +0100</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Monitoring PostgreSQL temporary directory space</title>
@@ -2361,7 +2361,7 @@ git log -Gquery Word difference comparison Running a diff based on words rather 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/about/</guid>
-      <description>A creative, anarcho-capitalist, PhD in Computer Science from Portugal. Specialist in information retrieval and network science. Enjoys random walks, machine learning, and data science. Mainly codes in Python, but also a master of R, and a lover of Scala. Believer in diversity and equality, but not fussy about it. No-bullshit, people-take-precedence policy, and an endless passion for questioning. Gets bored easily, works best when focused on a single, challenging goal.</description>
+      <description>A creative PhD in Computer Science from Portugal. Specialist in information retrieval and network science. Enjoys random walks, machine learning, and data science. Mainly codes in Python, but also a master of R, and a lover of Scala. Believer in diversity and equality, but not fussy about it. No-bullshit, people-take-precedence policy, and an endless passion for questioning. Works best when focused on a single, challenging goal. Disbeliever in multitasking, unless it&amp;rsquo;s a computer doing it.</description>
       <content>&lt;p&gt;&lt;div class=&#34;tinted&#34;  style=&#34;max-width: 22%;&#34; &gt;
   &lt;div class=&#34;tint&#34;&gt;&lt;/div&gt;
   &lt;img src=&#34;/img/about/jld1.jpg&#34;  /&gt;
@@ -2383,16 +2383,14 @@ git log -Gquery Word difference comparison Running a diff based on words rather 
 &lt;/div&gt;
 &lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;A creative, anarcho-capitalist, &lt;code&gt;PhD in Computer Science&lt;/code&gt; from Portugal.&lt;/li&gt;
+&lt;li&gt;A creative &lt;code&gt;PhD in Computer Science&lt;/code&gt; from Portugal.&lt;/li&gt;
 &lt;li&gt;Specialist in &lt;code&gt;information retrieval&lt;/code&gt; and &lt;code&gt;network science&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Enjoys &lt;code&gt;random walks&lt;/code&gt;, &lt;code&gt;machine learning&lt;/code&gt;, and &lt;code&gt;data science&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Mainly codes in &lt;code&gt;Python&lt;/code&gt;, but also a master of &lt;code&gt;R&lt;/code&gt;, and a lover of &lt;code&gt;Scala&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Believer in diversity and equality, but not fussy about it.&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;No-bullshit&lt;/code&gt;, people-take-precedence policy, and an endless passion for questioning.&lt;/li&gt;
-&lt;li&gt;Gets bored easily, works best when focused on a single, challenging goal.&lt;/li&gt;
+&lt;li&gt;Works best when focused on a single, challenging goal.&lt;/li&gt;
 &lt;li&gt;Disbeliever in multitasking, unless it&amp;rsquo;s a computer doing it.&lt;/li&gt;
-&lt;li&gt;Doesn&amp;rsquo;t care about benefits, only money.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Anti&lt;/code&gt; compartmentalization, emotional intelligence, or &lt;code&gt;social convention&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Believes an individual should be &lt;code&gt;free to be&lt;/code&gt; regardless of context.&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;Engineer&lt;/code&gt;, &lt;code&gt;programmer&lt;/code&gt;, &lt;code&gt;sysadmin&lt;/code&gt; &amp;mdash; I get it done.&lt;/li&gt;
 &lt;/ul&gt;
@@ -2448,7 +2446,6 @@ I continued at SAPO Labs, working on data visualization and link analysis for a 
   &lt;img src=&#34;/img/academy/bitcoin.jpg&#34;  class=&#34;center&#34;  style=&#34;max-height: 400px&#34;  /&gt;
 
 
-&lt;p&gt;An anarcho-capitalist in the making.&lt;/p&gt;
 </content>
     </item>
     
@@ -2462,8 +2459,6 @@ I continued at SAPO Labs, working on data visualization and link analysis for a 
 Porto, Portugal
 E-mail
 joseluisdevezas@gmail.com
-Twitter
-@jldevezas
 LinkedIn
 https://pt.linkedin.com/in/jldevezas
 GitHub
@@ -2472,8 +2467,6 @@ https://github.com/jldevezas/</description>
 Porto, Portugal&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;E-mail&lt;/strong&gt;&lt;br&gt;
 &lt;a href=&#34;mailto:joseluisdevezas@gmail.com&#34;&gt;joseluisdevezas@gmail.com&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Twitter&lt;/strong&gt;&lt;br&gt;
-&lt;a href=&#34;https://twitter.com/jldevezas&#34;&gt;@jldevezas&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;LinkedIn&lt;/strong&gt;&lt;br&gt;
 &lt;a href=&#34;https://pt.linkedin.com/in/jldevezas&#34;&gt;https://pt.linkedin.com/in/jldevezas&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;GitHub&lt;/strong&gt;&lt;br&gt;
