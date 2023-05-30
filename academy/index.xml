@@ -2004,11 +2004,6 @@
       <guid>/academy/demos/</guid>
       <description> Your browser does not support the video tag, but check out FourEyes website instead. </description>
       <content>&lt;p&gt;&lt;div class=&#34;slides&#34;&gt;
-  &lt;iframe width=&#34;250&#34; height=&#34;140.45&#34; src=&#34;https://www.youtube.com/embed/-o4sZp6lH9o&#34; frameborder=&#34;0&#34;
-    allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34;
-    allowfullscreen&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-&lt;div class=&#34;slides&#34;&gt;
   &lt;iframe width=&#34;250&#34; height=&#34;140.45&#34; src=&#34;https://www.youtube.com/embed/uDhfL_UvF_Y&#34; frameborder=&#34;0&#34;
     allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34;
     allowfullscreen&gt;&lt;/iframe&gt;
