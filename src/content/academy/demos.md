@@ -6,6 +6,6 @@ author: "José Devezas"
 
 {{< youtube id="uDhfL_UvF_Y" >}}
 {{< video src="/vid/academy/projects/feedarchive/feedarchive_demo.mp4" thumb="/img/academy/projects/feedarchive/feedarchive_demo.jpg" class="slides" >}}
-
 {{< slides base="academy/demos" src="labs_sapo_up-2013-devezas-juggle" align="top" >}}
+
 {{< slides base="academy/demos" src="labs_sapo_up-2010-devezas-ciclope" >}}

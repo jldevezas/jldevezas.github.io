@@ -2078,8 +2078,8 @@ git log -Gquery Word difference comparison Running a diff based on words rather 
   &lt;source src=&#34;/vid/academy/projects/feedarchive/feedarchive_demo.mp4&#34; type=&#34;video/mp4&#34;&gt;
   Your browser does not support the video tag, but check out
   &lt;a href=&#34;http://foureyes.inesctec.pt/&#34;&gt;FourEyes website&lt;/a&gt; instead.
-&lt;/video&gt;&lt;/p&gt;
-&lt;p&gt;
+&lt;/video&gt;
+
 
 
   &lt;figure class=&#34;slides top&#34;&gt;
@@ -2088,7 +2088,7 @@ git log -Gquery Word difference comparison Running a diff based on words rather 
         /&gt;
     &lt;/a&gt;
   &lt;/figure&gt;
-
+&lt;/p&gt;
 
 
 
@@ -2098,7 +2098,7 @@ git log -Gquery Word difference comparison Running a diff based on words rather 
         /&gt;
     &lt;/a&gt;
   &lt;/figure&gt;
-&lt;/p&gt;
+
 </content>
     </item>
     
