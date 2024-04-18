@@ -11,7 +11,7 @@ params:
   contentTypeName: blog
 
   # ["orange", "blue", "red", "green", "pink"]
-  themeColor: red
+  themeColor: blue
 
   # if you set this to 0, only submenu trigger will be visible
   showMenuItems: 6
@@ -66,35 +66,35 @@ languages:
 
     menu:
       main:
-      - identifier: "home"
-        name: "Home"
-        url: "/"
-        weight: -120
-      - identifier: "blog"
-        name: "Blog"
-        url: "/blog"
-        weight: -110
-      - identifier: "academy"
-        name: "Academy"
-        url: "/academy"
-        weight: -100
-      - identifier: "career"
-        name: "Career"
-        url: "/career"
-        weight: -90
-      - identifier: "about"
-        name: "About"
-        url: "/about"
-        weight: -80
-      - identifier: "contact"
-        name: "Contact"
-        url: "/contact"
-        weight: -70
-      - identifier: "tags"
-        name: "Tags"
-        url: "/tags"
-        weight: -60
-      - identifier: "rss"
-        name: "RSS"
-        url: "/blog/index.xml"
-        weight: -50
+        - identifier: "home"
+          name: "Home"
+          url: "/"
+          weight: -120
+        - identifier: "blog"
+          name: "Blog"
+          url: "/blog"
+          weight: -110
+        - identifier: "academy"
+          name: "Academy"
+          url: "/academy"
+          weight: -100
+        - identifier: "career"
+          name: "Career"
+          url: "/career"
+          weight: -90
+        - identifier: "about"
+          name: "About"
+          url: "/about"
+          weight: -80
+        - identifier: "contact"
+          name: "Contact"
+          url: "/contact"
+          weight: -70
+        - identifier: "tags"
+          name: "Tags"
+          url: "/tags"
+          weight: -60
+        - identifier: "rss"
+          name: "RSS"
+          url: "/blog/index.xml"
+          weight: -50
