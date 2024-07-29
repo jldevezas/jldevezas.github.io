@@ -21,12 +21,12 @@ On Linux, you just `pip install jupyter` and you can run `jupyter notebook` or `
 
 # The Solution
 
-1. The VM has a Windows-accessible IP though, so we can listen on that IP instead.
+1. The VM has a Windows-accessible IP, so we can listen on that IP instead.
 2. It's possible to open the default Windows browser from WSL, using [wslu](https://wslutiliti.es/wslu/).
 
 ## Setting up Jupyter to listen on the WSL IP
 
-Edit `~/.jupyter/jupyter_notebook_config.py`:
+Edit `~/.jupyter/jupyter_notebook_config.py` to include the following lines:
 
 ```python
 import subprocess
