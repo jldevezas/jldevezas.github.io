@@ -239,11 +239,11 @@ if (!doNotTrack) {
 </ol>
 <h1 id="the-solution">The Solution<a href="#the-solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
 <ol>
-<li>The VM has a Windows-accessible IP though, so we can listen on that IP instead.</li>
+<li>The VM has a Windows-accessible IP, so we can listen on that IP instead.</li>
 <li>It&rsquo;s possible to open the default Windows browser from WSL, using <a href="https://wslutiliti.es/wslu/">wslu</a>.</li>
 </ol>
 <h2 id="setting-up-jupyter-to-listen-on-the-wsl-ip">Setting up Jupyter to listen on the WSL IP<a href="#setting-up-jupyter-to-listen-on-the-wsl-ip" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<p>Edit <code>~/.jupyter/jupyter_notebook_config.py</code>:</p>
+<p>Edit <code>~/.jupyter/jupyter_notebook_config.py</code> to include the following lines:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> subprocess
 </span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>
 </span></span><span style="display:flex;"><span>c<span style="color:#f92672">.</span>NotebookApp<span style="color:#f92672">.</span>ip <span style="color:#f92672">=</span> subprocess<span style="color:#f92672">.</span>check_output([<span style="color:#e6db74">&#39;hostname&#39;</span>, <span style="color:#e6db74">&#39;-I&#39;</span>], text<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)<span style="color:#f92672">.</span>strip()
