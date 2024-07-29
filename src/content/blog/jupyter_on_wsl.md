@@ -57,16 +57,16 @@ exec fish
 
 ## Launching Jupyter
 
-You can now run Jupyter Notebook as usual:
+You can now run Jupyter Notebook:
 
 ```shell
 jupyter notebook
 ```
 
-Same with Jupyter Lab:
+Or Jupyter Lab:
 
 ```shell
 jupyter lab
 ```
 
-Your default Windows browser should open and display Jupyter.
+Your default Windows browser should open and display Jupyter as usual.
