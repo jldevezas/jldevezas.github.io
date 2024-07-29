@@ -45,12 +45,14 @@ For bash:
 
 ```shell
 echo 'export BROWSER=wslview' >> ~/.bashrc
+exec bash
 ```
 
 For fish:
 
 ```shell
 echo 'set -x BROWSER wslview' >> ~/.config/fish/config.fish
+exec fish
 ```
 
 ## Launching Jupyter
