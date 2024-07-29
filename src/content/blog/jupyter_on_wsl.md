@@ -13,7 +13,7 @@ showFullContent: false
 
 # The Problem
 
-On Linux, you just `pip install jupyter` and you can run `jupyter notebook` or `jupyter lab` and it will listen on `localhost` by default and open the browser for you. This is important, because notebooks are for useful for prototyping and quickly testing new ideas, so a quick setup is relevant. On Windows, however, if you're using WSL or WSL2 (who isn't?), this won't happen. You'll have two main issues:
+On Linux, you just `pip install jupyter` and you can run `jupyter notebook` or `jupyter lab` and it will listen on `localhost` by default and open the browser for you. This is relevant, because notebooks are useful for prototyping and quickly testing new ideas. On Windows, however, if you're using WSL or WSL2 (who isn't?), this won't happen. You'll have two main issues:
 
 1. `localhost` on WSL won't be accessible via your Windows browser, because WSL is essentially running on a VM, and it has its own separate network.
 2. Your Windows browser won't open and, instead, the default shell browser will open, which is something like `links`, a text-based browser.
