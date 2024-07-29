@@ -7,7 +7,57 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2021-2023 José Devezas</copyright>
-    <lastBuildDate>Tue, 29 Mar 2022 11:58:44 +0100</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 29 Jul 2024 22:23:21 +0100</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>data-science</title>
+      <link>/tags/data-science/</link>
+      <pubDate>Mon, 29 Jul 2024 22:23:21 +0100</pubDate>
+      
+      <guid>/tags/data-science/</guid>
+      <description></description>
+      <content></content>
+    </item>
+    
+    <item>
+      <title>jupyter</title>
+      <link>/tags/jupyter/</link>
+      <pubDate>Mon, 29 Jul 2024 22:23:21 +0100</pubDate>
+      
+      <guid>/tags/jupyter/</guid>
+      <description></description>
+      <content></content>
+    </item>
+    
+    <item>
+      <title>windows</title>
+      <link>/tags/windows/</link>
+      <pubDate>Mon, 29 Jul 2024 22:23:21 +0100</pubDate>
+      
+      <guid>/tags/windows/</guid>
+      <description></description>
+      <content></content>
+    </item>
+    
+    <item>
+      <title>windows-subsystem-for-linux</title>
+      <link>/tags/windows-subsystem-for-linux/</link>
+      <pubDate>Mon, 29 Jul 2024 22:23:21 +0100</pubDate>
+      
+      <guid>/tags/windows-subsystem-for-linux/</guid>
+      <description></description>
+      <content></content>
+    </item>
+    
+    <item>
+      <title>wsl</title>
+      <link>/tags/wsl/</link>
+      <pubDate>Mon, 29 Jul 2024 22:23:21 +0100</pubDate>
+      
+      <guid>/tags/wsl/</guid>
+      <description></description>
+      <content></content>
+    </item>
+    
     <item>
       <title>fish</title>
       <link>/tags/fish/</link>

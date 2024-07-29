@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>windows on José Devezas, PhD</title>
+    <link>/tags/windows/</link>
+    <description>Recent content in windows on José Devezas, PhD</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2021-2023 José Devezas</copyright>
+    <lastBuildDate>Mon, 29 Jul 2024 22:23:21 +0100</lastBuildDate><atom:link href="/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Jupyter Notebooks on WSL</title>
+      <link>/blog/jupyter_on_wsl/</link>
+      <pubDate>Mon, 29 Jul 2024 22:23:21 +0100</pubDate>
+      
+      <guid>/blog/jupyter_on_wsl/</guid>
+      <description>The Problem On Linux, you just pip install jupyter and you can run jupyter notebook or jupyter lab and it will listen on localhost by default and open the browser for you. This is important, because notebooks are for useful for prototyping and quickly testing new ideas, so a quick setup is relevant. On Windows, however, if you&amp;rsquo;re using WSL or WSL2 (who isn&amp;rsquo;t?), this won&amp;rsquo;t happen. You&amp;rsquo;ll have two main issues:</description>
+      <content>&lt;h1 id=&#34;the-problem&#34;&gt;The Problem&lt;/h1&gt;
+&lt;p&gt;On Linux, you just &lt;code&gt;pip install jupyter&lt;/code&gt; and you can run &lt;code&gt;jupyter notebook&lt;/code&gt; or &lt;code&gt;jupyter lab&lt;/code&gt; and it will listen on &lt;code&gt;localhost&lt;/code&gt; by default and open the browser for you. This is important, because notebooks are for useful for prototyping and quickly testing new ideas, so a quick setup is relevant. On Windows, however, if you&amp;rsquo;re using WSL or WSL2 (who isn&amp;rsquo;t?), this won&amp;rsquo;t happen. You&amp;rsquo;ll have two main issues:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;localhost&lt;/code&gt; on WSL won&amp;rsquo;t be accessible via your Windows browser, because WSL is essentially running on a VM, and it has its own separate network.&lt;/li&gt;
+&lt;li&gt;Your Windows browser won&amp;rsquo;t open and, instead, the default shell browser will open, which is something like &lt;code&gt;links&lt;/code&gt;, a text-based browser.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;the-solution&#34;&gt;The Solution&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;The VM has a Windows-accessible IP though, so we can listen on that IP instead.&lt;/li&gt;
+&lt;li&gt;It&amp;rsquo;s possible to open the default Windows browser from WSL, using &lt;a href=&#34;https://wslutiliti.es/wslu/&#34;&gt;wslu&lt;/a&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;setting-up-jupyter-to-listen-on-the-wsl-ip&#34;&gt;Setting up Jupyter to listen on the WSL IP&lt;/h2&gt;
+&lt;p&gt;Edit &lt;code&gt;~/.jupyter/jupyter_notebook_config.py&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; subprocess
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;c&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;NotebookApp&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ip &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; subprocess&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;check_output([&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;hostname&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;-I&amp;#39;&lt;/span&gt;], text&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strip()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;changing-the-default-browser-to-the-windows-default&#34;&gt;Changing the default browser to the Windows default&lt;/h2&gt;
+&lt;p&gt;First, install &lt;code&gt;wslu&lt;/code&gt;, following the instructions &lt;a href=&#34;https://wslutiliti.es/wslu/install.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Then, set your &lt;code&gt;BROWSER&lt;/code&gt; environment variable to &lt;code&gt;wslview&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;For bash:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;export BROWSER=wslview&amp;#39;&lt;/span&gt; &amp;gt;&amp;gt; ~/.bashrc
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;For fish:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;set -x BROWSER wslview&amp;#39;&lt;/span&gt; &amp;gt;&amp;gt; ~/.config/fish/config.fish
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;launching-jupyter&#34;&gt;Launching Jupyter&lt;/h2&gt;
+&lt;p&gt;You can now run Jupyter Notebook as usual:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;jupyter notebook
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Same with Jupyter Lab:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;jupyter lab
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Your default Windows browser should open and display Jupyter.&lt;/p&gt;
+</content>
+    </item>
+    
+  </channel>
+</rss>
